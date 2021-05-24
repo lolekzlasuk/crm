@@ -1,0 +1,159 @@
+
+{% extends 'base.html' %}
+{% block extra_css %}  .nav__link[name="Calendar"] {background-color: #1caf9a; color: white;} {% endblock %}
+{% block body_block %}
+{% load static %}
+{% load groupfilter %}
+<div class="site-header">
+
+
+    <span class="category-title">
+    Calendar
+    </span>
+    <span class="category-subtitle">/ subtitle</span>
+  </div>
+
+<div class="content-container">
+
+
+  <div class="objecta">
+  </div>
+  <div class="pA">
+
+  <div class="pH">
+
+
+  <div class="pAT">
+    {{object.title}}
+
+      {{object.start|date:"H:i"}} - {{object.end|date:"H:i"}}
+
+
+  </div>
+  </div>
+  <div class="pAb">
+
+{{object.description}}
+
+
+  </div>
+  </div>
+
+
+</div>
+<script>
+// // Open the Modal
+// function openModal() {
+//   document.getElementById("myModal").style.display = "block";
+// }
+//
+// // Close the Modal
+// function closeModal() {
+//   document.getElementById("myModal").style.display = "none";
+// }
+//
+// var slideIndex = 1;
+// showSlides(slideIndex);
+//
+// // Next/previous controls
+// function plusSlides(n) {
+//   showSlides(slideIndex += n);
+// }
+//
+// // Thumbnail image controls
+// function currentSlide(n) {
+//   showSlides(slideIndex = n);
+// }
+//
+// function showSlides(n) {
+//   var i;
+//   var slides = document.getElementsByClassName("mySlides");
+//   var dots = document.getElementsByClassName("demo");
+//   var captionText = document.getElementById("caption");
+//   if (n > slides.length) {slideIndex = 1}
+//   if (n < 1) {slideIndex = slides.length}
+//   for (i = 0; i < slides.length; i++) {
+//     slides[i].style.display = "none";
+//   }
+//   for (i = 0; i < dots.length; i++) {
+//     dots[i].className = dots[i].className.replace(" active", "");
+//   }
+//   slides[slideIndex-1].style.display = "block";
+//   dots[slideIndex-1].className += " active";
+//   captionText.innerHTML = dots[slideIndex-1].alt;
+// }
+
+
+
+
+
+$(document).ready(function(){
+  $.ajaxSetup({
+       beforeSend: function(xhr, settings) {
+           function getCookie(name) {
+               var cookieValue = null;
+               if (document.cookie && document.cookie != '') {
+                   var cookies = document.cookie.split(';');
+                   for (var i = 0; i < cookies.length; i++) {
+                       var cookie = jQuery.trim(cookies[i]);
+                       // Does this cookie string begin with the name we want?
+                       if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                           cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                           break;
+                       }
+                   }
+               }
+               return cookieValue;
+           }
+           if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+               // Only send the token to relative URLs i.e. locally.
+               xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+           }
+       }
+  });
+
+});
+
+
+$(document).on('click','.unopened',function (e) {
+  var csrftoken = $("input[name=csrfmiddlewaretoken]").val();
+  e.preventDefault();
+  var pk = $(this).attr("data-id");
+  var urlss = $(this).attr("data-href");
+
+
+
+    // console.log($(this).find("input[name='type"+i+"']:checked").val());
+    $.ajax({
+        type:'POST',
+        url: urlss,
+        data:JSON.stringify({
+            "pk": pk,
+            // "csrfmiddlewaretoken": csrftoken,
+            // "action": 'post'
+        }),
+
+        success:(json) => {
+          $(this).removeClass("unopened");
+          $(this).parents(".news").removeClass("unopened");
+
+
+        },
+        error : function(xhr,errmsg,err) {
+        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+    }
+    });
+   });
+
+
+
+
+
+
+
+
+
+
+
+</script>
+{% endblock %}

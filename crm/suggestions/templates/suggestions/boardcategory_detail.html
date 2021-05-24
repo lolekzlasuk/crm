@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block extra_css %}  .nav__link[name="Q&A"] {background-color: #1caf9a; color: white;} {% endblock %}
+{% block body_block %}
+{% load static %}
+
+<div class="site-header">
+
+
+    <span class="category-title">
+    Message Board
+    </span>
+    <span class="category-subtitle">/ Communicate!</span>
+  </div>
+
+  <div class="content-container content-container--paginated">
+    <a href="{% url 'suggestions:questionform' %}">form</a>
+  <div class="pA">
+
+  <div class="pH">
+
+
+  <div class="pAT">
+    Categories
+
+  </div>
+  </div>
+  <div class="pAb">
+  <div class="doc_grid">
+    <div class="doc">
+      <a href="{% url 'suggestions:questionlist'  %}">
+
+      <span> All</span>
+
+    </a>
+    </div>
+  {% for each in categories %}
+
+  <div class="doc">
+    <a href="{% url 'suggestions:category' pk=each.pk %}">
+
+    <span>  {{ each.title}}</span>
+
+  </a>
+  </div>
+
+  {% endfor %}
+  </div>
+  </div>
+  </div>
+  Newest(dropdown here maybe)
+    {% for question in object_list %}
+    <div class="pA idea">
+      <div class="idea__left">
+        <img src="{{question.author.userprofile.profile_pic.url}}" alt="" class="avatar">
+        <div class="avatar__name">
+  {{question.author.userprofile.name}}
+        </div>
+        <div class="idea__info">
+          {{question.date_created}}
+
+  <span>no of replies: {% if question.answers.all %}
+    {{question.answers.all}}
+  {% else %}
+  0{%endif%}</span>
+        </div>
+      </div>
+      <div class="idea__right">
+
+    <a href="{% url 'suggestions:questiondetail' pk=question.pk %}">
+      <div class="pH">
+        <div class="pT">
+       {{question.title}}
+        </div>
+
+
+      </div></a>
+        <div class="pAb">
+
+
+
+          {{question.body|truncatewords:100}}
+
+        </div>
+
+    </div>
+        </div>
+
+    {% endfor %}
+    {% if is_paginated %}
+       <ul class="pagination">
+         {% if page_obj.has_previous %}
+           <a href="?page={{ page_obj.previous_page_number }}"><li class="hover">&laquo;</li></a>
+         {% else %}
+           <li class="disabled"><span>&laquo;</span></li>
+         {% endif %}
+         {% for i in paginator.page_range %}
+           {% if page_obj.number == i %}
+             <li class="active pagi__number"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+           {% else %}
+             <a  href="?page={{ i }}"><li class="hover">{{ i }}</li></a>
+           {% endif %}
+         {% endfor %}
+         {% if page_obj.has_next %}
+           <a href="?page={{ page_obj.next_page_number }}"><li class="hover">&raquo;</li></a>
+         {% else %}
+           <li class="disabled"><span>&raquo;</span></li>
+         {% endif %}
+       </ul>
+     {% endif %}</div>
+
+
+
+
+      </div>
+
+
+
+
+    {% endblock %}

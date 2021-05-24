@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block extra_css %}  .nav__link[name="Polls"] {background-color: #1caf9a; color: white;} {% endblock %}
+{% block body_block %}
+{% load static %}
+{% load groupfilter %}
+<div class="site-header">
+
+
+    <span class="category-title">
+    Polls
+    </span>
+    <span class="category-subtitle">/ Polling station</span>
+  </div>
+
+<div class="content-container">
+  {% if request.user|has_group:"Admins" %}
+  <div class="moderator_bar">
+
+
+  <a href="{% url 'polls:polllist' %}">Questions</a>
+  <a href="{% url 'polls:unpublishedpolllist' %}">unpublished</a>
+
+    </div>
+  {% endif %}
+
+<table>
+  <thead>
+
+
+  <th>User</th>
+  {% for each in object.questions.all|dictsort:'order'  %}
+  <th>{{each.title}}</th>
+  {% endfor %}
+    </thead>
+  <tbody>
+    {% for e in object.submitions.all %}
+    <tr>
+      <td>{{e.user.username}}</td>
+      {% for r in e.submitions.all|dictsort:'order' %}
+    <td> {{r.ans}}</td>
+      {% endfor %}
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
+
+
+
+
+
+    </div>
+
+
+
+
+  {% endblock %}

@@ -1,0 +1,52 @@
+
+{% extends 'base.html' %}
+{% block extra_css %}  .nav__link[name="QandA"] {background-color: #1caf9a; color: white;} {% endblock %}
+{% block body_block %}
+{% load static %}
+{% load groupfilter %}
+
+
+  <div class="site-header">
+    <div class="site-header__left">
+
+
+    <span class="site-header__title">
+      Home
+    </span>
+    <span class="site-header__subtitle">/ Company News</span>
+      </div>
+      <div class="site-header__right">
+        <span class="site-header__breadcrumb">Home page</span>
+      </div>
+  </div>
+
+
+
+<div class="content-container">
+
+  {% if request.user|has_group:"Admins" %}
+  <div class="moderator_bar">
+
+
+  <a href="{% url 'news:QandA' %}">Questions</a>
+  <a href="{% url 'news:unanQandA' %}">unanswered</a>
+
+    </div>
+  {% endif %}
+  <div class="objecta">
+
+  </div>
+    {% if request.user|has_group:"Admins" %}
+{% for question in object_list %}
+{{question.title}}
+{{question.body}}
+<a href="{% url 'news:updateQandA' pk=question.pk %}">Answer</a>
+{% endfor %}
+{% endif %}
+</div>
+
+
+
+
+
+{% endblock %}

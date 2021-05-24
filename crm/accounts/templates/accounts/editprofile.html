@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+<a href="{% url 'accounts:profile' %}">Back</a>
+<form method="POST" class="post-form" enctype=multipart/form-data>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Save</button>
+</form>
+{% endblock %}

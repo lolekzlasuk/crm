@@ -1,0 +1,268 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+{% load static %}
+
+
+
+
+{{data.title}}
+<form id="form" method="POST" class="pollcreation">
+  {% csrf_token %}
+  <div class="question">
+    <input class="title comment-input" placeholder="Your Question" id="last_name" type="text" name="lang">
+
+
+
+
+    <p> <input type="checkbox" class="enable" name="enable text" value=""></p>
+    <p>type of answers?</p>
+    <select name="0" class="select">
+    <p><label><option name="0" value="mch"> Multiple Choice</label></p>
+    <p> <label><option  name="0"value="chc"> radio</label></p>
+    <p> <label><option  name="0" value="txt"> text</label></p>
+    <p> <label><option  name="0" value="pck"> list</label></p>
+    <p> <label><option  name="0" value="dat"> date</label></p>
+    </select>
+    <p>possible answer</p>
+    <div class="answers">
+      <p><input class="answer comment-input" type="text" name="lang"></p>
+
+      <p><input class="answer comment-input" type="text" name="lang"></p>
+
+    </div>
+    <p><button type="button" class="addanswer" name="button">add another answer</button></p>
+
+
+
+    <p><button type="button" name="button" class="addquestion">add another question</button></p>
+    <!-- <p><button type="button" name="button" class="removequestion">remove this question</button></p> -->
+
+  </div>
+
+
+      <input data-id="{{data.pk}}" data-href="{% url 'polls:createpoll' pk=data.pk %}" type="submit" name="submit" value="submit" class="form-button comment-submit">
+</form>
+
+
+
+
+<script type="text/javascript">
+var n = 1
+
+
+$(document).ready(function(){
+  $.ajaxSetup({
+       beforeSend: function(xhr, settings) {
+           function getCookie(name) {
+               var cookieValue = null;
+               if (document.cookie && document.cookie != '') {
+                   var cookies = document.cookie.split(';');
+                   for (var i = 0; i < cookies.length; i++) {
+                       var cookie = jQuery.trim(cookies[i]);
+                       // Does this cookie string begin with the name we want?
+                       if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                           cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                           break;
+                       }
+                   }
+               }
+               return cookieValue;
+           }
+           if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+               // Only send the token to relative URLs i.e. locally.
+               xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+           }
+       }
+  });
+
+});
+
+
+  $(document).on('click',".addanswer",function (e) {
+
+            $(this).parents(".question").find(".answers").append(
+            '<div class="answerwrapper">'+
+
+            '<p><input class="answer comment-input" type="text" name="lang">'+
+            '<button type="button" class="removeanswer">remove this answer</button></p></div>'
+            );
+          });
+
+
+
+
+$(document).on('change',"select[class=select]",function (e) {
+
+      if($(this).val() == "txt" || $(this).val() == "dat"){
+
+              $(this).parents('.question').find('.answer').attr("disabled","disabled");
+              $(this).parents('.question').find('.answer').prop("value","");
+              $(this).parents('.question').find('.addanswer').attr("disabled","disabled");
+              $(this).parents('.question').find('.enable').attr("disabled","disabled");
+              $(this).parents('.question').find('.enable').prop('checked', false);
+      }
+      else if($(this).val() == "pck"){
+              $(this).parents('.question').find('.enable').attr("disabled","disabled");
+              $(this).parents('.question').find('.enable').prop('checked', false);
+
+              $(this).parents('.question').find('.answer').removeAttr("disabled","disabled");
+              $(this).parents('.question').find('.addanswer').removeAttr("disabled","disabled");
+
+      }
+
+      else{
+        $(this).parents('.question').find('.answer').removeAttr("disabled","disabled");
+        $(this).parents('.question').find('.addanswer').removeAttr("disabled","disabled");
+        $(this).parents('.question').find('.enable').removeAttr("disabled","disabled");
+      }
+        });
+
+
+// $(document).on('click',"input[type=radio]",function (e) {
+//       if($(this).val() == "pck"){
+//               $(this).parents('.question').find('.enable').attr("disabled","disabled");
+//               $(this).parents('.question').find('.enable').prop('checked', false);
+//
+//       }
+//       else{
+//         $(this).parents('.question').find('.enable').removeAttr("disabled","disabled");
+//       }
+//         });
+//
+
+
+$(document).on('click',".removequestion",function (e) {
+
+          $(this).parents('.question')[0].remove();
+        });
+
+
+$(document).on('click',".removeanswer",function (e) {
+
+          $(this).parents('.answerwrapper')[0].remove();
+        });
+
+
+
+        $(document).on('click',".addquestion",function (e) {
+
+          $(
+          '<div class="question">'+
+            '<input class="title comment-input" placeholder="Your Question" id="last_name" type="text" name="lang">'+
+
+
+            '<p> <input type="checkbox" class="enable" name="enable text" value=""></p>'+
+            '<p>type of answers?</p>'+
+              '<select name="'+n+'" class="select">'+
+            '<p><label><option value="mch"> Multiple Choice</label></p>'+
+            '<p> <label><option  value="chc"> radio</label></p>'+
+            '<p> <label><option   value="txt"> text</label></p>'+
+            '<p> <label><option  value="pck"> list</label></p>'+
+            '<p> <label><option   value="dat"> Date</label></p>'+
+            '</select>'+
+            '<p>possible answer</p>'+
+            '<div class="answers">'+
+              '<p><input class="answer comment-input" type="text" name="lang"></p>'+
+
+              '<p><input class="answer comment-input" type="text" name="lang"></p>'+
+
+            '</div>'+
+          '  <p><button type="button" class="addanswer" name="button">add another answer</button></p>'+
+
+
+
+          '  <p><button type="button" name="button" class="addquestion">add another question</button></p>'+
+      '      <p><button type="button" name="button" class="removequestion">remove this question</button></p>'+
+
+          '</div>'
+
+        ).insertAfter($('.question').last());
+        n = n + 1;
+        });
+
+
+  $(document).on('click','.comment-submit',function (e) {
+    var csrftoken = $("input[name=csrfmiddlewaretoken]").val();
+    e.preventDefault();
+    var pk = $(this).data("pk");
+    var urlss = $(this).attr("data-href");
+
+    $('.question').each(function(i,e) {
+
+      var ans = [];
+      $(this).find('.answer').each(function(i,e){
+        ans.push($(this).val());
+      });
+      console.log($(this).find(".title").val());
+      console.log($(this).find(".enable").is(':checked'));
+      console.log(ans);
+      console.log($(this).find("input[name='"+i+"']:checked").prop("name"));
+
+      // console.log($(this).find("input[name='type"+i+"']:checked").val());
+      $.ajax({
+          type:'POST',
+          url: urlss,
+          data:JSON.stringify({
+
+              "title":$(this).find('.title').val(),
+              "enabletext":$(this).find('.enable').is(':checked'),
+              "type":$(this).find('select[name="'+i+'"]').val(),
+              "answers":ans,
+              "order":$(this).find('select[name="'+i+'"]').prop("name"),
+              "pk": pk,
+              // "csrfmiddlewaretoken": csrftoken,
+              // "action": 'post'
+          }),
+
+          success:(json) => {
+            console.log('yaaay');
+                window.location.href = '{% url 'polls:polllist' %}';
+
+          },
+          error : function(xhr,errmsg,err) {
+          console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+      }
+      });
+     });
+
+});
+
+
+// $(document).on('click','.importquestion',function (e) {
+//   // var csrftoken = $("input[name=csrfmiddlewaretoken]").val();
+//   e.preventDefault();
+//   var pk = $(this).parent().parent().find(".select").val();
+//   var urlss = $(this).attr("data-href");
+//   console.log(pk);
+//   console.log(urlss);
+//     // console.log($(this).find("input[name='type"+i+"']:checked").val());
+//     $.ajax({
+//         type:'POST',
+//         url: urlss,
+//         // datatype: 'json',
+//         data:JSON.stringify({
+//             "pk": pk,
+//             // "csrfmiddlewaretoken": csrftoken,
+//             // "action": 'post'
+//         }),
+//
+//         success:(json) => {
+//           console.log(json);
+//
+//
+//         },
+//         error : function(xhr,errmsg,err) {
+//         console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+//     }
+//     });
+//    });
+//
+
+
+
+
+</script>
+
+
+{% endblock %}

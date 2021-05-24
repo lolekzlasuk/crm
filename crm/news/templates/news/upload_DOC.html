@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}  .nav__link[name="Home"] {background-color: #1caf9a; color: white;} {% endblock %}
+
+{% block body_block %}
+<form method="POST" class="post-form" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        {{ form.as_p}}
+
+        <button type="submit" class="save btn btn-default">Save</button>
+</form>
+<script>var editor = new MediumEditor('.editable');</script>
+{% endblock %}

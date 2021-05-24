@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% block extra_css %}  .nav__link[name="Documents"] {background-color: #1caf9a; color: white;} {% endblock %}
+{% block body_block %}
+{% load static %}
+{% load groupfilter %}
+<div class="site-header">
+
+
+    <span class="category-title">
+    Documents
+    </span>
+    <span class="category-subtitle">/ Useful information</span>
+  </div>
+
+<div class="content-container">
+
+  {% if request.user|has_group:"Admins" %}
+  <div class="moderator_bar">
+
+
+  <a href="{% url 'news:upload' %}">Upload a new one</a>
+  <a href="{% url 'news:unpublished' %}">unpublished</a>
+  <a href="{% url 'news:newss' %}">published</a>
+    </div>
+  {% endif %}
+  <div class="objecta">
+
+  </div>
+{% for news in object_list %}
+
+
+
+
+
+<div class="news {% if news.id in activate %} unopened {% endif %}">
+  <div class="news-header  open-news">
+
+
+  <div class="news-title">
+      {{news.title }}
+  </div>
+      <!-- <button type="button" class="open-news {% if news.id in activate %} unopened {% endif %}" data-href="{% url 'news:newsreadflag' %}" data-id="{{news.pk}}" name="button" >open</button> -->
+
+<div class="news-date">
+          {% if news.published_date %}
+  {{news.published_date}}
+  {% endif %}
+</div></div>
+      <div class="news-body">
+        {% if not news.published_date %}
+
+        <a href="{% url 'news:publish' pk=news.pk %}">publish</a>
+        {% endif %}
+        {{news.body | safe}}
+        <!-- <p>{% for each in news.files.all %}
+        <img class="miniature" src="{{each.file.url}}" alt="Av"/>
+
+
+        {% endfor %}</p> -->
+
+        <div class="barr">
+
+        </div>
+        <div class="row">
+
+          {% for each in news.files.all %}
+
+
+
+          <div class="column">
+
+            <img src="{{each.file.url}}" onclick="openModal();currentSlide({{forloop.counter}})" class="miniature hover-shadow">
+            <a href="{{each.file.url}}" download>Download</a>
+          </div>
+{% endfor %}
+        </div>
+
+        <!-- The Modal/Lightbox -->
+        <div id="myModal" class="modal">
+          <span class="close cursor" onclick="closeModal()">&times;</span>
+          <div class="modal-content">
+
+        {% for each in news.files.all %}
+            <div class="mySlides">
+              <div class="numbertext">{{forloop.counter}} / {{news.files.count}}</div>
+              <img src="{{each.file.url}}" style="width:100%">
+            </div>
+        {% endfor %}
+
+            <!-- Next/previous controls -->
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+            <!-- Caption text -->
+            <div class="caption-container">
+              <p id="caption"></p>
+            </div>
+
+            <!-- Thumbnail image controls -->
+                  {% for each in news.files.all %}
+            <!-- <div class="column">
+              <img class="miniature demo" src="{{each.file.url}}" onclick="currentSlide({{forloop.counter}})" alt="Nature">
+            </div> -->
+        {% endfor %}
+          </div>
+        </div>
+
+
+  </div>
+
+</div>{% endfor %}</div>
+
+
+<script>
+  $('.news-body').toggle();
+
+  $(document).ready(function(){
+  $(".open-news").click(function(){
+      $(this).parents('.news').find('.news-body').toggle();
+
+    });
+  });
+
+
+</script>
+
+<script>
+// // Open the Modal
+// function openModal() {
+//   document.getElementById("myModal").style.display = "block";
+// }
+//
+// // Close the Modal
+// function closeModal() {
+//   document.getElementById("myModal").style.display = "none";
+// }
+//
+// var slideIndex = 1;
+// showSlides(slideIndex);
+//
+// // Next/previous controls
+// function plusSlides(n) {
+//   showSlides(slideIndex += n);
+// }
+//
+// // Thumbnail image controls
+// function currentSlide(n) {
+//   showSlides(slideIndex = n);
+// }
+//
+// function showSlides(n) {
+//   var i;
+//   var slides = document.getElementsByClassName("mySlides");
+//   var dots = document.getElementsByClassName("demo");
+//   var captionText = document.getElementById("caption");
+//   if (n > slides.length) {slideIndex = 1}
+//   if (n < 1) {slideIndex = slides.length}
+//   for (i = 0; i < slides.length; i++) {
+//     slides[i].style.display = "none";
+//   }
+//   for (i = 0; i < dots.length; i++) {
+//     dots[i].className = dots[i].className.replace(" active", "");
+//   }
+//   slides[slideIndex-1].style.display = "block";
+//   dots[slideIndex-1].className += " active";
+//   captionText.innerHTML = dots[slideIndex-1].alt;
+// }
+
+
+
+
+
+$(document).ready(function(){
+  $.ajaxSetup({
+       beforeSend: function(xhr, settings) {
+           function getCookie(name) {
+               var cookieValue = null;
+               if (document.cookie && document.cookie != '') {
+                   var cookies = document.cookie.split(';');
+                   for (var i = 0; i < cookies.length; i++) {
+                       var cookie = jQuery.trim(cookies[i]);
+                       // Does this cookie string begin with the name we want?
+                       if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                           cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                           break;
+                       }
+                   }
+               }
+               return cookieValue;
+           }
+           if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+               // Only send the token to relative URLs i.e. locally.
+               xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+           }
+       }
+  });
+
+});
+
+
+$(document).on('click','.unopened',function (e) {
+  var csrftoken = $("input[name=csrfmiddlewaretoken]").val();
+  e.preventDefault();
+  var pk = $(this).attr("data-id");
+  var urlss = $(this).attr("data-href");
+
+
+
+    // console.log($(this).find("input[name='type"+i+"']:checked").val());
+    $.ajax({
+        type:'POST',
+        url: urlss,
+        data:JSON.stringify({
+            "pk": pk,
+            // "csrfmiddlewaretoken": csrftoken,
+            // "action": 'post'
+        }),
+
+        success:(json) => {
+          $(this).removeClass("unopened");
+          $(this).parents(".news").removeClass("unopened");
+
+
+        },
+        error : function(xhr,errmsg,err) {
+        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+    }
+    });
+   });
+
+
+
+
+
+
+
+
+
+
+
+</script>
+{% endblock %}

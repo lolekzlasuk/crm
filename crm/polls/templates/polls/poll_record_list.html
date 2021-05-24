@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block extra_css %}  .nav__link[name="Polls"] {background-color: #1caf9a; color: white;} {% endblock %}
+{% block body_block %}
+{% load static %}
+{% load groupfilter %}
+<div class="site-header">
+
+
+    <span class="category-title">
+    Polls
+    </span>
+    <span class="category-subtitle">/ Polling station</span>
+  </div>
+
+<div class="content-container">
+  {% if request.user|has_group:"Admins" %}
+  <div class="moderator_bar">
+
+
+  <a href="{% url 'polls:polllist' %}">Questions</a>
+  <a href="{% url 'polls:unpublishedpolllist' %}">unpublished</a>
+
+    </div>
+  {% endif %}
+  <a href="#">form</a>
+
+
+
+  {% for poll in object_list %}
+<p><a href="{% url 'polls:detailanswers' pk=poll.pk %}"> {{poll.title}}</a></p>
+{% if poll.published_date is None %}
+<a href="{% url 'polls:publishpoll' pk=poll.pk %}">publish</a>
+{% endif %}
+          {% endfor %}
+
+
+    </div>
+
+
+
+
+  {% endblock %}

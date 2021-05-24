@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+
+<div class="site-header">
+
+
+    <span class="category-title">
+    Suggestions
+    </span>
+    <span class="category-subtitle">/ Company message board</span>
+  </div>
+
+
+<div class="content-container content-container--paginated">
+
+  <div class="pA idea">
+    <div class="idea__left">
+      <img src="{{object.author.userprofile.profile_pic.url}}" alt="" class="avatar">
+      <div class="avatar__name">
+{{object.author.userprofile.name}}
+      </div>
+      <div class="idea__info">
+        {{object.date_created}}
+
+
+      </div>
+    </div>
+    <div class="idea__right">
+
+
+    <div class="pH">
+      <div class="pT">
+     {{object.title}}
+      </div>
+
+
+    </div>
+      <div class="pAb">
+
+
+
+        {{object.body}}
+
+      </div>
+
+  </div>
+      </div>
+<div class="comment-margin">
+
+</div>
+
+{% for each in object.answer.all %}
+<div class="pA  comment">
+  <div class="idea__left">
+    <img src="{{each.author.userprofile.profile_pic.url}}" alt="" class="avatar">
+    <div class="avatar__name">
+{{each.author.userprofile.name}}
+    </div>
+    <div class="idea__info">
+      {{each.date_created}}
+
+
+    </div>
+  </div>
+  <div class="idea__right">
+
+
+
+    <div class="pAb">
+
+
+
+      {{each.body}}
+
+    </div>
+
+</div>
+    </div>
+
+
+{% endfor %}
+
+
+  <a class="buttonn" href="{% url "suggestions:postanswer" pk=object.pk %}"><div class="doc">Add a comment</div></a>
+
+
+
+
+
+  </div>
+
+  {% endblock %}

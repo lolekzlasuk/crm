@@ -1,0 +1,64 @@
+
+{% extends 'base.html' %}
+{% block extra_css %}  .nav__link[name="Documents"] {background-color: #1caf9a; color: white;} {% endblock %}
+{% block body_block %}
+{% load static %}
+{% load groupfilter %}
+
+  <div class="site-header">
+    <div class="site-header__left">
+
+
+      <span class="site-header__title">
+        Knowledge
+      </span>
+      <span class="site-header__subtitle">/ Directory of useful information / {{object.title}}</span>
+    </div>
+    <div class="site-header__right">
+      <span class="site-header__breadcrumb">Home page</span>
+    </div>
+  </div>
+
+
+<div class="content-container">
+  <div class="objecta">
+  </div>
+
+
+
+
+
+    <a href="{% url 'news:knowledge' %}" class="buttonn" name="Knowledge">
+    <div class="doc secondary-hover">
+    <-  Knowledge
+    </div></a>
+    <div class="Ccard">
+      <div class="Ccard_header primary-hover">
+
+
+        <div class="Ccard_title">
+          {{object.title }}
+        </div>
+        <div class="Ccard_subtitle">
+
+          {{object.created_date}}
+
+        </div>
+      </div>
+      <div class="Ccard_body">
+
+{{object.body|safe}}
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+{% endblock %}
