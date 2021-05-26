@@ -73,7 +73,7 @@ Categories
 
 <div class="questions__wrapper">
   {% for question in object_list %}
-  {% if question.answer %}
+
   <div class="question">
   <div class="question_title secondary-hover">
     {{question.title}}
@@ -83,7 +83,7 @@ Categories
     {{question.answer}}
   </div>
     </div>
-    {% endif %}
+
     {% endfor %}
 </div>
 

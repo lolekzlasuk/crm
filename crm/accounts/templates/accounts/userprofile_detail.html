@@ -1,31 +1,41 @@
 {% extends 'base.html' %}
 
 {% block body_block %}
+
+
 <div class="site-header">
+  <div class="site-header__left">
 
 
-    <span class="category-title">
-    Users
+    <span class="site-header__title">
+         Users
     </span>
-    <span class="category-subtitle">/ Your profile</span>
+    <span class="site-header__subtitle">/ Your profile</span>
   </div>
-<div class="content-container">
-<div class="profile-wrapper">
+  <div class="site-header__right">
+    <span class="site-header__breadcrumb">Home page</span>
+  </div>
+</div>
+
+<div class="content-container content-container--paginated">
+<div class="Ccard">
+    <div class="Ccard_header"><div class="Ccard_title">Your information</div></div>
+<div class="Ccard_body profile-wrapper">
 
 <div class="profile_divider">
   <p class="profile-title">Profile Picture</p>
 
-  <img class="avatar" src="{{object.profile_pic.url}}" alt=""> <div class="">
-
-  <a href="{% url 'accounts:edit_profile' %}">CHANGE </a>
+  <img class="avatar" src="{{object.profile_pic.url}}" alt="">
+<div>
+  <a class="buttonn" href="{% url 'accounts:edit_profile' %}"><div class="doc secondary-hover"> CHANGE </div></a>
   {% if object.profile_pic != "profile_pics/default-profile.png" %}
-   <a href="{% url 'accounts:delete_profile_pic' %}">/ Delete</a>
+   <a class="buttonn" href="{% url 'accounts:delete_profile_pic' %}"><div class="doc secondary-hover"> Delete</div></a>
    {% endif %}
-</div>
-  </div>
+
+  </div></div>
   <div class="profile_table">
 
-  <p class="profile-title">Your information</p>
+
   <table id="profilegrid">
 
   <tr>
@@ -61,8 +71,8 @@
 <div class="">
 
 
-  <a class="buttonn" href="{% url 'accounts:change_password' %}"><div class="doc">Change Password</div></a>
-</div>
+  <a class="buttonn" href="{% url 'accounts:change_password' %}"><div class="doc secondary-hover">Change Password</div></a>
+</div></div>
 </div>
   </div>
 {% endblock %}

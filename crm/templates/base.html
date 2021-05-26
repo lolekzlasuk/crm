@@ -160,8 +160,8 @@ function collapseNavigation(){
     if (window.localStorage.getItem("size") == "small") {
       $(".undercontent").toggleClass('fullsize-sidebar');
       $('.navlink').toggleClass('smallnav');
-      $('.nav__title').toggle();
-      $('.top-bar__logo').toggle();
+      $('.nav__title').toggle(200);
+      $('.top-bar__logo').toggle(200);
 }}
 else{
        window.localStorage.setItem("size","big");

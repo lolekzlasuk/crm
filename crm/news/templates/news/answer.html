@@ -5,24 +5,22 @@
 {% load static %}
 {% load groupfilter %}
 
-
-  <div class="site-header">
-    <div class="site-header__left">
+<div class="site-header">
+  <div class="site-header__left">
 
 
     <span class="site-header__title">
-      Home
+      FAQ
     </span>
-    <span class="site-header__subtitle">/ Company News</span>
-      </div>
-      <div class="site-header__right">
-        <span class="site-header__breadcrumb">Home page</span>
-      </div>
+    <span class="site-header__subtitle">/ Frequently asked questions/span>
   </div>
+  <div class="site-header__right">
+    <span class="site-header__breadcrumb">Home page</span>
+  </div>
+</div>
 
 
-
-<div class="content-container">
+<div class="content-container content-container--paginated">
 
   {% if request.user|has_group:"Admins" %}
   <div class="moderator_bar">
@@ -36,17 +34,71 @@
   <div class="objecta">
 
   </div>
-    {% if request.user|has_group:"Admins" %}
-{% for question in object_list %}
-{{question.title}}
-{{question.body}}
-<a href="{% url 'news:updateQandA' pk=question.pk %}">Answer</a>
-{% endfor %}
-{% endif %}
+
+  <div class="Ccard">
+
+  <div class="Ccard_header">
+
+
+  <div class="Ccard_title">
+
+Categories
+</div>
+</div>
+<div class="Ccard_body">
+
+<div class="doc_grid">
+  <a class="buttonn" href="{% url 'news:QandA' %}">  <div class="doc secondary-hover">All</div></a>
+  {% for news in categories %}
+  {% if news.questions.all %}
+    <a class="buttonn" href="{% url 'news:QandA' %}?category={{news.pk}}">  <div class="doc secondary-hover">{{news.title}}({{news.questions.count}}) </div></a>
+
+    {% endif %}
+  {% endfor %}
+</div>
+</div>
+</div>
+<div class="Ccard">
+  <div class="Ccard_header">
+
+
+
+
+
+
+<a class="buttonn" href="{% url 'news:createuserquestion' %}">  <div class="doc secondary-hover">Ask a Question  </div></a>
+  </div>
+<div class="Ccard_body">
+
+
+<div class="questions__wrapper">
+  {% for question in object_list %}
+
+  <div class="question">
+  <div class="question_title secondary-hover">
+    {{question.title}}
+  </div>
+
+  <div class="question_answer">
+    {{question.body}}
+  </div>
+    </div>
+
+    {% endfor %}
 </div>
 
+</div>
+</div>
+</div>
+<script type="text/javascript">
 
+  $('.question_answer').toggle();
 
-
-
+  $(document).ready(function(){
+  $(".question_title").click(function(){
+      $(this).parents('.question').find('.question_answer').toggle();
+      $(this).toggleClass("question_title--active")
+    });
+  });
+</script>
 {% endblock %}

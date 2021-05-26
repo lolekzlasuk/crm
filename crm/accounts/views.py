@@ -50,6 +50,7 @@ def user_logout(request):
     return redirect('/')
 
 class EmployeeListView(LoginRequiredMixin,ListView):
+    paginate_by = 10
     model = UserProfile
     template_name = 'accounts/userprofile_list.html'
     def get_queryset(self):

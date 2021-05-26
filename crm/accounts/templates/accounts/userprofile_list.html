@@ -30,9 +30,7 @@
     List of employees
 
   </div>
-<div class="Ccard_subtitle">
 
-</div>
 </div>
 <div class="Ccard_body">
   <div class="searchbar">
@@ -46,7 +44,7 @@
   </div>
 
 <div class="knowledge-table">
-<table class="content-table">
+<table id="contact-table" class="content-table">
   <tr>
     <th>Photo</th>
     <th>Name</th>
@@ -78,6 +76,43 @@
 </div>
 </div>
 </div>
+ <div class="pag-wrapper"> {% if is_paginated %}
+
+
+
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">
+        <li class="secondary-hover">&laquo;</li>
+      </a>
+      {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+      {% endif %}
+      {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+      <li class="active pagi__number"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+      <a href="?page={{ i }}">
+        <li class="secondary-hover">{{ i }}</li>
+      </a>
+      {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">
+        <li class="secondary-hover">&raquo;</li>
+      </a>
+      {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+      {% endif %}
+    </ul>
+
+    {% endif %}
+  </div>
+</div>{% if object_list.count <= 7 %}
+<div class="site-filler">
+
+</div>
+    {% endif %}
 </div>
 
 {% endblock %}

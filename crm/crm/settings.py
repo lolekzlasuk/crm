@@ -25,7 +25,12 @@ SECRET_KEY = '6mpnkvugd670^e#px)g=^3(qdvpi(3a8rrv$spc&d=h$_gbd0n'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = [
+    'nolos1.pythonanywhere.com',
+    '.pythonanywhere.com',
+    '.googleapis.com',
+]
 
 
 # Application definition

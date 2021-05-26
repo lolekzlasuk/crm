@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import View,TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 from django.views.generic import TemplateView,ListView,DetailView,CreateView,UpdateView,DeleteView
-from .models import News,NewsFile,Notification,NotificationReadFlag,NewsReadFlag,DocumentF,DocFile,DocQuestion,KnowledgeCategory
+from .models import News,NewsFile,Notification,NotificationReadFlag,NewsReadFlag,DocumentF,DocFile,DocQuestion,KnowledgeCategory,UserQuestion
 from django.utils import timezone
 from django.contrib import messages
 from django.db.models import Q
@@ -85,8 +85,9 @@ class QuestionListView(ListView):
         context = super().get_context_data(**kwargs)
         context['categories'] = KnowledgeCategory.objects.all()
         return context
+
 class UnansweredQuestionListView(ListView):
-    model = DocQuestion
+    model = UserQuestion
     template_name = "news/answer.html"
     def get_queryset(self):
         return DocQuestion.objects.filter(answer=None)

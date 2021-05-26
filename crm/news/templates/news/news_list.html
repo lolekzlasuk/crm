@@ -30,7 +30,9 @@
   {% endif %}
 
 
-
+<form>
+<input type="button" onClick="move()" value="Move to the right">
+</form>
   <div class="objecta">
 
   </div>
@@ -46,12 +48,7 @@
 
       <div class="Ccard_title">
         {{news.title }}
-         {% if not news.published_date %}
 
-
-<a class="buttonn"ref="{% url 'news:publish' pk=news.pk %}"><div class="doc secondary-hover">Publish  </div></a>
-
-              {% endif %}
       </div>
       <div class="Ccard_subtitle">
         {% if news.published_date %}
@@ -60,7 +57,12 @@
       </div>
     </div>
     <div class="Ccard_body">
+         {% if not news.published_date %}
 
+
+<a class="buttonn"ref="{% url 'news:publish' pk=news.pk %}"><div class="doc secondary-hover">Publish  </div></a>
+
+              {% endif %}
       {{news.body | safe}}
 
 {% if news.files.all %}
@@ -158,6 +160,16 @@ Attached files
 
 <script>
   $('.Ccard_body').toggle();
+
+function move(){
+    window.scrollBy({
+  top: 250, // could be negative value
+  left: 0,
+  behavior: 'smooth'
+});
+}
+
+
 
   $(document).ready(function() {
     $(".Ccard_header").click(function() {

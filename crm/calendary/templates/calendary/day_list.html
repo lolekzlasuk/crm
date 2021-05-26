@@ -4,31 +4,35 @@
 {% block body_block %}
 {% load static %}
 {% load groupfilter %}
+
 <div class="site-header">
+  <div class="site-header__left">
 
 
-    <span class="category-title">
-    Calendar
+    <span class="site-header__title">
+       Calendar
     </span>
-    <span class="category-subtitle">/ subtitle</span>
+    <span class="site-header__subtitle">/ subtitle</span>
   </div>
+  <div class="site-header__right">
+    <span class="site-header__breadcrumb">Home page</span>
+  </div>
+</div>
+
 
 <div class="content-container content-container--paginated">
 
 
-  <div class="objecta">
-  </div>
+  <!--<div class="objecta">-->
+  <!--</div>-->
   <div class="content-wrapper">
 
 
-  <div class="cal_pages">
-      <!-- <a href="{% url 'calendary:calendary' month=prevmonth  year=prevyear %}"><i class="fas fa-arrow-circle-left"></i></a>
-    <a href="{% url 'calendary:calendary' month=nextmonth  year=nextyear %}"><i class="fas fa-arrow-circle-right"></i></a> -->
-  </div>
+
   <div class="calendar__date">
     <a href="{% url 'calendary:calendary' month=prevmonth  year=prevyear %}"><i class="fas fa-arrow-circle-left"></i></a>
         {{date}}
-  <a href="{% url 'calendary:calendary' month=nextmonth  year=nextyear %}"><i class="fas fa-arrow-circle-right"></i></a>
+  <a class="buttonn" href="{% url 'calendary:calendary' month=nextmonth  year=nextyear %}"><i class="fas fa-arrow-circle-right"></i></a>
 
   </div>
   <div class="cal__wrapper">
@@ -88,7 +92,7 @@ Friday
 
 
 
-<a href="{% url 'calendary:devent' pk=each.pk %}">{{each.title}}</a>
+<a class="buttonn" href="{% url 'calendary:devent' pk=each.pk %}"><div class="doc secondary-hover">{{each.title}}</div></a>
 
 </div>
 
