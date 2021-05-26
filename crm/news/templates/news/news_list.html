@@ -60,7 +60,7 @@
          {% if not news.published_date %}
 
 
-<a class="buttonn"ref="{% url 'news:publish' pk=news.pk %}"><div class="doc secondary-hover">Publish  </div></a>
+<a class="buttonn" href="{% url 'news:publish' pk=news.pk %}"><div class="doc secondary-hover">Publish  </div></a>
 
               {% endif %}
       {{news.body | safe}}

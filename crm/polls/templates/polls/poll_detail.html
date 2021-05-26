@@ -3,18 +3,37 @@
 {% block body_block %}
 {% load static %}
 
+
 <div class="site-header">
+  <div class="site-header__left">
 
 
-    <span class="category-title">
-    Polls
+    <span class="site-header__title">
+      Polls
     </span>
-    <span class="category-subtitle">/ Polling station</span>
+    <span class="site-header__subtitle">/ Polling station</span>
+  </div>
+  <div class="site-header__right">
+    <span class="site-header__breadcrumb">Home page</span>
+  </div>
+</div>
+
+
+
+
+<div class="content-container content-container--paginated">
+
+
+<div class="Ccard">
+  <div class="Ccard_header">
+    <div class="Ccard_title">
+        {{poll.title}}
+    </div>
   </div>
 
-<div class="poll-container">
+<div class="Ccard_body">
 
-  {{poll.title}}
+
 
 
   <form id="form" method="POST" class="pollcreation">
@@ -24,17 +43,17 @@
        <input type="hidden" name="Qid" value="{{question.id}}">
        <input type="hidden" name="custId" value="{{question.type}}">
       <input type="hidden" name="enabletext" value="{{question.enabletext}}">
-      <div class="">
+      <div class="pollquestion-title">
     {{question.title}}
       </div>
     {% if question.type == 'pck' %}
 
 
-<select name="answers" class="select">
+<p><select class="listanswer" name="answers" class="select">
       {% for answer in question.answers.all %}
   <option value="{{answer.id}}">{{answer.body}}</option>
       {% endfor %}
-</select>
+</select></p>
 {% elif question.type == 'dat' %}
 <p><input class="dateanswer" type="date" name="lang"></p>
     {% elif question.type == 'txt' %}
@@ -58,13 +77,13 @@
                 </div>
         {% endfor %}
 
-        <input  data-href="{% url 'polls:createpollAnswer' pk=poll.pk %}" type="submit" name="submit" value="submit" class="form-button comment-submit">
+        <input  data-href="{% url 'polls:createpollAnswer' pk=poll.pk %}" type="submit"  name="submit" value="submit" class="form-button comment-submit" >
 
 </form>
 
+</div>
 
-
-
+</div>
     </div>
     <script type="text/javascript">
 
@@ -114,7 +133,7 @@
         e.preventDefault();
         // var pk = $(this).data("pk");
         var urlss = $(this).attr("data-href");
-
+        $(this).disabled=true;
         $('.question').each(function(i,e) {
 
           var ans = [];
@@ -149,7 +168,9 @@
 
 
         }} else if (type == 'pck'){
-          ans.push($(this).find(".select").val());
+          ans.push($(this).find("select").val());
+          console.log("comes");
+            console.log(ans);
         }
 
 
@@ -170,6 +191,7 @@
               }),
 
               success:(json) => {
+
                 console.log('yaaay');
                 window.location.href = '{% url 'polls:polllist' %}';
 

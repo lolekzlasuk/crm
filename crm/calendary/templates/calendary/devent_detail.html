@@ -5,33 +5,41 @@
 {% load static %}
 {% load groupfilter %}
 <div class="site-header">
+  <div class="site-header__left">
 
 
-    <span class="category-title">
-    Calendar
+    <span class="site-header__title">
+      Calendar
     </span>
-    <span class="category-subtitle">/ subtitle</span>
+    <span class="site-header__subtitle">/ Event</span>
   </div>
-
-<div class="content-container">
-
-
-  <div class="objecta">
+  <div class="site-header__right">
+    <span class="site-header__breadcrumb">Home page</span>
   </div>
-  <div class="pA">
-
-  <div class="pH">
+</div>
 
 
-  <div class="pAT">
+
+
+
+  <div class="content-container">
+
+  <div class="Ccard">
+
+  <div class="Ccard_header">
+
+
+  <div class="Ccard_title">
     {{object.title}}
+<div class="Ccard_subtitle">
+  {{object.start|date:"H:i"}} - {{object.end|date:"H:i"}}
+</div>
 
-      {{object.start|date:"H:i"}} - {{object.end|date:"H:i"}}
 
 
   </div>
   </div>
-  <div class="pAb">
+  <div class="Ccard_body">
 
 {{object.description}}
 

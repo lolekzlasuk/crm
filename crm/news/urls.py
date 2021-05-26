@@ -24,5 +24,5 @@ urlpatterns = [
     path('docs/<int:pk>/',views.DocDetailView.as_view(),name="docdetail"),
     path('QandA/',views.QuestionListView.as_view(),name="QandA"),
     path('QandA/unanswered',views.UnansweredQuestionListView.as_view(),name="unanQandA"),
-    path('upload/<int:pk>/updatequestion',views.QuestionUpdateView.as_view(),name="updateQandA"),
+    path('upload/<int:pk>/updatequestion',views.answer_question,name="answerqna"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

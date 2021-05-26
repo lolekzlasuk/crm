@@ -69,15 +69,23 @@ class PollSubmition(models.Model):
 class PollSubmitionQuestion(models.Model):
     submition = models.ForeignKey('polls.PollSubmition',on_delete=models.CASCADE,related_name='submitions')
     question = models.ForeignKey('polls.Question',on_delete=models.CASCADE,related_name='submitions')
-    # answer = models.ForeignKey('polls.Answer',on_delete=models.CASCADE,related_name='submitions',null=True,blank=True)
-    answer = models.TextField(max_length=200)
+    manyanswer = models.ManyToManyField('polls.Answer',related_name='submitions',null=True,blank=True)
+    answer = models.TextField(max_length=200,null=True,blank=True)
     text = models.TextField(max_length=200,null=True,blank=True)
     date = models.DateField(null=True,blank=True)
     order = models.IntegerField(null=True,blank=True)
     def ans(self):
         if self.answer != None:
             return self.answer
-        if self.text != None:
+        if self.text is not None:
+            return self.text
+        if self.date:
+            return self.date
+
+    def __str__(self):
+        if self.answer != None:
+            return self.answer
+        if self.text is not None:
             return self.text
         if self.date != None:
             return self.date

@@ -30,6 +30,7 @@ ALLOWED_HOSTS = [
     'nolos1.pythonanywhere.com',
     '.pythonanywhere.com',
     '.googleapis.com',
+    'localhost'
 ]
 
 

@@ -3,26 +3,41 @@
 {% block body_block %}
 {% load static %}
 {% load groupfilter %}
-<div class="site-header">
 
 
-    <span class="category-title">
-    Polls
-    </span>
-    <span class="category-subtitle">/ Polling station</span>
+
+  <div class="site-header">
+    <div class="site-header__left">
+
+
+      <span class="site-header__title">
+          Polls
+      </span>
+      <span class="site-header__subtitle">/ Polling station</span>
+    </div>
+    <div class="site-header__right">
+      <span class="site-header__breadcrumb">Home page</span>
+    </div>
   </div>
 
+
+
 <div class="content-container">
-  {% if request.user|has_group:"Admins" %}
-  <div class="moderator_bar">
+
+  <div class="Ccard">
+
+  <div class="Ccard_header">
 
 
-  <a href="{% url 'polls:polllist' %}">Questions</a>
-  <a href="{% url 'polls:unpublishedpolllist' %}">unpublished</a>
+  <div class="Ccard_title">
 
-    </div>
-  {% endif %}
+{{object.title}}
+</div>
+</div>
+<div class="Ccard_body">
 
+
+  <div class="knowledge-table">
 <table>
   <thead>
 
@@ -35,18 +50,18 @@
   <tbody>
     {% for e in object.submitions.all %}
     <tr>
-      <td>{{e.user.username}}</td>
+      <td>{{e.user.userprofile.name}}</td>
       {% for r in e.submitions.all|dictsort:'order' %}
-    <td> {{r.ans}}</td>
+    <td> {{r.ans.manyanswer}}</td>
       {% endfor %}
     </tr>
 {% endfor %}
   </tbody>
 </table>
 
+</div></div>
 
-
-
+</div>
 
     </div>
 

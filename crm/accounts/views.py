@@ -86,7 +86,7 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request,user)
-                messages.success(request, 'Your password was updated successfully!')
+                messages.success(request, 'Logged in!')
                 return HttpResponseRedirect(reverse('news:newss'))
 
             else:

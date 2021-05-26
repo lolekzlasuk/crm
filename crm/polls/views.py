@@ -32,11 +32,13 @@ class PollAnswerDetailView(DetailView):
 
 class PollListView(ListView):
     def get_queryset(self):
-        polls = Poll.objects.exclude(published_date=None).order_by('-published_date')
+
+        polls = Poll.objects.exclude(published_date=None).exclude(published_date__lt = self.request.user.date_joined).order_by('-published_date')
+
         submitions_set = PollSubmition.objects.filter(user = self.request.user).exclude(submitions__isnull = True)
-        print(submitions_set.count())
+
         polls = polls.exclude(submitions__in=submitions_set)
-        print(polls.count())
+
         return polls
 
 
@@ -127,26 +129,27 @@ def createpollAnswer(request,pk):
             answerstr = str(" ")
             for counter,each in enumerate(answers):
                 if counter > 0:
-                    answerstr = answerstr + "; "
+                    answerstr = answerstr + ";"
                 answerstr = answerstr + str(Answer.objects.get(pk=each).body)
+
 
             ans = PollSubmitionQuestion.objects.create(
             submition = submition,
             question = questionobj,
             order = questionobj.order,
-
-
-
-
-            answer = answerstr
+            answer = answerstr,
+            date = None,
+            text = None,
             )
-
+            for each in answers:
+                ans.manyanswer.add(each)
         if text != None:
             ans = PollSubmitionQuestion.objects.create(
             submition = submition,
             question = questionobj,
             order = questionobj.order,
-            text = text
+            text = text,
+            date = None,
             )
         if date != None:
             ans = PollSubmitionQuestion.objects.create(
@@ -154,7 +157,15 @@ def createpollAnswer(request,pk):
             question = questionobj,
             order = questionobj.order,
             date = date,
+            text = None,
             )
+
+        print(ans)
+        print(ans.order)
+        print(ans.text)
+        print(ans.date)
+        print(ans.manyanswer)
+        print(ans.answer)
         submition.date = timezone.now()
         submition.save()
         return HttpResponse("OK")

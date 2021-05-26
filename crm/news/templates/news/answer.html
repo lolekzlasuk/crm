@@ -10,7 +10,7 @@
 
 
     <span class="site-header__title">
-      FAQ
+      FAQaa
     </span>
     <span class="site-header__subtitle">/ Frequently asked questions/span>
   </div>
@@ -35,39 +35,13 @@
 
   </div>
 
-  <div class="Ccard">
 
-  <div class="Ccard_header">
-
-
-  <div class="Ccard_title">
-
-Categories
-</div>
-</div>
-<div class="Ccard_body">
-
-<div class="doc_grid">
-  <a class="buttonn" href="{% url 'news:QandA' %}">  <div class="doc secondary-hover">All</div></a>
-  {% for news in categories %}
-  {% if news.questions.all %}
-    <a class="buttonn" href="{% url 'news:QandA' %}?category={{news.pk}}">  <div class="doc secondary-hover">{{news.title}}({{news.questions.count}}) </div></a>
-
-    {% endif %}
-  {% endfor %}
-</div>
-</div>
-</div>
 <div class="Ccard">
-  <div class="Ccard_header">
-
-
-
-
-
-
-<a class="buttonn" href="{% url 'news:createuserquestion' %}">  <div class="doc secondary-hover">Ask a Question  </div></a>
+<div class="Ccard_header">
+  <div class="Ccard_title">
+    Questions to answer
   </div>
+</div>
 <div class="Ccard_body">
 
 
@@ -81,6 +55,7 @@ Categories
 
   <div class="question_answer">
     {{question.body}}
+    <a href="{% url 'news:answerqna' pk=question.pk %}">answer</a>
   </div>
     </div>
 
@@ -92,13 +67,13 @@ Categories
 </div>
 <script type="text/javascript">
 
-  $('.question_answer').toggle();
-
-  $(document).ready(function(){
-  $(".question_title").click(function(){
-      $(this).parents('.question').find('.question_answer').toggle();
-      $(this).toggleClass("question_title--active")
-    });
-  });
+  // $('.question_answer').toggle();
+  //
+  // $(document).ready(function(){
+  // $(".question_title").click(function(){
+  //     $(this).parents('.question').find('.question_answer').toggle();
+  //     $(this).toggleClass("question_title--active")
+  //   });
+  // });
 </script>
 {% endblock %}

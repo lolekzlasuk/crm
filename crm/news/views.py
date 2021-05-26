@@ -89,8 +89,7 @@ class QuestionListView(ListView):
 class UnansweredQuestionListView(ListView):
     model = UserQuestion
     template_name = "news/answer.html"
-    def get_queryset(self):
-        return DocQuestion.objects.filter(answer=None)
+
 
 
 class QuestionUpdateView(UpdateView):
@@ -152,14 +151,15 @@ def post_news(request):
 def answer_question(request,pk):
     question = get_object_or_404(UserQuestion,pk=pk)
     if request.method == 'POST':
-        form = UserQuestionForm(request.POST)
+        form = DocQuestionForm(request.POST)
         if form.is_valid():
-            form_instance.save()
-
+            form.save()
+            UserQuestion.objects.get(pk=pk).delete()
     else:
-        form = UserQuestionForm()
         data = {'title':question.title,'body':question.body}
-    return render(request, 'news/upload.html', {'form': form},initial=data)
+        form = DocQuestionForm(initial=data)
+
+    return render(request, 'news/upload.html', {'form': form})
 
 
 
