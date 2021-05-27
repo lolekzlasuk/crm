@@ -18,21 +18,19 @@
     <span class="site-header__breadcrumb">Home page</span>
   </div>
 </div>
-
+{% if request.user|has_group:"Admins" %}
+<div class="moderator_bar">
+  <a href="{% url 'news:upload' %}">Upload a new one</a>
+  <a href="{% url 'news:unpublished' %}">unpublished</a>
+  <a href="{% url 'news:newss' %}">published</a>
+</div>
+{% endif %}
 
 <div class="content-container content-container--paginated">
-  {% if request.user|has_group:"Admins" %}
-  <div class="moderator_bar">
-    <a href="{% url 'news:upload' %}">Upload a new one</a>
-    <a href="{% url 'news:unpublished' %}">unpublished</a>
-    <a href="{% url 'news:newss' %}">published</a>
-  </div>
-  {% endif %}
 
 
-<form>
-<input type="button" onClick="move()" value="Move to the right">
-</form>
+
+
   <div class="objecta">
 
   </div>
@@ -160,14 +158,6 @@ Attached files
 
 <script>
   $('.Ccard_body').toggle();
-
-function move(){
-    window.scrollBy({
-  top: 250, // could be negative value
-  left: 0,
-  behavior: 'smooth'
-});
-}
 
 
 

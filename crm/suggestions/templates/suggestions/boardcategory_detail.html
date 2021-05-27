@@ -4,50 +4,43 @@
 {% load static %}
 
 <div class="site-header">
+  <div class="site-header__left">
 
 
-    <span class="category-title">
-    Message Board
+    <span class="site-header__title">
+      Message Board
     </span>
-    <span class="category-subtitle">/ Communicate!</span>
+    <span class="site-header__subtitle">/ Communicate!</span>
   </div>
+  <div class="site-header__right">
+    <span class="site-header__breadcrumb">Home page</span>
+  </div>
+</div>
 
   <div class="content-container content-container--paginated">
-    <a href="{% url 'suggestions:questionform' %}">form</a>
-  <div class="pA">
+    <div class="Ccard_body">
+    <div class="doc_grid">
+      <div class="doc secondary-hover">
+        <a href="{% url 'suggestions:questionlist'  %}">
 
-  <div class="pH">
+        <span> All</span>
+
+      </a>
+      </div>
+    {% for each in categories %}
+
+      <a class="buttonn" href="{% url 'suggestions:category' pk=each.pk %}">
+    <div class="doc secondary-hover">
+      <span>  {{ each.title}}</span>
 
 
-  <div class="pAT">
-    Categories
-
-  </div>
-  </div>
-  <div class="pAb">
-  <div class="doc_grid">
-    <div class="doc">
-      <a href="{% url 'suggestions:questionlist'  %}">
-
-      <span> All</span>
-
-    </a>
     </div>
-  {% for each in categories %}
+    </a>
+    {% endfor %}
+    </div>
 
-  <div class="doc">
-    <a href="{% url 'suggestions:category' pk=each.pk %}">
-
-    <span>  {{ each.title}}</span>
-
-  </a>
   </div>
 
-  {% endfor %}
-  </div>
-  </div>
-  </div>
-  Newest(dropdown here maybe)
     {% for question in object_list %}
     <div class="pA idea">
       <div class="idea__left">

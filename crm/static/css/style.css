@@ -189,7 +189,7 @@ padding: 10px 0;
 .Ccard{
   min-height: 65px;
   background-color:  rgb(255, 255, 255);
-  box-shadow: 0 3px 0 rgba(12,12,12,0.03);
+  box-shadow: 3px 3px 0 rgba(12,12,12,0.03);
   margin: 15px 15px 10px 15px;
   border-radius: 1px;
 }
@@ -222,7 +222,7 @@ nav > a{
   color: inherit; /* blue colors for links too */
 text-decoration: inherit;
 padding: 0.5em 0.5em;
-font-weight: 550;
+
 
 }
 nav > a:hover{
@@ -239,14 +239,19 @@ nav{
   text-decoration: underline;
 }
 .nav__link{
-  margin: 0.2em 1em;
+  margin:  0;
   display: block;
-  border-radius: 0.2em;
+  font-size: 1.1em;
 }
 .fullsize-sidebar{
   display: grid;
   grid-template-columns: 50px auto;
   grid-template-rows: auto;
+
+}
+.navlink{
+  margin-left: 2em;
+  font-size: 0.85em;
 
 }
 .fullsize-sidebar a {
@@ -466,6 +471,7 @@ border-right: .5px solid lightgray;
 .cal_dif{
   border: .5px solid gray;
   border-left: none;
+  border-top: none;
   color: gray;
   background-color: lightgray;
 }
@@ -478,15 +484,16 @@ border-right: .5px solid lightgray;
   background-color: lightgray;
 }
 .calendar__date{
-  font-size:2em;
+  font-size:1em;
   font-weight: bolder;
-  padding: .5em 1em;
+  padding: .5em .7em;
   margin: 2rem 1rem 0 1rem;
   background-color: lightgray;
 }
 .calendar__headline{
   background-color: lightgray;
 border-right: 1px solid gray;
+border-bottom: 1px solid gray;
   text-align: center;
   padding: 7px 0;
   font-weight:bold;
@@ -843,7 +850,7 @@ text-align: left;
 .active, .secondary-hover:hover{
   background-color: #1caf9a;
   color: white;
-  transition: 0.2s;
+  transition: 0.1s;
   cursor: pointer;
 }
 .question_title--active{

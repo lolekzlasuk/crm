@@ -3,17 +3,23 @@
 {% load static %}
 
 <div class="site-header">
+  <div class="site-header__left">
 
 
-    <span class="category-title">
-    Suggestions
+    <span class="site-header__title">
+      Message Board
     </span>
-    <span class="category-subtitle">/ Company message board</span>
+    <span class="site-header__subtitle">/ Communicate!</span>
   </div>
-
+  <div class="site-header__right">
+    <span class="site-header__breadcrumb">Home page</span>
+  </div>
+</div>
 
 <div class="content-container content-container--paginated">
+<a class="buttonn" href="{% url 'suggestions:questionlist' %}"> <div class="doc secondary-hover">
 
+Back</div></a>
   <div class="pA idea">
     <div class="idea__left">
       <img src="{{object.author.userprofile.profile_pic.url}}" alt="" class="avatar">
@@ -82,7 +88,7 @@
 {% endfor %}
 
 
-  <a class="buttonn" href="{% url "suggestions:postanswer" pk=object.pk %}"><div class="doc">Add a comment</div></a>
+  <a class="buttonn" href="{% url "suggestions:postanswer" pk=object.pk %}"><div class="doc secondary-hover">Add a comment</div></a>
 
 
 

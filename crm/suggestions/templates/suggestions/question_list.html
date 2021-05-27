@@ -3,30 +3,36 @@
 {% block body_block %}
 {% load static %}
 
+
 <div class="site-header">
+  <div class="site-header__left">
 
 
-    <span class="category-title">
-    Message Board
+    <span class="site-header__title">
+      Message Board
     </span>
-    <span class="category-subtitle">/ Communicate!</span>
+    <span class="site-header__subtitle">/ Communicate!</span>
   </div>
+  <div class="site-header__right">
+    <span class="site-header__breadcrumb">Home page</span>
+  </div>
+</div>
 
 <div class="content-container content-container--paginated">
 
-<div class="pA">
+<div class="Ccard">
 
-<div class="pH">
+<div class="Ccard_header">
 
 
-<div class="pAT">
+<div class="Ccard_title">
   Categories
 
 </div>
 </div>
-<div class="pAb">
+<div class="Ccard_body">
 <div class="doc_grid">
-  <div class="doc">
+  <div class="doc secondary-hover">
     <a href="{% url 'suggestions:questionlist'  %}">
 
     <span> All</span>
@@ -34,14 +40,14 @@
   </a>
   </div>
 {% for each in categories %}
-<div class="doc">
-  <a href="{% url 'suggestions:category' pk=each.pk %}">
 
+  <a class="buttonn" href="{% url 'suggestions:category' pk=each.pk %}">
+<div class="doc secondary-hover">
   <span>  {{ each.title}}</span>
 
-</a>
-</div>
 
+</div>
+</a>
 {% endfor %}
 </div>
 </div>
@@ -58,12 +64,12 @@
 {{question.author.userprofile.name}}
       </div>
       <div class="idea__info">
-        {{question.date_created}}
+        {{question.date_created|date:"d.m.Y"}}
 
-<span>no of replies: {% if question.answer.count %}
+<div>no of replies: {% if question.answer.count %}
   {{question.answer.all.count}}
 {% else %}
-0{%endif%}</span>
+0{%endif%}</div>
       </div>
     </div>
     <div class="idea__right">
@@ -92,30 +98,38 @@
 
 
 
-      <ul class="pagination">
-        {% if page_obj.has_previous %}
-          <a href="?page={{ page_obj.previous_page_number }}"><li class="hover">&laquo;</li></a>
-        {% else %}
-          <li class="disabled"><span>&laquo;</span></li>
-        {% endif %}
-        {% for i in paginator.page_range %}
-          {% if page_obj.number == i %}
-            <li class="active pagi__number"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-          {% else %}
-            <a  href="?page={{ i }}"><li class="hover">{{ i }}</li></a>
-          {% endif %}
-        {% endfor %}
-        {% if page_obj.has_next %}
-          <a href="?page={{ page_obj.next_page_number }}"><li class="hover">&raquo;</li></a>
-        {% else %}
-          <li class="disabled"><span>&raquo;</span></li>
-        {% endif %}
-      </ul>
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">
+        <li class="secondary-hover">&laquo;</li>
+      </a>
+      {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+      {% endif %}
+      {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+      <li class="active pagi__number"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+      <a href="?page={{ i }}">
+        <li class="secondary-hover">{{ i }}</li>
+      </a>
+      {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">
+        <li class="secondary-hover">&raquo;</li>
+      </a>
+      {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+      {% endif %}
+    </ul>
 
-    {% endif %}</div>    </div>{% if object_list.count <= 7 %}
-    <div class="site-filler">
+    {% endif %}
+  </div>
+  </div>{% if object_list.count <= 7 %}
+  <div class="site-filler">
 
-    </div>
+  </div>
   {% endif %}
 
 
