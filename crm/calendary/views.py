@@ -7,8 +7,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View, TemplateView
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView, ListView, DetailView
 from .models import Day, Devent
 from django.utils import timezone
 from django.contrib import messages

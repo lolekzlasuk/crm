@@ -53,7 +53,8 @@ class CategoryDetailView(ListView):
 
     template_name = 'suggestions/boardcategory_detail.html'
     def get_queryset(self,**kwargs):
-        queryset = Question.objects.all().filter(category_id = self.kwargs['pk']).order_by('-last_answer')
+        queryset = Question.objects.all().filter(
+            category_id = self.kwargs['pk']).order_by('-last_answer')
         return queryset
 
     def get_context_data(self,**kwargs):
@@ -96,27 +97,3 @@ def post_answer(request,pk):
      else:
          form = AnswerForm()
      return render(request, 'suggestions/answerform.html', {'form': form})
-
-#
-# def create_to_feed(request):
-#     user = request.user
-#     if request.method == 'POST':
-#         form = FeedModelForm(request.POST)
-#         file_form = FileModelForm(request.POST, request.FILES)
-#         files = request.FILES.getlist('file') #field name in model
-#         if form.is_valid() and file_form.is_valid():
-#             feed_instance = form.save(commit=False)
-#             feed_instance.user = user
-#             feed_instance.save()
-#             for f in files:
-#                 file_instance = FeedFile(file=f, feed=feed_instance)
-#                 file_instance.save()
-#     else:
-#         form = FeedModelForm()
-#         file_form = FileModelForm()
-#
-#
-# def publish_news(request,pk):
-#     news = get_object_or_404(News,pk=pk)
-#     news.publish()
-#     return redirect('news:newss')

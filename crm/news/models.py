@@ -167,7 +167,9 @@ class DocFile(models.Model):
     target_location = models.CharField(
         max_length=3, choices=COMPANY_LOCATIONS, default='ALL')
     category = models.ForeignKey(
-        'news.KnowledgeCategory', on_delete=models.PROTECT, default=2, related_name="files")
+        'news.KnowledgeCategory', on_delete=models.PROTECT,
+         default=2, related_name="files"
+    )
 
 
 class DocQuestion(models.Model):
@@ -181,7 +183,9 @@ class DocQuestion(models.Model):
         max_length=3, choices=COMPANY_LOCATIONS, default='ALL')
     date_created = models.DateTimeField(default=timezone.now)
     category = models.ForeignKey(
-        'news.KnowledgeCategory', on_delete=models.PROTECT, default=2, related_name="questions")
+        'news.KnowledgeCategory', on_delete=models.PROTECT,
+        default=2, related_name="questions"
+    )
 
 
 class UserQuestion(models.Model):
