@@ -7,7 +7,7 @@ import os
 from django.core.validators import FileExtensionValidator
 from PIL import Image
 from django.conf import settings
-from accounts.choises import *
+from accounts.choises.choises import *
 
 
 class FileManager(models.Manager):

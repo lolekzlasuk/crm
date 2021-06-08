@@ -4,7 +4,7 @@ from django.utils import timezone
 from PIL import Image
 import os
 from django.conf import settings
-from accounts.choises import *
+from accounts.choises.choises import *
 
 class AvatarManager(models.Manager):
     def resize_file(self, file):
