@@ -105,9 +105,12 @@ def edit_profile(request):
 
             profile.profile_pic = image
             profile.save()
-            if prev_pic != "profile_pics/default-profile.png":
-                if os.path.isfile(prev_pic.path):
-                    os.remove(prev_pic.path)
+            try:
+                if prev_pic != "profile_pics/default-profile.png":
+                    if os.path.isfile(prev_pic.path):
+                        os.remove(prev_pic.path)
+            except:
+                pass
         return redirect('accounts:profile')
     else:
         form = UserProfileForm
@@ -117,8 +120,11 @@ def edit_profile(request):
 def delete_profile_pic(request):
     profile = request.user.userprofile
     if profile.profile_pic != "profile_pics/default-profile.png":
-        if os.path.isfile(profile.profile_pic.path):
-            os.remove(profile.profile_pic.path)
+        try:
+            if os.path.isfile(profile.profile_pic.path):
+                os.remove(profile.profile_pic.path)
+        except:
+            pass #remove after final
         profile.profile_pic = "profile_pics/default-profile.png"
         profile.save()
     return redirect('accounts:profile')
