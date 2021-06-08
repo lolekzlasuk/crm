@@ -4,20 +4,7 @@ from django.utils import timezone
 from PIL import Image
 import os
 from django.conf import settings
-
-COMPANY_LOCATIONS = (
-    ('WAW', 'Warszawa'),
-    ('KRK', 'Kraków'),
-    ('PZN', 'Poznań'),
-    ('non', "None"),
-)
-DEPARTAMENTS = (
-    ('sal', 'Sales'),
-    ('mar', 'Marketing'),
-    ('HR', 'Human Resources'),
-    ('non', "None"),
-)
-
+from accounts import choises
 
 class AvatarManager(models.Manager):
     def resize_file(self, file):

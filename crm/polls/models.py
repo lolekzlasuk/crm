@@ -2,26 +2,8 @@ from django.db import models
 
 from django.utils import timezone
 from django.contrib.auth.models import User
-QUESTIONTYPES = (
-        ('mch', 'Multiple Choice'),
-        ('chc', 'Choice'),
-        ('txt', 'Text'),
-        ('pck', 'Pick from list'),
-        ('dat', 'Date')
+from accounts import choises
 
-        )
-COMPANY_LOCATIONS = (
-    ('WAW', 'Warszawa'),
-    ('KRK', 'Kraków'),
-    ('PZN', 'Poznań'),
-    ('ALL',"All"),
-    )
-DEPARTAMENTS = (
-    ('sal', 'Sales'),
-    ('mar', 'Marketing'),
-    ('HR', 'Human Resources'),
-    ('ALL',"All"),
-    )
 class Poll(models.Model):
     date_created = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey('auth.User',on_delete=models.PROTECT)

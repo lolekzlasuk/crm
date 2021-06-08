@@ -1,12 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
-STATES = (
-    ('acc', 'Accepted'),
-    ('rej', 'Rejected'),
-    ('wai', 'Awaiting'),
-)
-
+from accounts import choises
 
 class BoardCategory(models.Model):
     title = models.TextField(max_length=25)

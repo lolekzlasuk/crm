@@ -7,18 +7,7 @@ import os
 from django.core.validators import FileExtensionValidator
 from PIL import Image
 from django.conf import settings
-COMPANY_LOCATIONS = (
-    ('WAW', 'Warszawa'),
-    ('KRK', 'Kraków'),
-    ('PZN', 'Poznań'),
-    ('ALL', "All"),
-)
-DEPARTAMENTS = (
-    ('sal', 'Sales'),
-    ('mar', 'Marketing'),
-    ('HR', 'Human Resources'),
-    ('ALL', "All"),
-)
+from accounts import choises
 
 
 class FileManager(models.Manager):
