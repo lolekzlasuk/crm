@@ -2,7 +2,7 @@ from django.db import models
 
 from django.utils import timezone
 from django.contrib.auth.models import User
-from accounts.choises import COMPANY_LOCATIONS,DEPARTAMENTS,QUESTIONTYPES,STATES
+from accounts.choises import *
 
 class Poll(models.Model):
     date_created = models.DateTimeField(default=timezone.now)

@@ -7,7 +7,7 @@ import os
 from django.core.validators import FileExtensionValidator
 from PIL import Image
 from django.conf import settings
-from accounts.choises import COMPANY_LOCATIONS,DEPARTAMENTS,QUESTIONTYPES,STATES
+from accounts.choises import *
 
 
 class FileManager(models.Manager):
