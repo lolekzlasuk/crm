@@ -116,6 +116,8 @@ class NotificationReadFlag(models.Model):
         'news.Notification', on_delete=models.CASCADE)
     read = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.notification.title
 
 class NewsReadFlag(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
@@ -146,6 +148,8 @@ class DocumentF(models.Model):
          related_name="docs"
     )
 
+    def __str__(self):
+        return self.title
 
 class DocFile(models.Model):
     file = models.FileField(upload_to='documents')
@@ -160,6 +164,8 @@ class DocFile(models.Model):
          default=2, related_name="files"
     )
 
+    def __str__(self):
+        return self.name
 
 class DocQuestion(models.Model):
     title = models.CharField(max_length=200)
@@ -176,9 +182,14 @@ class DocQuestion(models.Model):
         default=2, related_name="questions"
     )
 
+    def __str__(self):
+        return self.title
 
 class UserQuestion(models.Model):
     title = models.CharField(max_length=200)
     body = models.TextField(max_length=5000)
     author = models.ForeignKey(
         'auth.User', on_delete=models.PROTECT, blank=True, null=True)
+
+    def __str__(self):
+        return self.title

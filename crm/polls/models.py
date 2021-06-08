@@ -36,6 +36,8 @@ class Answer(models.Model):
     body = models.TextField(max_length=200)
     question = models.ForeignKey('polls.Question',on_delete=models.CASCADE,related_name='answers')
 
+    def __str__(self):
+        return self.body
 
 # class PollFinishFlag(models.Model):
 #     user = models.ManyToManyField('auth.User')
@@ -47,6 +49,10 @@ class PollSubmition(models.Model):
     user = models.ForeignKey('auth.User',on_delete=models.CASCADE)
     poll = models.ForeignKey('polls.Poll',on_delete=models.CASCADE,related_name='submitions')
     date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return str(self.user.username + " " + self.poll.title)
+
 
 class PollSubmitionQuestion(models.Model):
     submition = models.ForeignKey('polls.PollSubmition',on_delete=models.CASCADE,related_name='submitions')

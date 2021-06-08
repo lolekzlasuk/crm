@@ -1,6 +1,10 @@
+WARSZAWA = 'WAW'
+
+
+
 
 COMPANY_LOCATIONS = (
-    ('WAW', 'Warszawa'),
+    (WARSZAWA, 'Warszawa'),
     ('KRK', 'Kraków'),
     ('PZN', 'Poznań'),
     ('non', "None"),

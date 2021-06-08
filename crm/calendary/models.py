@@ -13,3 +13,6 @@ class Devent(models.Model):
     start = models.TimeField(default=0)
     end = models.TimeField(blank=True,null=True)
     author = models.ForeignKey('auth.user',on_delete=models.PROTECT)
+
+    def __str__(self):
+        return self.title
