@@ -1,10 +1,8 @@
-WARSZAWA = 'WAW'
-
 
 
 
 COMPANY_LOCATIONS = (
-    (WARSZAWA, 'Warszawa'),
+    ('WAW', 'Warszawa'),
     ('KRK', 'Kraków'),
     ('PZN', 'Poznań'),
     ('non', "None"),

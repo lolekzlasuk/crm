@@ -40,7 +40,7 @@ def change_password(request):
     })
 
 
-class UserProfileDetailView(DetailView):
+class UserProfileDetailView(LoginRequiredMixin, DetailView):
     model = UserProfile
     queryset = User.objects.all()
 
@@ -56,6 +56,7 @@ def user_logout(request):
 class EmployeeListView(LoginRequiredMixin, ListView):
     model = UserProfile
     template_name = 'accounts/userprofile_list.html'
+    paginate_by = 5
 
     def get_queryset(self):
         object_list = UserProfile.objects.all()
@@ -65,7 +66,7 @@ class EmployeeListView(LoginRequiredMixin, ListView):
             object_list = UserProfile.objects.all().filter(
                 Q(name__icontains=query) | Q(email__icontains=query)
                 | Q(departament__icontains=query) | Q(location__icontains=query)
-                | Q(position__icontains=query)
+                | Q(position__icontains=query) | Q(telephone__icontains=query)
             )
 
         return object_list
@@ -91,7 +92,7 @@ def user_login(request):
     else:
         return render(request, 'accounts/login.html', {})
 
-
+@login_required
 def edit_profile(request):
     profile = request.user.userprofile
     if request.method == 'POST':
@@ -116,7 +117,7 @@ def edit_profile(request):
         form = UserProfileForm
     return render(request, 'accounts/editprofile.html', {'form': form})
 
-
+@login_required
 def delete_profile_pic(request):
     profile = request.user.userprofile
     if profile.profile_pic != "profile_pics/default-profile.png":
