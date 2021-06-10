@@ -1,6 +1,5 @@
-
 {% extends 'base.html' %}
-{% block extra_css %}  .nav__link[name="Calendar"] {background-color: #1caf9a; color: white;} {% endblock %}
+{% block extra_css %} .nav__link[name="Calendar"] {background-color: #1caf9a; color: white;} {% endblock %}
 {% block body_block %}
 {% load static %}
 {% load groupfilter %}
@@ -10,7 +9,7 @@
 
 
     <span class="site-header__title">
-       Calendar
+      Calendar
     </span>
     <span class="site-header__subtitle">/ subtitle</span>
   </div>
@@ -22,201 +21,85 @@
 
 <div class="content-container content-container--paginated">
 
-
-  <!--<div class="objecta">-->
-  <!--</div>-->
   <div class="content-wrapper">
 
 
 
-  <div class="calendar__date">
-    <a href="{% url 'calendary:calendary' month=prevmonth  year=prevyear %}"><i class="fas fa-arrow-circle-left"></i></a>
-        {{date}}
-  <a class="buttonn" href="{% url 'calendary:calendary' month=nextmonth  year=nextyear %}"><i class="fas fa-arrow-circle-right"></i></a>
+    <div class="calendar__date">
+      <a href="{% url 'calendary:calendary' month=prevmonth  year=prevyear %}"><i class="fas fa-arrow-circle-left"></i></a>
+      {{date}}
+      <a class="buttonn" href="{% url 'calendary:calendary' month=nextmonth  year=nextyear %}"><i class="fas fa-arrow-circle-right"></i></a>
 
-  </div>
-  <div class="cal__wrapper">
-
-
-<div class="calendar__container">
-
-<div class="calendar__headline">
-  Monday
-</div>
-<div class="calendar__headline">
-  Tuesday
-</div>
-<div class="calendar__headline">
-  Wednesday
-</div>
-<div class="calendar__headline">
-  Thursday
-</div>
-<div class="calendar__headline">
-Friday
-</div>
-<div class="calendar__headline">
-  Saturday
-</div>
-<div class="calendar__headline">
-  Sunday
-</div>
+    </div>
+    <div class="cal__wrapper">
 
 
+      <div class="calendar__container">
 
-{% for news in object_list %}
-
-{% if forloop.counter <= before %}
-
-<div class="cal_dif">
-  <div class="date__inside">
-    {{news.date|date:"j M" }}
-  </div>
-{% elif forloop.counter >= after %}
-<div class="cal_dif_later">
-  <div class="date__inside">
-    {{news.date|date:"j M" }}
-  </div>
-{% else %}
-<div class="date">
-  <div class="date__inside">
-    {{news.date|date:"j" }}
-    <a class="cala" href="{% url 'calendary:post_devent' pk=news.pk %}"><i class="far fa-plus-square"></i></a>
-  </div>
-{% endif %}
-
-
-{% for each in news.devent_set.all|dictsort:"start" %}
-
-<div class="devent">
+        <div class="calendar__headline">
+          Monday
+        </div>
+        <div class="calendar__headline">
+          Tuesday
+        </div>
+        <div class="calendar__headline">
+          Wednesday
+        </div>
+        <div class="calendar__headline">
+          Thursday
+        </div>
+        <div class="calendar__headline">
+          Friday
+        </div>
+        <div class="calendar__headline">
+          Saturday
+        </div>
+        <div class="calendar__headline">
+          Sunday
+        </div>
 
 
+        <!-- styling squares from other months than displayed -->
+        {% for news in object_list %}
 
-<a class="buttonn" href="{% url 'calendary:devent' pk=each.pk %}"><div class="doc secondary-hover">{{each.title}}</div></a>
+        {% if forloop.counter <= before %}
 
-</div>
+        <div class="cal_dif">
+          <div class="date__inside">
+            {{news.date|date:"j M" }}
+          </div>
+          {% elif forloop.counter >= after %}
+          <div class="cal_dif_later">
+            <div class="date__inside">
+              {{news.date|date:"j M" }}
+            </div>
+            {% else %}
+            <div class="date">
+              <div class="date__inside">
+                {{news.date|date:"j" }}
+                <a class="cala" href="{% url 'calendary:post_devent' pk=news.pk %}"><i class="far fa-plus-square"></i></a>
+              </div>
+              {% endif %}
 
-{% endfor %}
 
-</div>
-{% endfor %}
-  </div>
-</div>
-  </div>
+              {% for each in news.devent_set.all|dictsort:"start" %}
 
-<script>
-// // Open the Modal
-// function openModal() {
-//   document.getElementById("myModal").style.display = "block";
-// }
-//
-// // Close the Modal
-// function closeModal() {
-//   document.getElementById("myModal").style.display = "none";
-// }
-//
-// var slideIndex = 1;
-// showSlides(slideIndex);
-//
-// // Next/previous controls
-// function plusSlides(n) {
-//   showSlides(slideIndex += n);
-// }
-//
-// // Thumbnail image controls
-// function currentSlide(n) {
-//   showSlides(slideIndex = n);
-// }
-//
-// function showSlides(n) {
-//   var i;
-//   var slides = document.getElementsByClassName("mySlides");
-//   var dots = document.getElementsByClassName("demo");
-//   var captionText = document.getElementById("caption");
-//   if (n > slides.length) {slideIndex = 1}
-//   if (n < 1) {slideIndex = slides.length}
-//   for (i = 0; i < slides.length; i++) {
-//     slides[i].style.display = "none";
-//   }
-//   for (i = 0; i < dots.length; i++) {
-//     dots[i].className = dots[i].className.replace(" active", "");
-//   }
-//   slides[slideIndex-1].style.display = "block";
-//   dots[slideIndex-1].className += " active";
-//   captionText.innerHTML = dots[slideIndex-1].alt;
-// }
+              <div class="devent">
+
+                <a class="buttonn" href="{% url 'calendary:devent' pk=each.pk %}">
+                  <div class="doc secondary-hover">{{each.title}}</div>
+                </a>
+
+              </div>
+
+              {% endfor %}
+
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
 
 
 
-
-
-$(document).ready(function(){
-  $.ajaxSetup({
-       beforeSend: function(xhr, settings) {
-           function getCookie(name) {
-               var cookieValue = null;
-               if (document.cookie && document.cookie != '') {
-                   var cookies = document.cookie.split(';');
-                   for (var i = 0; i < cookies.length; i++) {
-                       var cookie = jQuery.trim(cookies[i]);
-                       // Does this cookie string begin with the name we want?
-                       if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                           cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                           break;
-                       }
-                   }
-               }
-               return cookieValue;
-           }
-           if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-               // Only send the token to relative URLs i.e. locally.
-               xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-           }
-       }
-  });
-
-});
-
-
-$(document).on('click','.unopened',function (e) {
-  var csrftoken = $("input[name=csrfmiddlewaretoken]").val();
-  e.preventDefault();
-  var pk = $(this).attr("data-id");
-  var urlss = $(this).attr("data-href");
-
-
-
-    // console.log($(this).find("input[name='type"+i+"']:checked").val());
-    $.ajax({
-        type:'POST',
-        url: urlss,
-        data:JSON.stringify({
-            "pk": pk,
-            // "csrfmiddlewaretoken": csrftoken,
-            // "action": 'post'
-        }),
-
-        success:(json) => {
-          $(this).removeClass("unopened");
-          $(this).parents(".news").removeClass("unopened");
-
-
-        },
-        error : function(xhr,errmsg,err) {
-        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-    }
-    });
-   });
-
-
-
-
-
-
-
-
-
-
-
-</script>
-{% endblock %}
+      {% endblock %}

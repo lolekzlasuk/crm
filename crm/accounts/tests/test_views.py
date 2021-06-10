@@ -18,10 +18,48 @@ class TestAccountsViews(TestCase):
         test_user3.save()
         test_user4.save()
 
-        test_user1_userprofile = UserProfile.objects.create(user=test_user1, name='Test User1', telephone='11', email='testuser1@email.com', employee_id='2', departament='HR', location='WAW')
-        test_user2_userprofile = UserProfile.objects.create(user=test_user2, name='Test User2', telephone='22', email='testuser2@email.com', employee_id='3', departament='sal', location='PZN')
-        test_user3_userprofile = UserProfile.objects.create(user=test_user3, name='Test User3', telephone='33', email='testuser3@email.com', employee_id='4', departament='mar', location='KRK')
-        test_user4_userprofile = UserProfile.objects.create(user=test_user4, name='Test User4', telephone='44', email='testuser4@email.com', employee_id='5', departament='HR', location='KRK')
+
+        test_user1_userprofile = UserProfile.objects.create(
+            user=test_user1,
+            name='Test User1',
+            telephone='11',
+            email='testuser1@email.com',
+            employee_id='2',
+            departament='HR',
+            location='WAW'
+            )
+
+
+        test_user2_userprofile = UserProfile.objects.create(
+            user=test_user2,
+            name='Test User2',
+            telephone='22',
+            email='testuser2@email.com',
+            employee_id='3',
+            departament='sal'
+            location='PZN'
+             )
+
+        test_user3_userprofile = UserProfile.objects.create(
+            user=test_user3,
+            name='Test User3',
+            telephone='33',
+            email='testuser3@email.com',
+            employee_id='4',
+            departament='mar'
+            location='KRK'
+             )
+
+        test_user4_userprofile = UserProfile.objects.create(
+            user=test_user4,
+            name='Test User4',
+            telephone='44',
+            email='testuser4@email.com',
+            employee_id='5',
+            departament='HR',
+            location='KRK'
+            )
+
 
         test_user1_userprofile.save()
         test_user2_userprofile.save()

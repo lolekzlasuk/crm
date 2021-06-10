@@ -49,13 +49,15 @@
   {% for question in object_list %}
 
   <div class="question">
-  <div class="question_title secondary-hover">
+  <div class="question_title ">
     {{question.title}}
   </div>
 
   <div class="question_answer">
     {{question.body}}
-    <a href="{% url 'news:answerqna' pk=question.pk %}">answer</a>
+    <a class="buttonn" href="{% url 'news:answerqna' pk=question.pk %}"><div class="doc secondary-hover">
+
+    answer</div></a>
   </div>
     </div>
 

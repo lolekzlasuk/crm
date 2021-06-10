@@ -24,11 +24,7 @@ class CalListView(ListView):
     model = Day
 
     def get_queryset(self):
-        qs = Day.objects.filter(
-            date__month=self.kwargs['month']
-        ).filter(
-            date__year=self.kwargs['year']
-        )
+        qs = Day.objects.filter(date__month=self.kwargs['month']).filter(date__year=self.kwargs['year'])
 
         dayrange = qs[0].date.weekday()
         list_of_pks = list(range(qs[0].pk - dayrange, qs[0].pk))
@@ -88,7 +84,7 @@ def post_devent(request, pk):
             instance.author = User.objects.get(username=request.user.username)
             instance.day = Days
             instance.save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            return redirect('calendary:calendary',month=instance.day.date.month, year=instance.day.date.year)
     else:
         form = DeventForm(initial=data)
     return render(request, 'calendary/deventform.html', {'form': form})
