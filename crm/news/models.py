@@ -50,21 +50,21 @@ class News(models.Model):
     def publish(self):
         self.published_date = timezone.now()
         self.save()
-        notif = Notification.objects.create(
+        notification_instance = Notification.objects.create(
             news=self,
             title="New news for you!",
             body=self.title[0:20]
         )
         audience = UserProfile.objects.all()
-        if self.target_location != "ALL":
+        if self.target_location != "non":
             audience = audience.filter(location=self.target_location)
-        if self.target_departament != "ALL":
+        if self.target_departament != "non":
             audience = audience.filter(departament=self.target_departament)
 
         for each in audience:
             notifreadflag = NotificationReadFlag.objects.create(
                 user=each.user,
-                notification=notif
+                notification=notification_instance
             )
             newsreadflag = NewsReadFlag.objects.create(
                 user=each.user,
@@ -72,7 +72,7 @@ class News(models.Model):
             )
 
     def __str__(self):
-        return self.title
+        return self.title[0:30]
 
 
 class NewsFile(models.Model):

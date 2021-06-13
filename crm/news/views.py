@@ -196,7 +196,6 @@ def flagtoggle(request):
 
     if request.is_ajax() and request.method == 'POST':
         pk = json.loads(request.body).get('pk')
-        print(request.body)
         user = User.objects.get(username=request.user)
         news = News.objects.get(pk=pk)
         notification = Notification.objects.get(news=news)
