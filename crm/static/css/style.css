@@ -3,8 +3,8 @@
 #F7F7F7 very light gray secondary
 #F5F5F5 white smoke
 #1caf9a green
-#1d2939 granat
-#636e7b main dark text
+#26354a granat
+#8a94a1 main dark text
 #e4e7ea light gray  background
 
 */
@@ -168,7 +168,7 @@ color: black;
   border-radius: 2px;
 }
 .Ccard_subtitle{
-  color: #636e7b;
+  color: #8a94a1;
 font-size: 0.6em;
 font-weight: 500;
 padding: 10px 0;
@@ -181,7 +181,7 @@ padding: 10px 0;
 .Ccard_body{
   background-color: #F5F5F5;
   padding: 15px 20px;
-  color: #636e7b;
+  color: #8a94a1;
 }
 .comment-margin{
   margin-top: 2em;
@@ -211,7 +211,7 @@ background-color: #e4e7ea;
 
 /* ----------------sidebar------------------- */
 .sidebar{
-    background-color: #1d2939;
+    background-color: #26354a;
     height: inherit;
     display: flex;
     flex-flow: column;
@@ -227,11 +227,11 @@ padding: 0.5em 0.5em;
 }
 nav > a:hover{
   background-color: white;
-  color: #1d2939;
+  color: #26354a;
 }
 nav{
 
-  color: #636e7b;
+  color: #8a94a1;
 }
 .nav__title{
   margin: 1.5em 0.85em 0.85em 0.85em;
@@ -415,8 +415,11 @@ margin-bottom: 30px;
   color: inherit;
   display:inline-block;
   position: absolute;
-  padding: 10px 10px;
-    border-radius: 0.2em;
+  padding: 11px 11px;
+  height:inherit;
+    border-radius: 1px;
+    left:17px;
+   transform:translateY(-23%);
 
 }
 
@@ -509,8 +512,8 @@ border-bottom: 1px solid gray;
 .devent{
   /*cursor: pointer;*/
   /*padding: 0 .5em;*/
-  /*background-color: #1d2939;*/
-  /*color: #636e7b;*/
+  /*background-color: #26354a;*/
+  /*color: #8a94a1;*/
   /*padding-left: .5em;*/
   /*border-radius: 4px;*/
   /*margin-bottom: .3em;*/
@@ -565,8 +568,8 @@ border-radius: 2px;
 
 
   padding: .3em .5em;
-  background-color: #1d2939;
-  color: #636e7b;
+  background-color: #26354a;
+  color: #8a94a1;
 
 }
 .doc-button{
@@ -576,8 +579,8 @@ border-radius: 2px;
 border-radius: 2px;
 
   padding: .3em .5em;
-  background-color: #1d2939;
-  color: #636e7b;
+  background-color: #26354a;
+  color: #8a94a1;
 }
 .content-title{
     font-weight: 600;
@@ -628,14 +631,14 @@ border-radius: 2px;
   font-weight: 600;
   cursor: pointer;
   padding: .5em 1em;
-  background-color: #1d2939;
-  color: #636e7b;
+  background-color: #26354a;
+  color: #8a94a1;
 
 }
 .question_answer{
   background-color: white;
   padding: .5em .75em;
-  color: #636e7b;
+  color: #8a94a1;
 
 
 }
@@ -796,8 +799,8 @@ margin: 0 1em;
   position: absolute;
   box-shadow: 0 3px 0 rgba(12,12,12,0.03);
   height: auto;
-  background-color: #1d2939;
-  color: #636e7b;
+  background-color: #26354a;
+  color: #8a94a1;
   font-size: 0.8em;
 }
 
@@ -829,7 +832,7 @@ text-align: center;
 }
 .dropdown_notification{
 background-color: #F5F5F5;
-color: #636e7b;
+color: #8a94a1;
 line-height: 1.5em;
 margin: 3px 0;
 padding: 7px .5em;
@@ -839,8 +842,8 @@ text-align: left;
 }
 
 .dropdown_notification-last{
-  background-color: #1d2939;
-  color: #636e7b;
+  background-color: #26354a;
+  color: #8a94a1;
   line-height: 1.5em;
 text-align: left;
   padding: 7px 7px;
@@ -870,7 +873,7 @@ text-align: left;
 
 /* ###############top-bar############# */
 .top-bar{
-  color: #636e7b;
+  color: #8a94a1;
   display:flex;
     background-color: white;
     flex-direction: row;
@@ -886,7 +889,7 @@ line-height: 40px;
   font-weight: bold;
   padding: 0 .58em;
   /* border-left: 1px solid lightgray; */
-  color: #636e7b; /* blue colors for links too */
+  color: #8a94a1; /* blue colors for links too */
 text-decoration: inherit;
 cursor:pointer;
   position: relative;
@@ -951,8 +954,31 @@ cursor:pointer;
   margin-right: 1em;
 }
 .fabutton {
-  background-color: #1d2939;
-  color: #636e7b;
+  background-color: #26354a;
+  color: #8a94a1;
 padding: .5em .5em;
   border: none;
+}
+input[type=text], select, textarea, .medium-editor-element {
+  width: 70%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+form{
+  padding: 2em 2em;
+}
+.medium-editor-element{
+  background-color: white;
+}
+#searchbar{
+  display: inline-block;
+  margin-right: 0;
+}
+#search-submit{
+  padding: 12px 12px;
+  margin: 8px 0;
 }

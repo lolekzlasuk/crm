@@ -7,11 +7,11 @@ class Day(models.Model):
     date = models.DateField()
 
 class Devent(models.Model):
-    day = models.ForeignKey('calendary.Day',on_delete=models.PROTECT)
-    title = models.TextField()
-    description = models.TextField(blank=True,null=True)
-    start = models.TimeField(default=0)
-    end = models.TimeField(blank=True,null=True)
+    day = models.ForeignKey('calendary.Day',on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True, max_length=5000)
+    start = models.TimeField(default="00:00")
+    end = models.TimeField(default="23:59")
     author = models.ForeignKey('auth.user',on_delete=models.PROTECT)
 
     def __str__(self):

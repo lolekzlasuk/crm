@@ -112,8 +112,7 @@ class Notification(models.Model):
 
 class NotificationReadFlag(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-    notification = models.ForeignKey(
-        'news.Notification', on_delete=models.CASCADE)
+    notification = models.ForeignKey('news.Notification', on_delete=models.CASCADE)
     read = models.BooleanField(default=False)
 
     def __str__(self):
