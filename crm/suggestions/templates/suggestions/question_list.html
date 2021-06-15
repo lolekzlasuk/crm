@@ -41,7 +41,7 @@
   </div>
 {% for each in categories %}
 
-  <a class="buttonn" href="{% url 'suggestions:category' pk=each.pk %}">
+  <a class="buttonn" href="{{ category.get_absolute_url }}">
 <div class="doc secondary-hover">
   <span>  {{ each.title}}</span>
 
@@ -74,7 +74,7 @@
     </div>
     <div class="idea__right">
 
-  <a href="{% url 'suggestions:questiondetail' pk=question.pk %}">
+  <a href="{{ question.get_absolute_url }}">
     <div class="pH">
       <div class="pT">
      {{question.title}}

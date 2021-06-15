@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.models import User
 from accounts.choises.choises import *
@@ -9,8 +9,8 @@ class Poll(models.Model):
     author = models.ForeignKey('auth.User',on_delete=models.PROTECT)
     title =  models.CharField(max_length=200)
     published_date = models.DateTimeField(default=None,null = True, blank = True)
-    target_departament = models.CharField(max_length=3, choices=DEPARTAMENTS,default='ALL')
-    target_location = models.CharField(max_length=3, choices=COMPANY_LOCATIONS,default='ALL')
+    target_departament = models.CharField(max_length=3, choices=DEPARTAMENTS,default='non')
+    target_location = models.CharField(max_length=3, choices=COMPANY_LOCATIONS,default='non')
     def publish(self):
         self.published_date = timezone.now()
         self.save()
@@ -18,13 +18,13 @@ class Poll(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+       return reverse('polls:create_poll_answer', args=[str(self.id)])
 
 class Question(models.Model):
     poll = models.ForeignKey('polls.Poll',on_delete=models.CASCADE,null=True,blank=True,related_name='questions')
     title = models.TextField(max_length=200)
     order = models.IntegerField(null=True,blank=True)
-    # textanswer = models.TextField(max_length=200,null=True,blank=True)
-    # answer = models.OneToManyField('polls.Answer',blank=True,Null=True)
     enabletext = models.BooleanField(default=False)
     type = models.CharField(max_length=3, choices=QUESTIONTYPES,default='chc')
     def __str__(self):
@@ -39,10 +39,6 @@ class Answer(models.Model):
     def __str__(self):
         return self.body
 
-# class PollFinishFlag(models.Model):
-#     user = models.ManyToManyField('auth.User')
-#     poll = models.ManyToManyField('polls.Poll')
-#     finished = models.BooleanField(default=False)
 
 
 class PollSubmition(models.Model):
@@ -57,23 +53,24 @@ class PollSubmition(models.Model):
 class PollSubmitionQuestion(models.Model):
     submition = models.ForeignKey('polls.PollSubmition',on_delete=models.CASCADE,related_name='submitions')
     question = models.ForeignKey('polls.Question',on_delete=models.CASCADE,related_name='submitions')
-    manyanswer = models.ManyToManyField('polls.Answer',related_name='submitions',null=True,blank=True)
+    manyanswer = models.ManyToManyField('polls.Answer',related_name='submitions',blank=True)
     answer = models.TextField(max_length=200,null=True,blank=True)
     text = models.TextField(max_length=200,null=True,blank=True)
     date = models.DateField(null=True,blank=True)
     order = models.IntegerField(null=True,blank=True)
     def ans(self):
-        if self.answer != None:
-            return self.answer
+        if self.answer != None and self.text == None:
+            # if len(self.manyanswer.split(';')) > 1:
+            #     return self.manyanswer
+            # else:
+
+            return str(self.answer)
+        if self.answer != None and self.text is not None:
+            return str(self.answer + "; " + self.text)
         if self.text is not None:
-            return self.text
+            return str(self.text)
         if self.date:
-            return self.date
+            return self.date.strftime("%m/%d/%Y")
 
     def __str__(self):
-        if self.answer != None:
-            return self.answer
-        if self.text is not None:
-            return self.text
-        if self.date != None:
-            return self.date
+        return str(self.ans())

@@ -32,11 +32,11 @@ class UserProfile(models.Model):
         blank=True
     )
 
-    name = models.TextField(max_length=200)
-    telephone = models.IntegerField()
-    email = models.TextField(max_length=200, null=True)
-    date_of_employement = models.DateTimeField(default=timezone.now)
-    employee_id = models.CharField(max_length=20)
+    name = models.TextField(max_length=200) #charfieldd
+    telephone = models.IntegerField() #positiveintegerfield
+    email = models.TextField(max_length=200, null=True) #emailfield
+    date_of_employement = models.DateTimeField(default=timezone.now) #switch to datefield
+    employee_id = models.CharField(max_length=20) #positiveintegerfield
     position = models.CharField(max_length=40, default="")
     objects = AvatarManager()
 

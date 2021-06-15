@@ -8,7 +8,8 @@ from django.core.validators import FileExtensionValidator
 from PIL import Image
 from django.conf import settings
 from accounts.choises.choises import *
-
+from django.urls import reverse
+from django.template.defaultfilters import slugify
 
 class FileManager(models.Manager):
     def save_file(self, file):
@@ -43,9 +44,10 @@ class News(models.Model):
     staticdoc = models.BooleanField(default=False)
     files = models.ManyToManyField('news.NewsFile', default=None, blank=True)
     target_departament = models.CharField(
-        max_length=3, choices=DEPARTAMENTS, default='ALL')
+        max_length=3, choices=DEPARTAMENTS, default='non')
     target_location = models.CharField(
-        max_length=3, choices=COMPANY_LOCATIONS, default='ALL')
+        max_length=3, choices=COMPANY_LOCATIONS, default='non')
+    slug = models.SlugField(max_length=200,null=True)
 
     def publish(self):
         self.published_date = timezone.now()
@@ -74,6 +76,12 @@ class News(models.Model):
     def __str__(self):
         return self.title[0:30]
 
+    def get_absolute_url(self):
+       return reverse('news:newsdetail', args=[str(self.pk)])
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title[0:20])
+        super(News, self).save(*args, **kwargs)
 
 class NewsFile(models.Model):
     file = models.FileField(upload_to='upload/%Y/%m/%d', default=None, blank=True, validators=[
@@ -83,9 +91,9 @@ class NewsFile(models.Model):
     isnews = models.BooleanField(default=True)
     objects = FileManager()
     target_departament = models.CharField(
-        max_length=3, choices=DEPARTAMENTS, default='ALL')
+        max_length=3, choices=DEPARTAMENTS, default='non')
     target_location = models.CharField(
-        max_length=3, choices=COMPANY_LOCATIONS, default='ALL')
+        max_length=3, choices=COMPANY_LOCATIONS, default='non')
 
     def __str__(self):
         return str(self.file.name.split("/")[-1])
@@ -107,7 +115,7 @@ class Notification(models.Model):
     date_created = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.title
+        return self.body[0:20]
 
 
 class NotificationReadFlag(models.Model):
@@ -116,13 +124,15 @@ class NotificationReadFlag(models.Model):
     read = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.notification.title
+        return '{0} ({1}) '.format(self.user.userprofile, self.notification)
 
 class NewsReadFlag(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     news = models.ForeignKey('News', on_delete=models.CASCADE)
     read = models.BooleanField(default=False)
 
+    def __str__(self):
+        return '{0} ({1}) '.format(self.user.userprofile, self.news)
 
 class KnowledgeCategory(models.Model):
     title = models.CharField(max_length=200)
@@ -137,9 +147,9 @@ class DocumentF(models.Model):
     author = models.ForeignKey('auth.User', on_delete=models.PROTECT)
     date_created = models.DateTimeField(default=timezone.now)
     target_departament = models.CharField(
-        max_length=3, choices=DEPARTAMENTS, default='ALL')
+        max_length=3, choices=DEPARTAMENTS, default='non')
     target_location = models.CharField(
-        max_length=3, choices=COMPANY_LOCATIONS, default='ALL')
+        max_length=3, choices=COMPANY_LOCATIONS, default='non')
     category = models.ForeignKey(
         'news.KnowledgeCategory',
          on_delete=models.PROTECT,
@@ -147,24 +157,32 @@ class DocumentF(models.Model):
          related_name="docs"
     )
 
+    class Meta:
+        ordering = ['-date_created']
+
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+       return reverse('news:docdetail', args=[str(self.id)])
 
 class DocFile(models.Model):
     file = models.FileField(upload_to='documents')
     title = models.CharField(max_length=200)
     date_created = models.DateTimeField(default=timezone.now)
     target_departament = models.CharField(
-        max_length=3, choices=DEPARTAMENTS, default='ALL')
+        max_length=3, choices=DEPARTAMENTS, default='non')
     target_location = models.CharField(
-        max_length=3, choices=COMPANY_LOCATIONS, default='ALL')
+        max_length=3, choices=COMPANY_LOCATIONS, default='non')
     category = models.ForeignKey(
         'news.KnowledgeCategory', on_delete=models.PROTECT,
          default=2, related_name="files"
     )
+    class Meta:
+        ordering = ['-date_created']
 
     def __str__(self):
-        return self.name
+        return self.title
 
 class DocQuestion(models.Model):
     title = models.CharField(max_length=200)
@@ -172,9 +190,9 @@ class DocQuestion(models.Model):
     answer = models.TextField(
         max_length=5000, default=None, blank=True, null=True)
     target_departament = models.CharField(
-        max_length=3, choices=DEPARTAMENTS, default='ALL')
+        max_length=3, choices=DEPARTAMENTS, default='non')
     target_location = models.CharField(
-        max_length=3, choices=COMPANY_LOCATIONS, default='ALL')
+        max_length=3, choices=COMPANY_LOCATIONS, default='non')
     date_created = models.DateTimeField(default=timezone.now)
     category = models.ForeignKey(
         'news.KnowledgeCategory', on_delete=models.PROTECT,

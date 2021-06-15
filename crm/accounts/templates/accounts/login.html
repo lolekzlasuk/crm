@@ -21,17 +21,22 @@
 </style>
   </head>
   <body>
-<h1>PLease log in</h1>
+    <div class="login">
+      <div class="loginlogo ">
+         <span>intranet</span>
+      </div>
+
+<h2> Sign in</h2>
 <form action="{% url 'accounts:user_login' %}" method="post">
   {% csrf_token %}
-  <label for="username">Username</label>
-<input type="text" name="username" placeholder="Enter Username">
-<label for="password">Password:</label>
-<input type="password" name="password" >
+  <label hidden for="username">Username</label>
+<input type="text" name="username" placeholder="Username, email or phone number">
+<label hidden for="password">Password:</label>
+<input type="password" name="password" placeholder="Password">
 
-<input type="submit" name="" value="login">
+<input type="submit" name="" class="doc secondary-hover" value="Sign in">
 
 </form>
-
+    </div>
 </body>
 </html>

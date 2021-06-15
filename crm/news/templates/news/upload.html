@@ -3,6 +3,10 @@
 {% block extra_css %}  .nav__link[name="Home"] {background-color: #1caf9a; color: white;} {% endblock %}
 
 {% block body_block %}
+
+<div class="form-container">
+
+
 <form method="POST" class="post-form" enctype="multipart/form-data">
 
         {% csrf_token %}
@@ -11,5 +15,6 @@
         {{ file_form.as_p }}
         <button type="submit" class="save btn btn-default">Save</button>
 </form>
+</div>
 <script>var editor = new MediumEditor('.editable');</script>
 {% endblock %}

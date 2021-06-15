@@ -20,8 +20,10 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
 import os
 from pathlib import Path
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-
+@login_required
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
@@ -47,7 +49,7 @@ class UserProfileDetailView(LoginRequiredMixin, DetailView):
     def get_object(self):
         return self.request.user.userprofile
 
-
+@login_required
 def user_logout(request):
     logout(request)
     return redirect('/')
@@ -81,12 +83,12 @@ def user_login(request):
             if user.is_active:
                 login(request, user)
                 messages.success(request, 'Logged in!')
-                return HttpResponseRedirect(reverse('news:newss'))
+                return HttpResponseRedirect(reverse('news:news_list'))
             else:
-                return HttpResponse('account is not active')
+                return HttpResponse('Account is not active')
         else:
             print('failed login detected')
-            print('username: {} and password {}'.format(username, password))
+            print('username: {} login failed'.format(username))
             return HttpResponse('invalid login details supplied')
 
     else:

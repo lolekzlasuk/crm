@@ -52,7 +52,7 @@
     <tr>
       <td>{{e.user.userprofile.name}}</td>
       {% for r in e.submitions.all|dictsort:'order' %}
-    <td> {{r.ans.manyanswer}}</td>
+    <td> {{r.ans}}</td>
       {% endfor %}
     </tr>
 {% endfor %}

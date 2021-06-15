@@ -6,13 +6,11 @@ from django.contrib.auth.models import User
 
 class EmailPhoneBackend(ModelBackend):
     def authenticate(self, request, username, password, **kwargs):
-        try: #to allow authentication through phone number or any other field, modify the below statement
+        try:
             userprofile = UserProfile.objects.get(Q(email__iexact=username) | Q(telephone__iexact=username) | Q(user__username__iexact=username))
             user = userprofile.user
         except UserProfile.DoesNotExist:
-
             user = UserModel.objects.get(username=username)
-
 
         if user.check_password(password) and self.user_can_authenticate(user):
             return user

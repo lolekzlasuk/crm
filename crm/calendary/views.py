@@ -1,15 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 import datetime
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect, HttpResponse
-from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import ListView, DetailView
 from .models import Day, Devent
-from django.utils import timezone
 from .forms import DeventForm
 from django.contrib.auth.decorators import permission_required
+
+
 class DeventDetailView(LoginRequiredMixin, DetailView):
     model = Devent
 
@@ -61,7 +60,6 @@ class DayListView(LoginRequiredMixin, ListView):
         elif self.kwargs['month'] != 1:
             context['prevmonth'] = self.kwargs['month'] - 1
             context['prevyear'] = self.kwargs['year']
-
         return context
 
 @login_required

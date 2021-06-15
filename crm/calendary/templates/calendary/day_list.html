@@ -84,10 +84,10 @@
 
               {% for each in news.devent_set.all|dictsort:"start" %}
 
-              <div class="devent">
+              <div class="event">
 
-                <a class="buttonn" href="{% url 'calendary:devent' pk=each.pk %}">
-                  <div class="doc secondary-hover">{{each.title}}</div>
+                <a class="buttonn" href="{{ each.get_absolute_url }}">
+                  <div class="devent secondary-hover">{{each.title}}</div>
                 </a>
 
               </div>

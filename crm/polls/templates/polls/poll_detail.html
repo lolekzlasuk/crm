@@ -24,97 +24,94 @@
 <div class="content-container content-container--paginated">
 
 
-<div class="Ccard">
-  <div class="Ccard_header">
-    <div class="Ccard_title">
+  <div class="Ccard">
+    <div class="Ccard_header">
+      <div class="Ccard_title">
         {{poll.title}}
-    </div>
-  </div>
-
-<div class="Ccard_body">
-
-
-
-
-  <form id="form" method="POST" class="pollcreation">
-    {% csrf_token %}
-      {% for question in poll.questions.all %}
-    <div class="question">
-       <input type="hidden" name="Qid" value="{{question.id}}">
-       <input type="hidden" name="custId" value="{{question.type}}">
-      <input type="hidden" name="enabletext" value="{{question.enabletext}}">
-      <div class="pollquestion-title">
-    {{question.title}}
       </div>
-    {% if question.type == 'pck' %}
-
-
-<p><select class="listanswer" name="answers" class="select">
-      {% for answer in question.answers.all %}
-  <option value="{{answer.id}}">{{answer.body}}</option>
-      {% endfor %}
-</select></p>
-{% elif question.type == 'dat' %}
-<p><input class="dateanswer" type="date" name="lang"></p>
-    {% elif question.type == 'txt' %}
-    <p><input class="textanswer" type="text" name="lang"></p>
-    {% elif question.type == 'mch' %}
-    {% for answer in question.answers.all %}
-      <p> <input type="checkbox" class="enable" name="enable text" value="{{answer.id}}">{{answer.body}}</p>
-    {% endfor %}
-    {% if question.enabletext == True %}
-        <p><label><input type="checkbox" class="mchtext" name="enable text" value="{{answer.id}}"><input class="textanswer" type="text" name="lang"></label></p>
-    {% endif %}
-
-    {% elif question.type == 'chc' %}
-        {% for answer in question.answers.all %}
-    <p><label><input type="radio" name="{{question.title}}" value='{{answer.id}}' > {{answer.body}}</label></p>
-        {% endfor %}
-    {% if question.enabletext == True %}
-            <p><label><input type="radio" class="radiotext" name="{{question.title}}" ><input class="radiotextanswer" type="text" name="lang"> </label></p>
-    {% endif %}
-        {% endif %}
-                </div>
-        {% endfor %}
-
-        <input  data-href="{% url 'polls:createpollAnswer' pk=poll.pk %}" type="submit"  name="submit" value="submit" class="form-button comment-submit" >
-
-</form>
-
-</div>
-
-</div>
     </div>
-    <script type="text/javascript">
+
+    <div class="Ccard_body">
 
 
-    $(document).ready(function(){
-      $.ajaxSetup({
-           beforeSend: function(xhr, settings) {
-               function getCookie(name) {
-                   var cookieValue = null;
-                   if (document.cookie && document.cookie != '') {
-                       var cookies = document.cookie.split(';');
-                       for (var i = 0; i < cookies.length; i++) {
-                           var cookie = jQuery.trim(cookies[i]);
-                           // Does this cookie string begin with the name we want?
-                           if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                               cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                               break;
-                           }
-                       }
-                   }
-                   return cookieValue;
-               }
-               if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-                   // Only send the token to relative URLs i.e. locally.
-                   xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-               }
-           }
-      });
 
+
+      <form id="form" method="POST" class="pollcreation">
+        {% csrf_token %}
+        {% for question in poll.questions.all %}
+        <div class="question">
+          <input type="hidden" name="Qid" value="{{question.id}}">
+          <input type="hidden" name="custId" value="{{question.type}}">
+          <input type="hidden" name="enabletext" value="{{question.enabletext}}">
+          <div class="pollquestion-title">
+            {{question.title}}
+          </div>
+          {% if question.type == 'pck' %}
+
+
+          <p><select class="listanswer" name="answers" class="select">
+              {% for answer in question.answers.all %}
+              <option value="{{answer.id}}">{{answer.body}}</option>
+              {% endfor %}
+            </select></p>
+          {% elif question.type == 'dat' %}
+          <p><input class="dateanswer" type="date" name="lang"></p>
+          {% elif question.type == 'txt' %}
+          <p><textarea class="textanswer" name="lang"></textarea></p>
+          {% elif question.type == 'mch' %}
+          {% for answer in question.answers.all %}
+          <p> <input type="checkbox" class="enable" name="enable text" value="{{answer.id}}">{{answer.body}}</p>
+          {% endfor %}
+          {% if question.enabletext == True %}
+          <p><label><input type="checkbox" class="mchtext" name="enable text" value="{{answer.id}}"><textarea style="display:inline-block;" class="textanswer" name="lang"></textarea></label></p>
+          {% endif %}
+
+          {% elif question.type == 'chc' %}
+          {% for answer in question.answers.all %}
+          <p><label><input type="radio" name="{{question.title}}" value='{{answer.id}}'> {{answer.body}}</label></p>
+          {% endfor %}
+          {% if question.enabletext == True %}
+          <p><label><input type="radio" class="radiotext" name="{{question.title}}"><textarea class="radiotextanswer " style="display:inline-block;" name="lang"> </textarea> </label></p>
+          {% endif %}
+          {% endif %}
+        </div>
+        {% endfor %}
+
+        <input data-href="{% url 'polls:create_poll_answer' pk=poll.pk %}" type="submit" name="submit" value="submit" class="buttonn secondary-hover  comment-submit">
+
+      </form>
+
+    </div>
+
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+        function getCookie(name) {
+          var cookieValue = null;
+          if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+              var cookie = jQuery.trim(cookies[i]);
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+              }
+            }
+          }
+          return cookieValue;
+        }
+        if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+          // Only send the token to relative URLs i.e. locally.
+          xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+        }
+      }
     });
 
+  });
 
 
 
@@ -124,101 +121,93 @@
 
 
 
+  $(document).on('click', '.comment-submit', function(e) {
+    // var csrftoken = $("input[name=csrfmiddlewaretoken]").val();
+    e.preventDefault();
+    // var pk = $(this).data("pk");
+    var urlss = $(this).attr("data-href");
+    $(this).disabled = true;
+    $('.question').each(function(i, e) {
 
+      var ans = [];
+      var type = $(this).find("input[name=custId]").val();
+      var enabletext = $(this).find("input[name=enabletext]").val();
+      var textanswer = null;
+      var dateanswer = null;
+      var questionid = $(this).find("input[name=Qid]").val();
 
+      if (type == 'txt') {
+        textanswer = $(this).find(".textanswer").val();
+      } else if (type == 'dat') {
+        dateanswer = $(this).find(".dateanswer").val();
+      } else if (type == 'mch') {
+        $(this).find("input[type=checkbox]").each(function(i, e) {
 
-
-      $(document).on('click','.comment-submit',function (e) {
-        // var csrftoken = $("input[name=csrfmiddlewaretoken]").val();
-        e.preventDefault();
-        // var pk = $(this).data("pk");
-        var urlss = $(this).attr("data-href");
-        $(this).disabled=true;
-        $('.question').each(function(i,e) {
-
-          var ans = [];
-          var type = $(this).find("input[name=custId]").val();
-          var enabletext = $(this).find("input[name=enabletext]").val();
-          var textanswer = null;
-          var dateanswer = null;
-          var questionid =  $(this).find("input[name=Qid]").val();
-
-          if(type == 'txt'){
-            textanswer = $(this).find(".textanswer").val();
+          if ($(this).is(":checked")) {
+            if ($(this).hasClass("mchtext")) {
+              textanswer = $(this).parent().find(".textanswer").val();
+            } else {
+              ans.push($(this).val());
+            }
           }
-          else if(type == 'dat'){
-            dateanswer = $(this).find(".dateanswer").val();
-          }
-
-           else if (type == 'mch'){
-            $(this).find("input[type=checkbox]").each(function(i,e){
-
-              if($(this).is(":checked")){
-                if($(this).hasClass("mchtext")){
-                  textanswer = $(this).parent().find(".textanswer").val();
-                }else{
-                ans.push($(this).val());
-              }}  });
-        } else if (type == 'chc'){
-          if($(this).find("input[type=radio]:checked").hasClass("radiotext")){
+        });
+      } else if (type == 'chc') {
+        if ($(this).find("input[type=radio]:checked").hasClass("radiotext")) {
           textanswer = $(this).find(".radiotextanswer").val();
-        }else{
+        } else {
           ans.push($(this).find("input[type=radio]:checked").val());
 
 
 
-        }} else if (type == 'pck'){
-          ans.push($(this).find("select").val());
-          console.log("comes");
-            console.log(ans);
         }
-
-
-
-
-
-
-          $.ajax({
-              type:'POST',
-              url: urlss,
-              data:JSON.stringify({
-
-                  "question":questionid,
-                  "answer":ans,
-                  "text":textanswer,
-                  "date":dateanswer
-
-              }),
-
-              success:(json) => {
-
-                console.log('yaaay');
-                window.location.href = '{% url 'polls:polllist' %}';
-
-
-              },
-              error : function(xhr,errmsg,err) {
-              console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-          }
-          });
-
-
-
-
-
-
-
-
-
-
-
+      } else if (type == 'pck') {
+        ans.push($(this).find("select").val());
+        console.log("comes");
         console.log(ans);
-        console.log(textanswer);
+      }
 
-         });
+
+
+
+
+
+      $.ajax({
+        type: 'POST',
+        url: urlss,
+        data: JSON.stringify({
+
+          "question": questionid,
+          "answer": ans,
+          "text": textanswer,
+          "date": dateanswer
+
+        }),
+
+        success: (json) => {
+
+          console.log('yaaay');
+          window.location.href = "{% url 'polls:poll_list' %}";
+
+
+        },
+        error: function(xhr, errmsg, err) {
+          console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+      });
+
+
+
+
+
+
+
+
+
+      console.log(ans);
+      console.log(textanswer);
 
     });
 
-
-    </script>
-  {% endblock %}
+  });
+</script>
+{% endblock %}

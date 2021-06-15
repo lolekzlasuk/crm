@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block extra_css %}  .nav__link[name="Polls"] {background-color: #1caf9a; color: white;} {% endblock %}
+{% block extra_css %} .nav__link[name="Polls"] {background-color: #1caf9a; color: white;} {% endblock %}
 {% block body_block %}
 {% load static %}
 {% load groupfilter %}
@@ -23,12 +23,11 @@
 <div class="content-container ">
   {% if request.user|has_group:"Admins" %}
   <div class="moderator_bar">
-
-
-  <a href="{% url 'polls:polllist' %}">Questions</a>
-  <a href="{% url 'polls:unpublishedpolllist' %}">unpublished</a>
-  <a href="{% url 'polls:pollform' %}">form</a>
-    </div>
+    <a href="{% url 'polls:poll_list' %}">Published polls</a>
+    <a href="{% url 'polls:unpublishedpolllist' %}">Unpublished polls</a>
+    <a href="{% url 'polls:pollform' %}">Create a poll</a>
+    <a href="{% url 'polls:poll_submitions' %}">Submitions</a>
+  </div>
   {% endif %}
 
 
@@ -38,34 +37,36 @@
 
 
 
-<div class="Ccard">
-  <div class="Ccard_header">
-    <div class="Ccard_title">
-      Your polls
+  <div class="Ccard">
+    <div class="Ccard_header">
+      <div class="Ccard_title">
+        Your polls
+      </div>
+    </div>
+    <div class="Ccard_body">
+
+      <div class="questions__wrapper">
+
+        {% for poll in object_list %}
+        <div class="question">
+          <a class="buttonn" href="{{ poll.get_absolute_url }}" style="display:block;">
+            <div class="question_title secondary-hover">
+              {{poll.title}}
+              <span class="Ccard_subtitle">{{poll.published_date|date:"m.d.y"}}</span>
+            </div>
+          </a>
+          {% if poll.published_date is None %}
+          <a href="{% url 'polls:publishpoll' pk=poll.pk %}">publish</a>
+          {% endif %}
+        </div>
+
+
+        {% endfor %}
+      </div>
+
     </div>
   </div>
-<div class="Ccard_body">
-
-<div class="questions__wrapper">
-
-  {% for poll in object_list %}
-  <div class="question">
-        <a class="buttonn" href="{% url 'polls:createpollAnswer' pk=poll.pk %}" style="display:block;"><div class="question_title secondary-hover">
-    {{poll.title}}
-    <span class="Ccard_subtitle">{{poll.published_date|date:"m.d.y"}}</span>
-</div></a>
-{% if poll.published_date is None %}
-<a href="{% url 'polls:publishpoll' pk=poll.pk %}">publish</a>
-{% endif %}
 </div>
 
 
-          {% endfor %}
-</div>
-
-    </div>
-</div>
-</div>
-</div>
-
-  {% endblock %}
+{% endblock %}

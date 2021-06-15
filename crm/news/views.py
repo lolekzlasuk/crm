@@ -23,22 +23,19 @@ class KnowledgeCategoryListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        self.user_location = self.request.user.userprofile.location
+        self.user_departament = self.request.user.userprofile.departament
         files = DocFile.objects.filter(
-            Q(target_location=self.request.user.userprofile.location) | Q(
-            target_location="ALL"))
+            Q(target_location=self.user_location) | Q(target_location="non"))
 
         context['files'] = files.filter(Q
-            (target_departament=self.request.user.userprofile.departament) | Q(
-            target_departament="ALL")).order_by('-date_created')[:10]
+            (target_departament=self.user_departament) | Q(target_departament="non"))
 
         documents = DocumentF.objects.filter(
-            Q(target_location=self.request.user.userprofile.location) | Q(
-            target_location="ALL"))
+            Q(target_location=self.user_location) | Q(target_location="non"))
 
         context['docs'] = documents.filter(Q
-            (target_departament=self.request.user.userprofile.departament) | Q(
-            target_departament="ALL")).order_by('-date_created')[:10]
-
+            (target_departament=self.user_departament) | Q(target_departament="non"))
         return context
 
 
@@ -47,23 +44,21 @@ class KnowledgeCategoryDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        files = self.object.files
-
+        files = self.object.files.all()
+        documents = self.object.docs.all()
+        self.user_location = self.request.user.userprofile.location
+        self.user_departament = self.request.user.userprofile.departament
         files = files.filter(
-            Q(target_location=self.request.user.userprofile.location) | Q(
-                target_location="ALL"))
+            Q(target_location=self.user_location) | Q(target_location="non"))
 
         context['files'] = files.filter(Q
-            (target_departament=self.request.user.userprofile.departament) | Q(
-            target_departament="ALL")).order_by('-date_created')
-
-        documents = self.object.docs.filter(
-            Q(target_location=self.request.user.userprofile.location) | Q(
-            target_location="ALL"))
+            (target_departament=self.user_departament) | Q(target_departament="non"))
+        context['files'] = files
+        documents = documents.filter(
+            Q(target_location=self.user_location) | Q(target_location="non"))
 
         context['docs'] = documents.filter(Q
-            (target_departament=self.request.user.userprofile.departament) | Q(
-            target_departament="ALL")).order_by('-date_created')
+            (target_departament=self.user_departament) | Q(target_departament="non"))
 
         context['categories'] = KnowledgeCategory.objects.all()
 
@@ -129,20 +124,20 @@ class NewsListView(LoginRequiredMixin, ListView):
     paginate_by = 10
     model = News
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['activate'] = NewsReadFlag.objects.filter(
-            user=self.request.user, read=False).values_list('news', flat=True)
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['activate'] = NewsReadFlag.objects.filter(
+    #         user=self.request.user, read=False).values_list('news', flat=True)
+    #     return context
 
     def get_queryset(self):
         userprofile = self.request.user.userprofile
         qs = News.objects.exclude(published_date=None).exclude(
             staticdoc=True).order_by('-published_date')
         qs = qs.filter(Q(target_location=userprofile.location) | Q(
-            target_location="ALL"))
+            target_location="non"))
         qs = qs.filter(Q(target_departament=userprofile.departament) | Q(
-            target_departament="ALL"))
+            target_departament="non"))
         return qs
 
 
@@ -188,7 +183,7 @@ def answer_question(request, pk):
 def publish_news(request, pk):
     news = get_object_or_404(News, pk=pk)
     news.publish()
-    return redirect('news:newss')
+    return redirect('news:news_list')
 
 
 @login_required
@@ -249,7 +244,7 @@ def post_document(request):
             news_instance.author = User.objects.get(
                 username=request.user.username)
             news_instance.save()
-            return redirect('news:newss')
+            return redirect('news:knowledge')
     else:
         form = DocumentFForm()
     return render(request, 'news/upload.html', {'form': form})
@@ -264,7 +259,7 @@ def post_file(request):
             file_instance = form.save(commit=False)
             file_instance.isnews = False
             file_instance.save()
-            return redirect('news:files')
+            return redirect('news:knowledge')
     else:
         form = DocFileForm()
     return render(request, 'news/upload.html', {'form': form})

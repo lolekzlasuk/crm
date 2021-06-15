@@ -16,24 +16,24 @@ from django.core.paginator import Paginator
 # Create your views here.
 
 
-class Question2ListView(ListView):
-    model = Question
-
-
-    def get(self, request, *args, **kwargs):
-        if self.username != request.user.username:
-            return redirect('suggestions:questionlist')
-        else:
-            return render(request, self.template_name)
-
-    def get_context_data(self,**kwargs):
-        context = super().get_context_data(**kwargs)
-        context['categories'] = BoardCategory.objects.all()
-        return context
+# class Question2ListView(ListView):
+#     model = Question
+#
+#
+#     def get(self, request, *args, **kwargs):
+#         if self.username != request.user.username:
+#             return redirect('suggestions:questionlist')
+#         else:
+#             return render(request, self.template_name)
+#
+#     def get_context_data(self,**kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['categories'] = BoardCategory.objects.all()
+#         return context
 
 class QuestionListView(ListView):
     model = Question
-    paginate_by = 5
+    paginate_by = 10
     def get_queryset(self):
         queryset = Question.objects.order_by('-last_answer')
         return queryset
