@@ -139,3 +139,4 @@ STATICFILES_DIRS = [
 THUMBNAILS_DIR = os.path.join(MEDIA_DIR,'upload/thumbs/').replace("\\","/")
 LOGIN_REDIRECT_URL = '/accounts/login'
 CRISPY_TEMPLATE_PACK = 'bootstrap'
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

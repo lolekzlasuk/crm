@@ -95,7 +95,7 @@ class TestDayDetailView(TestCase):
 
 
 
-    def test_view_redirect_if_logged_in(self):
+    def test_view_if_logged_in(self):
         login = self.client.login(username='testuser1', password='1X<ISRUkw+tuK')
 
         response = self.client.get(reverse('calendary:devent', kwargs={'pk': self.test_devent.pk}))
