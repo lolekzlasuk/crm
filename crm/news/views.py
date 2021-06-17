@@ -40,7 +40,7 @@ class KnowledgeCategoryListView(LoginRequiredMixin, ListView):
         return context
 
 
-class KnowledgeCategoryDetailView(DetailView):
+class KnowledgeCategoryDetailView(LoginRequiredMixin, DetailView):
     model = KnowledgeCategory
 
     def get_context_data(self, **kwargs):

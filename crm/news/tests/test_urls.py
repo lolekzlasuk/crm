@@ -3,27 +3,6 @@ from django.urls import reverse, resolve
 from calendary import views
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 class TestUrls(SimpleTestCase):
 
     def test_KnowledgeCategoryListView_url_resolves(self):
