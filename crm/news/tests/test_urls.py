@@ -14,11 +14,11 @@ class TestUrls(SimpleTestCase):
         self.assertEquals(resolve(url).func.view_class, KnowledgeCategoryDetailView)
 
     def test_QuestionListView_url_resolves(self):
-        url = reverse('news:QandA',args=[])
+        url = reverse('news:faq',args=[])
         self.assertEquals(resolve(url).func.view_class, QuestionListView)
 
     def test_UnansweredQuestionListView_url_resolves(self):
-        url = reverse('news:unanQandA',args=[])
+        url = reverse('news:pending_faq',args=[])
         self.assertEquals(resolve(url).func.view_class, UnansweredQuestionListView)
 
     def test_UnpublishedNewsListView_url_resolves(self):
@@ -46,7 +46,7 @@ class TestUrls(SimpleTestCase):
         self.assertEquals(resolve(url).func, publish_news)
 
     def test_answer_question_url_resolves(self):
-        url = reverse('news:answerqna',args=['1'])
+        url = reverse('news:answerfaq',args=['1'])
         self.assertEquals(resolve(url).func, answer_question)
 
     def test_flagtoggle_url_resolves(self):

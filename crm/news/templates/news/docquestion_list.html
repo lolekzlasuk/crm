@@ -1,6 +1,6 @@
 
 {% extends 'base.html' %}
-{% block extra_css %}  .nav__link[name="QandA"] {background-color: #1caf9a; color: white;} {% endblock %}
+{% block extra_css %}  .nav__link[name="faq"] {background-color: #1caf9a; color: white;} {% endblock %}
 {% block body_block %}
 {% load static %}
 {% load groupfilter %}
@@ -26,8 +26,8 @@
   <div class="moderator_bar">
 
 
-  <a href="{% url 'news:QandA' %}">Questions</a>
-  <a href="{% url 'news:unanQandA' %}">unanswered</a>
+  <a href="{% url 'news:faq' %}">Questions</a>
+  <a href="{% url 'news:pending_faq' %}">unanswered</a>
 
     </div>
   {% endif %}
@@ -48,10 +48,10 @@ Categories
 <div class="Ccard_body">
 
 <div class="doc_grid">
-  <a class="buttonn" href="{% url 'news:QandA' %}">  <div class="doc secondary-hover">All</div></a>
+  <a class="buttonn" href="{% url 'news:faq' %}">  <div class="doc secondary-hover">All</div></a>
   {% for news in categories %}
   {% if news.questions.all %}
-    <a class="buttonn" href="{% url 'news:QandA' %}?category={{news.pk}}">  <div class="doc secondary-hover">{{news.title}}({{news.questions.count}}) </div></a>
+    <a class="buttonn" href="{% url 'news:faq' %}?category={{news.pk}}">  <div class="doc secondary-hover">{{news.title}}({{news.questions.count}}) </div></a>
 
     {% endif %}
   {% endfor %}

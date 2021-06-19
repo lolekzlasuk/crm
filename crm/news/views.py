@@ -4,7 +4,7 @@ from .forms import NewsForm, NewsFileForm, DocumentFForm, DocQuestionForm, UserQ
 from django.contrib.auth.models import User
 from accounts.models import UserProfile
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View, TemplateView
@@ -17,6 +17,7 @@ from django.db.models import Q
 import json
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import permission_required
+from django.core.exceptions import PermissionDenied
 
 class KnowledgeCategoryListView(LoginRequiredMixin, ListView):
     model = KnowledgeCategory
@@ -54,7 +55,8 @@ class KnowledgeCategoryDetailView(LoginRequiredMixin, DetailView):
 
         context['files'] = files.filter(Q
             (target_departament=self.user_departament) | Q(target_departament="non"))
-        context['files'] = files
+        context['files'] = files.filter(Q
+            (target_departament=self.user_departament) | Q(target_departament="non"))
         documents = documents.filter(
             Q(target_location=self.user_location) | Q(target_location="non"))
 
@@ -66,18 +68,18 @@ class KnowledgeCategoryDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class QuestionListView(ListView):
+class QuestionListView(LoginRequiredMixin, ListView):
     model = DocQuestion
 
     def get_queryset(self):
         userprofile = self.request.user.userprofile
-        qs = DocQuestion.objects.exclude(answer=None)
 
-        qs = qs.filter(Q(target_location=userprofile.location) | Q(
-            target_location="ALL"))
+
+        qs = DocQuestion.objects.filter(Q(target_location=userprofile.location) | Q(
+            target_location="non"))
 
         qs = qs.filter(Q(target_departament=userprofile.departament) | Q(
-            target_departament="ALL")).order_by('-date_created')
+            target_departament="non")).order_by('-date_created')
 
         if self.request.GET.get('category') != None:
             query = self.request.GET.get('category')
@@ -90,9 +92,10 @@ class QuestionListView(ListView):
         return context
 
 
-class UnansweredQuestionListView(ListView):
+class UnansweredQuestionListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = UserQuestion
-    template_name = "news/answer.html"
+    permission_required = 'news.view_userquestion'
+    template_name = "news/pending_questions.html"
 
 #
 # class QuestionUpdateView(UpdateView):
@@ -106,18 +109,31 @@ class UnansweredQuestionListView(ListView):
 class UnpublishedNewsListView(LoginRequiredMixin,
                                 PermissionRequiredMixin, ListView):
     model = News
-    permission_required = ('news.can_edit',)
+    permission_required = ('news.add_news',)
 
     def get_queryset(self):
-        return News.objects.filter(published_date=None).exclude(
-            staticdoc=True).order_by('-date_created')
+        return News.objects.filter(published_date=None).order_by('-date_created')
+
+class LocationDepartamentCheckMixin:
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if (request.user.userprofile.departament == self.object.target_departament
+            or self.object.target_departament == 'non'):
+            if (request.user.userprofile.location == self.object.target_location
+                or self.object.target_location == 'non'):
+                return super().dispatch(request, *args, **kwargs)
+            else:
+                return HttpResponseForbidden("403 Forbidden , you don't have access")
+        else:
+            return HttpResponseForbidden("403 Forbidden , you don't have access")
 
 
-class NewsDetailView(LoginRequiredMixin, DetailView):
+class NewsDetailView(LoginRequiredMixin, LocationDepartamentCheckMixin, DetailView):
     model = News
 
 
-class DocDetailView(LoginRequiredMixin, DetailView):
+class DocDetailView(LoginRequiredMixin, LocationDepartamentCheckMixin, DetailView):
     model = DocumentF
 
 
@@ -133,16 +149,15 @@ class NewsListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         userprofile = self.request.user.userprofile
-        qs = News.objects.exclude(published_date=None).exclude(
-            staticdoc=True).order_by('-published_date')
+        qs = News.objects.exclude(published_date=None).order_by('-published_date')
         qs = qs.filter(Q(target_location=userprofile.location) | Q(
             target_location="non"))
         qs = qs.filter(Q(target_departament=userprofile.departament) | Q(
             target_departament="non"))
         return qs
 
-
 @login_required
+@permission_required('news.add_news', raise_exception=True)
 def post_news(request):
     if request.method == 'POST':
         form = NewsForm(request.POST)
@@ -165,7 +180,8 @@ def post_news(request):
     return render(request, 'news/upload.html',
         {'form': form, 'file_form': file_form})
 
-
+@login_required
+@permission_required('news.view_userquestion', raise_exception=True)
 def answer_question(request, pk):
     question = get_object_or_404(UserQuestion, pk=pk)
     if request.method == 'POST':
@@ -181,6 +197,7 @@ def answer_question(request, pk):
 
 
 @login_required
+@permission_required('news.add_news', raise_exception=True)
 def publish_news(request, pk):
     news = get_object_or_404(News, pk=pk)
     news.publish()
@@ -236,6 +253,7 @@ def markall(request):
 
 
 @login_required
+@permission_required('news.add_documentf', raise_exception=True)
 def post_document(request):
     if request.method == 'POST':
         form = DocumentFForm(request.POST)
@@ -252,6 +270,7 @@ def post_document(request):
 
 
 @login_required
+@permission_required('news.add_docfile', raise_exception=True)
 def post_file(request):
     if request.method == 'POST':
         form = DocFileForm(request.POST, request.FILES)
@@ -265,8 +284,8 @@ def post_file(request):
         form = DocFileForm()
     return render(request, 'news/upload.html', {'form': form})
 
-
 @login_required
+@permission_required('news.add_docquestion', raise_exception=True)
 def post_question(request):
     if request.method == 'POST':
         form = DocQuestionForm(request.POST)
@@ -274,7 +293,7 @@ def post_question(request):
         if form.is_valid():
             news_instance = form.save(commit=False)
             news_instance.save()
-            return redirect('news:QandA')
+            return redirect('news:faq')
     else:
         form = DocQuestionForm()
     return render(request, 'news/upload.html', {'form': form})
@@ -290,7 +309,7 @@ def post_userquestion(request):
             news_instance.author = User.objects.get(
                 username=request.user.username)
             news_instance.save()
-            return redirect('news:QandA')
+            return redirect('news:faq')
     else:
         form = UserQuestionForm()
     return render(request, 'news/upload.html', {'form': form})

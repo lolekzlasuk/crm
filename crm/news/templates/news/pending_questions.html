@@ -1,6 +1,6 @@
 
 {% extends 'base.html' %}
-{% block extra_css %}  .nav__link[name="QandA"] {background-color: #1caf9a; color: white;} {% endblock %}
+{% block extra_css %}  .nav__link[name="faq"] {background-color: #1caf9a; color: white;} {% endblock %}
 {% block body_block %}
 {% load static %}
 {% load groupfilter %}
@@ -26,8 +26,8 @@
   <div class="moderator_bar">
 
 
-  <a href="{% url 'news:QandA' %}">Questions</a>
-  <a href="{% url 'news:unanQandA' %}">unanswered</a>
+  <a href="{% url 'news:faq' %}">Questions</a>
+  <a href="{% url 'news:pending_faq' %}">unanswered</a>
 
     </div>
   {% endif %}
@@ -55,7 +55,7 @@
 
   <div class="question_answer">
     {{question.body}}
-    <a class="buttonn" href="{% url 'news:answerqna' pk=question.pk %}"><div class="doc secondary-hover">
+    <a class="buttonn" href="{% url 'news:answerfaq' pk=question.pk %}"><div class="doc secondary-hover">
 
     answer</div></a>
   </div>

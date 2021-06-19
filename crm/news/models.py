@@ -41,7 +41,7 @@ class News(models.Model):
     author = models.ForeignKey('auth.User', on_delete=models.PROTECT)
     title = models.CharField(max_length=200)
     published_date = models.DateTimeField(default=None, null=True, blank=True)
-    staticdoc = models.BooleanField(default=False)
+    staticdoc = models.BooleanField(default=False)#delete
     files = models.ManyToManyField('news.NewsFile', default=None, blank=True)
     target_departament = models.CharField(
         max_length=3, choices=DEPARTAMENTS, default='non')
@@ -86,26 +86,16 @@ class News(models.Model):
 class NewsFile(models.Model):
     file = models.FileField(upload_to='upload/%Y/%m/%d', default=None, blank=True, validators=[
                             FileExtensionValidator(allowed_extensions=['jpg', 'png', 'gif', 'pdf'])])
-    miniature = models.TextField(default=None, null=True, blank=True)
-    extension = models.TextField(default=None, null=True, blank=True)
-    isnews = models.BooleanField(default=True)
+    miniature = models.TextField(default=None, null=True, blank=True,)
+    extension = models.CharField(default=None, null=True, blank=True, max_length=10)
     objects = FileManager()
-    target_departament = models.CharField(
-        max_length=3, choices=DEPARTAMENTS, default='non')
-    target_location = models.CharField(
-        max_length=3, choices=COMPANY_LOCATIONS, default='non')
 
     def __str__(self):
         return str(self.file.name.split("/")[-1])
 
-    # @property
-    # def file_type(self):
-    #     name, extension = os.path.splitext(self.file.path)
-    #     if extension in ['.jpg','.png','.gif']:
-    #         return 'image'
-    #     if extension == '.pdf':
-    #         return 'pdf'
-    #     return 'unknown'
+    def get_absolute_url(self):
+        return self.file.url
+
 
 
 class Notification(models.Model):
@@ -167,7 +157,7 @@ class DocumentF(models.Model):
        return reverse('news:docdetail', args=[str(self.id)])
 
 class DocFile(models.Model):
-    file = models.FileField(upload_to='documents')
+    file = models.FileField(upload_to='documents/%Y/%m/%d')
     title = models.CharField(max_length=200)
     date_created = models.DateTimeField(default=timezone.now)
     target_departament = models.CharField(
@@ -184,6 +174,9 @@ class DocFile(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return self.file.url
+        
 class DocQuestion(models.Model):
     title = models.CharField(max_length=200)
     body = models.TextField(max_length=5000)

@@ -57,3 +57,26 @@ class UserProfile(models.Model):
 
     class Meta:
         ordering = ['employee_id']
+
+    def set_default_profile_pic(self):
+        if self.profile_pic != "profile_pics/default-profile.png":
+            try:
+                if os.path.isfile(self.profile_pic.path):
+                    os.remove(self.profile_pic.path)
+            except:
+                pass
+            self.profile_pic = "profile_pics/default-profile.png"
+            self.save()
+
+
+    def change_profile_pic(self,file):
+        prev_pic = self.profile_pic
+        image = UserProfile.objects.resize_file(file)
+        self.profile_pic = file
+        self.save()
+        try:
+            if prev_pic != "profile_pics/default-profile.png":
+                if os.path.isfile(prev_pic.path):
+                    os.remove(prev_pic.path)
+        except:
+            pass

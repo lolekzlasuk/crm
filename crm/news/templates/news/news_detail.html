@@ -60,11 +60,11 @@
         <div class="Ccard_file">
           {% if each.extension == 'image' %}
           <img src="{{each.miniature}}" >
-          <p><a href="{{each.file.url}}" download>Download</a></p>
+          <p><a href="{{each.file.get_absolute_url}}" download>Download</a></p>
 
           {% elif each.extension == 'pdf' %}
           <img src="{% static 'media/pdf-icon.png' %}" >
-          <p><a href="{{each.file.url}}" download="kupka">{{each}}</a></p>
+          <p><a href="{{each.file.get_absolute_url}}" download>{{each}}</a></p>
           {% endif %}
         </div>
         {% endfor %}

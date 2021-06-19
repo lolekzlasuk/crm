@@ -5,7 +5,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView
 from .models import UserProfile
@@ -97,23 +96,15 @@ def user_login(request):
 @login_required
 def edit_profile(request):
     profile = request.user.userprofile
-    if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES, instance=profile)
-        prev_pic = profile.profile_pic
-        files = request.FILES.getlist('file')
-        if form.is_valid():
-            image = UserProfile.objects.resize_file(
-                request.FILES['profile_pic']
-            )
 
-            profile.profile_pic = image
-            profile.save()
-            try:
-                if prev_pic != "profile_pics/default-profile.png":
-                    if os.path.isfile(prev_pic.path):
-                        os.remove(prev_pic.path)
-            except:
-                pass
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES)
+
+        files = request.FILES.getlist('file')
+
+        if form.is_valid():
+            print(profile.profile_pic.path)
+            profile.change_profile_pic(request.FILES['profile_pic'])
         return redirect('accounts:profile')
     else:
         form = UserProfileForm
@@ -122,12 +113,7 @@ def edit_profile(request):
 @login_required
 def delete_profile_pic(request):
     profile = request.user.userprofile
-    if profile.profile_pic != "profile_pics/default-profile.png":
-        try:
-            if os.path.isfile(profile.profile_pic.path):
-                os.remove(profile.profile_pic.path)
-        except:
-            pass #remove after final
-        profile.profile_pic = "profile_pics/default-profile.png"
-        profile.save()
+    profile.set_default_profile_pic()
+
+
     return redirect('accounts:profile')
