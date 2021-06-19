@@ -9,6 +9,7 @@ from accounts.choises.choises import *
 class AvatarManager(models.Manager):
     def resize_file(self, file):
         name, ext = os.path.splitext(file.name)
+        print(name + "  " + ext)
         format_ext_dict = {'.jpg': 'JPEG', '.png': 'PNG', '.gif': 'GIF'}
         img_format = format_ext_dict[ext]
         im = Image.open(file)

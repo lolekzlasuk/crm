@@ -43,8 +43,9 @@ class UserProfileModelTest(TestCase):
             location='WAW'
             )
 
-        test_image_path = settings.MEDIA_DIR + '/test_image/dino.jpg'
-        cls.simple_file_image = SimpleUploadedFile(name = "testimage.jpg",  content=b'', content_type='image/jpeg')
+        # test_image_path = settings.MEDIA_DIR + '/test_image/dino.jpg'
+        # cls.test_image = open(test_image_path, 'rb')
+        # cls.simple_file_image = SimpleUploadedFile(name = "testimage.jpg",  content=open(test_image_path, 'rb').read(), content_type='image/jpeg')
 
         # user
         # profile_pic
@@ -127,11 +128,11 @@ class UserProfileModelTest(TestCase):
 
     # def test_user1_userprofile_resize_file(self):
     #     print(self.test_user1_userprofile.profile_pic.path)
-    #     self.test_user1_userprofile.change_profile_pic(self.simple_file_image)
-    #     # print(self.simple_file_image)
+    #     self.test_user1_userprofile.change_profile_pic(self.test_image)
+    #
     #     # expected_miniature_path = '/media/upload/thumbs/testimage-thumb.jpg'
     #     print(self.test_user1_userprofile.profile_pic.path)
-        # self.assertEqual(self.test_user1_userprofile_2.miniature, expected_miniature_path)
+    #     # self.assertEqual(self.test_user1_userprofile_2.miniature, expected_miniature_path)
     #
     # def test_user1_userprofile_miniature_size(self):
     #     expected_miniature_size = 128,128
