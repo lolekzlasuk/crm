@@ -15,8 +15,7 @@ headers = {
 
 data = {
     'username': '1',
-    'password': 'Maniek007',
-}
+    'password': ''
 
 
 r = requests.post(AUTH_ENDPOINT, data=json.dumps(data), headers=headers)
