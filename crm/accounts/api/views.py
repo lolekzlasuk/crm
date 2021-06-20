@@ -4,14 +4,13 @@ from rest_framework.response import Response
 from rest_framework import generics, permissions
 from rest_framework_jwt.settings import api_settings
 from django.db.models import Q
-from .serializers import UserRegisterSerializer
+from .serializers import UserRegisterSerializer, UserProfileSerializer
 from rest_framework import generics, mixins, permissions
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import UserProfileSerializer
 from accounts.models import UserProfile
-
+from django.shortcuts import get_object_or_404
 User = get_user_model()
 jwt_payload_handler             = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler              = api_settings.JWT_ENCODE_HANDLER
@@ -49,6 +48,27 @@ class UserProfileListAPIView(
 
         return object_list
 
+
+
+class UserProfileDetailAPIView(mixins.UpdateModelMixin,
+    generics.RetrieveAPIView):
+    permission_classes      = [permissions.IsAuthenticated]
+    serializer_class        = UserProfileSerializer
+    queryset                = UserProfile.objects.all()
+
+
+    def get_object(self):
+
+        request         = self.request
+        object = get_object_or_404(UserProfile, pk = self.request.user.userprofile.pk)
+        return object
+
+    def put(self, request, *args, **kwargs):
+        object = self.get_object()
+        data = request.data
+        image = data.get('profile_pic')
+        UserProfile.change_profile_pic(object,image)
+        return super().get(request, *args, **kwargs)
 
 
 

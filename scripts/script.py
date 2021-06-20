@@ -1,10 +1,10 @@
 import requests
 import json
 import os
-# image_path = os.path.join(os.getcwd(),'logo.png')
+image_path = os.path.join(os.getcwd(),'dino.jpg')
+print(image_path)
 
-
-ENDPOINT = "http://localhost:8080/accounts/api/list/"
+ENDPOINT = "http://localhost:8080/accounts/api/profile/"
 
 AUTH_ENDPOINT ="http://localhost:8080/accounts/api/jwt/"
 # REFRESH_ENDPOINT ="http://localhost:8080/auth/refresh/"
@@ -14,24 +14,34 @@ headers = {
     }
 
 data = {
-    'username': '1',
-    'password': ''
+    'username': '2',
+    'password': 'Maniek007'
 
+}
 
 r = requests.post(AUTH_ENDPOINT, data=json.dumps(data), headers=headers)
 token = r.json()['token']
 print(token)
 
 data2 = {
-    'token': token
+    'location': "KRK"
+
 }
 headers2 = {
-    "Content-Type": "application/json",
+
     "Authorization": "JWT " + token,
     }
-r2 = requests.get(ENDPOINT, data=json.dumps(data2), headers=headers2)
-token2 = r2.json()#['token']
-print(token2)
+with open(image_path, 'rb') as image:
+    file_data = {
+    'profile_pic': image,
+    }
+    # r2 = requests.patch(ENDPOINT, files=file_data, headers=headers2)
+    # token2 = r2.json()#['token']
+    # print(token2)
+
+    r2 = requests.put(ENDPOINT,files = file_data, headers=headers2)
+    token2 = r2.json()#['token']
+    print(token2)
 
 # refresh_data = {
 #     'token':token

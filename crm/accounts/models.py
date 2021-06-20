@@ -16,6 +16,7 @@ class AvatarManager(models.Manager):
         im.thumbnail((128, 128), Image.ANTIALIAS)
         save_name = settings.MEDIA_DIR + '/profile_pics/' + name + ext
         im.save(fp=save_name, format=img_format)
+        print(save_name)
         return save_name
 
 
@@ -73,10 +74,11 @@ class UserProfile(models.Model):
     def change_profile_pic(self,file):
         prev_pic = self.profile_pic
         image = UserProfile.objects.resize_file(file)
-        self.profile_pic = file
+        self.profile_pic = image
         self.save()
         try:
-            if prev_pic != "profile_pics/default-profile.png":
+            if (prev_pic != "profile_pics/default-profile.png" and
+                prev_pic != self.profile_pic):
                 if os.path.isfile(prev_pic.path):
                     os.remove(prev_pic.path)
         except:
