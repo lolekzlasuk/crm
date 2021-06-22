@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from django.utils import timezone
 import datetime
-from accounts.models import UserProfile
+from accounts.models import Day, Debent
 from rest_framework_jwt.settings import api_settings
 expire_delta             = api_settings.JWT_REFRESH_EXPIRATION_DELTA
 

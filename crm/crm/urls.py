@@ -25,6 +25,7 @@ urlpatterns = [
     path('',include('news.urls',namespace="news")),
     path('polls/',include('polls.urls',namespace="polls")),
     path('accounts/api/',include('accounts.api.urls')),
+    path('calendar/api/',include('calendar.api.urls')),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
