@@ -176,7 +176,7 @@ class DocFile(models.Model):
 
     def get_absolute_url(self):
         return self.file.url
-        
+
 class DocQuestion(models.Model):
     title = models.CharField(max_length=200)
     body = models.TextField(max_length=5000)
@@ -194,7 +194,8 @@ class DocQuestion(models.Model):
 
     def __str__(self):
         return self.title
-
+    class Meta:
+        ordering = ['-date_created']
 class UserQuestion(models.Model):
     title = models.CharField(max_length=200)
     body = models.TextField(max_length=5000)

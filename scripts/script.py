@@ -4,7 +4,7 @@ import os
 image_path = os.path.join(os.getcwd(),'dino.jpg')
 # print(image_path)
 
-ENDPOINT = "http://localhost:8080/accounts/api/change_pw/"
+ENDPOINT = "http://localhost:8080/news/api/faq/"
 
 AUTH_ENDPOINT ="http://localhost:8080/accounts/api/jwt/"
 # REFRESH_ENDPOINT ="http://localhost:8080/auth/refresh/"
@@ -14,9 +14,8 @@ headers = {
     }
 
 data = {
-    'username': '2',
+    'username': '3',
     'password': 'Maniek007'
-
 }
 
 r = requests.post(AUTH_ENDPOINT, data=json.dumps(data), headers=headers)
@@ -25,10 +24,8 @@ token = r.json()['token']
 
 # print(token)
 
-data2 = {
-    'current_password': "Maniek007",
-    'new_password': "Maniek008",
-    'new_password2': "Maniek008",
+data2 = { 'title':'testapi title','body':'test body answer','answer':'test answer answer'
+
 }
 headers2 = {
     "Content-Type": "application/json",
@@ -42,13 +39,11 @@ headers2 = {
 #     # token2 = r2.json()#['token']
 #     # print(token2)
 
-r2 = requests.put(ENDPOINT,data=json.dumps(data2), headers=headers2)
+r2 = requests.get(ENDPOINT,data=json.dumps(data2), headers=headers2)
 token2 = r2.json()#['token']
 print(token2)
 
-r3 = requests.get("http://localhost:8080/accounts/api/list", data=json.dumps(data2),headers=headers2)
-print(r3.json())
-# refresh_data = {
+
 #     'token':token
 # }
 # new_response = requests.post(REFRESH_ENDPOINT, data=json.dumps(refresh_data), headers=headers)

@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView
-from .models import Day, Devent
-from .forms import DeventForm
+from calendary.models import Day, Devent
+from calendary.forms import DeventForm
 from django.contrib.auth.decorators import permission_required
 
 
