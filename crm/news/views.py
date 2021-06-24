@@ -19,25 +19,21 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.contrib.auth.decorators import permission_required
 from django.core.exceptions import PermissionDenied
 
+
+
+def locationdepartamentfilter(qs,userprofile):
+    qs = qs.filter(Q(target_location=userprofile.location) | Q(target_location="non") & Q(target_departament=userprofile.departament) | Q(target_departament="non"))
+    return qs
+
+
 class KnowledgeCategoryListView(LoginRequiredMixin, ListView):
     model = KnowledgeCategory
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        self.user_location = self.request.user.userprofile.location
-        self.user_departament = self.request.user.userprofile.departament
-        files = DocFile.objects.filter(
-            Q(target_location=self.user_location) | Q(target_location="non"))
-
-        context['files'] = files.filter(Q
-            (target_departament=self.user_departament) | Q(target_departament="non"))
-
-        documents = DocumentF.objects.filter(
-            Q(target_location=self.user_location) | Q(target_location="non"))
-
-        context['docs'] = documents.filter(Q
-            (target_departament=self.user_departament) | Q(target_departament="non"))
+        user = self.request.user.userprofile
+        context['files'] = locationdepartamentfilter(DocFile.objects,user)
+        context['docs'] = locationdepartamentfilter(DocumentF.objects,user)
         return context
 
 
@@ -46,25 +42,10 @@ class KnowledgeCategoryDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        files = self.object.files.all()
-        documents = self.object.docs.all()
-        self.user_location = self.request.user.userprofile.location
-        self.user_departament = self.request.user.userprofile.departament
-        files = files.filter(
-            Q(target_location=self.user_location) | Q(target_location="non"))
-
-        context['files'] = files.filter(Q
-            (target_departament=self.user_departament) | Q(target_departament="non"))
-        context['files'] = files.filter(Q
-            (target_departament=self.user_departament) | Q(target_departament="non"))
-        documents = documents.filter(
-            Q(target_location=self.user_location) | Q(target_location="non"))
-
-        context['docs'] = documents.filter(Q
-            (target_departament=self.user_departament) | Q(target_departament="non"))
-
+        user = self.request.user.userprofile
+        context['files'] = locationdepartamentfilter(self.object.files.all(),user)
+        context['docs'] = locationdepartamentfilter(self.object.docs.all(),user)
         context['categories'] = KnowledgeCategory.objects.all()
-
         return context
 
 
@@ -72,14 +53,8 @@ class QuestionListView(LoginRequiredMixin, ListView):
     model = DocQuestion
 
     def get_queryset(self):
-        userprofile = self.request.user.userprofile
-
-
-        qs = DocQuestion.objects.filter(Q(target_location=userprofile.location) | Q(
-            target_location="non"))
-
-        qs = qs.filter(Q(target_departament=userprofile.departament) | Q(
-            target_departament="non")).order_by('-date_created')
+        user = self.request.user.userprofile
+        qs = locationdepartamentfilter(DocQuestion.objects,user)
 
         if self.request.GET.get('category') != None:
             query = self.request.GET.get('category')
@@ -150,10 +125,8 @@ class NewsListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         userprofile = self.request.user.userprofile
         qs = News.objects.exclude(published_date=None).order_by('-published_date')
-        qs = qs.filter(Q(target_location=userprofile.location) | Q(
-            target_location="non"))
-        qs = qs.filter(Q(target_departament=userprofile.departament) | Q(
-            target_departament="non"))
+        qs = locationdepartamentfilter(qs,userprofile)
+
         return qs
 
 @login_required
