@@ -2,7 +2,6 @@ from django.contrib.auth.backends import ModelBackend, UserModel
 from .models import UserProfile
 from django.db.models import Q
 from django.contrib.auth.models import User
-# Create your models here.
 
 class EmailPhoneBackend(ModelBackend):
     def authenticate(self, request, username, password, **kwargs):
@@ -20,5 +19,4 @@ class EmailPhoneBackend(ModelBackend):
             user = User.objects.get(pk=user_id)
         except User.DoesNotExist:
             return None
-
         return user

@@ -8,7 +8,7 @@
 
 
     <span class="site-header__title">
-         Users
+      Users
     </span>
     <span class="site-header__subtitle">/ Your profile</span>
   </div>
@@ -18,61 +18,79 @@
 </div>
 
 <div class="content-container content-container--paginated">
-<div class="Ccard">
-    <div class="Ccard_header"><div class="Ccard_title">Your information</div></div>
-<div class="Ccard_body profile-wrapper">
+  <div class="Ccard">
+    <div class="Ccard_header">
+      <div class="Ccard_title">Your information</div>
+    </div>
+    <div class="Ccard_body profile-wrapper">
 
-<div class="profile_divider">
-  <p class="profile-title">Profile Picture</p>
+      <div class="profile_divider">
+        <p class="profile-title">Profile Picture</p>
 
-  <img class="avatar" src="{{object.profile_pic.url}}" alt="">
-<div>
-  <a class="buttonn" href="{% url 'accounts:edit_profile' %}"><div class="doc secondary-hover"> CHANGE </div></a>
-  {% if object.profile_pic != "profile_pics/default-profile.png" %}
-   <a class="buttonn" href="{% url 'accounts:delete_profile_pic' %}"><div class="doc secondary-hover"> Delete</div></a>
-   {% endif %}
+        <img class="avatar" src="{{object.profile_pic.url}}" alt="">
+        <div>
+          <a class="buttonn" href="{% url 'accounts:edit_profile' %}">
+            <div class="doc secondary-hover"> CHANGE </div>
+          </a>
+          {% if object.profile_pic != "profile_pics/default-profile.png" %}
+          <a class="buttonn" href="{% url 'accounts:delete_profile_pic' %}">
+            <div class="doc secondary-hover"> Delete</div>
+          </a>
+          {% endif %}
 
-  </div></div>
-  <div class="profile_table">
-
-
-  <table id="profilegrid">
-
-  <tr>
-    <td>Name</td><td>{{object.name}} </td>
-  </tr>
-
-<tr>
-  <td>Telephone</td><td>{{object.telephone}} </td>
-
-</tr>
-<tr>
-  <td>Email</td><td>{{object.email}} </td>
-</tr>
-<tr>
-  <td>Employed on</td><td>{{object.date_of_employement|date:"m.d.y"}}</td>
-</tr>
-<tr>
-  <td>Position</td><td>{{object.position}}</td>
-</tr>
-<tr>
-  <td>ID</td><td>{{object.employee_id}}</td>
-</tr>
-<tr>
-  <td>Departament</td><td>{{object.get_departament_display}}</td>
-</tr>
-<tr>
-  <td>Location</td><td>{{object.get_location_display}}</td>
-</tr>
-
-</table>
-
-</div>
-<div class="">
+        </div>
+      </div>
+      <div class="profile_table">
 
 
-  <a class="buttonn" href="{% url 'accounts:change_password' %}"><div class="doc secondary-hover">Change Password</div></a>
-</div></div>
-</div>
+        <table id="profilegrid">
+
+          <tr>
+            <td>Name</td>
+            <td>{{object.name}} </td>
+          </tr>
+
+          <tr>
+            <td>Telephone</td>
+            <td>{{object.telephone}} </td>
+
+          </tr>
+          <tr>
+            <td>Email</td>
+            <td>{{object.email}} </td>
+          </tr>
+          <tr>
+            <td>Employed on</td>
+            <td>{{object.date_of_employement|date:"m.d.y"}}</td>
+          </tr>
+          <tr>
+            <td>Position</td>
+            <td>{{object.position}}</td>
+          </tr>
+          <tr>
+            <td>ID</td>
+            <td>{{object.employee_id}}</td>
+          </tr>
+          <tr>
+            <td>Departament</td>
+            <td>{{object.get_departament_display}}</td>
+          </tr>
+          <tr>
+            <td>Location</td>
+            <td>{{object.get_location_display}}</td>
+          </tr>
+
+        </table>
+
+      </div>
+      <div class="">
+
+
+        <a class="buttonn" href="{% url 'accounts:change_password' %}">
+          <div class="doc secondary-hover">Change Password</div>
+        </a>
+      </div>
+    </div>
   </div>
+</div>
 {% endblock %}

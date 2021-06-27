@@ -1,22 +1,22 @@
 {% extends 'base.html' %}
-{% block extra_css %}  .nav__link[name="Contact List"] {background-color: #1caf9a; color: white;} {% endblock %}
+{% block extra_css %} .nav__link[name="Contact List"] {background-color: #1caf9a; color: white;} {% endblock %}
 {% block body_block %}
 
 
 
-  <div class="site-header">
-    <div class="site-header__left">
+<div class="site-header">
+  <div class="site-header__left">
 
 
-      <span class="site-header__title">
-        Contact List
-      </span>
-      <span class="site-header__subtitle">/ Directory of employees</span>
-    </div>
-    <div class="site-header__right">
-      <span class="site-header__breadcrumb">Home page</span>
-    </div>
+    <span class="site-header__title">
+      Contact List
+    </span>
+    <span class="site-header__subtitle">/ Directory of employees</span>
   </div>
+  <div class="site-header__right">
+    <span class="site-header__breadcrumb">Home page</span>
+  </div>
+</div>
 
 
 
@@ -24,59 +24,59 @@
 
 
 
-<div class="Ccard">
-<div class="Ccard_header">
-  <div class="Ccard_title">
-    List of employees
+  <div class="Ccard">
+    <div class="Ccard_header">
+      <div class="Ccard_title">
+        List of employees
 
+      </div>
+
+    </div>
+    <div class="Ccard_body">
+      <div class="searchbar">
+        <form action="{% url 'accounts:employees' %}" method="get">
+          <input id="searchbar" name="q" type="text" placeholder="Search...">
+          <button type="submit" id="search-submit" class="doc fabutton secondary-hover">
+            <i class="fas fa-search"></i>
+          </button>
+
+        </form>
+      </div>
+
+      <div class="knowledge-table">
+        <table id="contact-table" class="content-table">
+          <tr>
+            <th>Photo</th>
+            <th>Name</th>
+            <th>Contact Number</th>
+            <th>Position</th>
+            <th>Departament</th>
+            <th>location</th>
+            <th>Email adress</th>
+          </tr>
+
+          {% for each in object_list %}
+          <tr>
+            <td> <img class="avatar" src="{{each.profile_pic.url}}" alt="Av" /></td>
+            <td> {{each.name}}</td>
+            <td> <a href="callto:{{each.telephone}}">{{each.telephone}}</a> </td>
+            <td>{{each.position}}</td>
+            <td> {{each.get_departament_display}}</td>
+            <td> {{each.get_location_display}}</td>
+            <td><a href="mailto:{{each.email}}">{{each.email}}</a></td>
+          </tr>
+
+
+          {% endfor %}
+
+
+
+
+        </table>
+      </div>
+    </div>
   </div>
-
-</div>
-<div class="Ccard_body">
-  <div class="searchbar">
-    <form action="{% url 'accounts:employees' %}" method="get">
-      <input id="searchbar" name="q" type="text" placeholder="Search...">
-      <button type="submit" id="search-submit" class="doc fabutton secondary-hover">
-      <i class="fas fa-search"></i>
-</button>
-
-    </form>
-  </div>
-
-<div class="knowledge-table">
-<table id="contact-table" class="content-table">
-  <tr>
-    <th>Photo</th>
-    <th>Name</th>
-    <th>Contact Number</th>
-    <th>Position</th>
-    <th>Departament</th>
-    <th>location</th>
-    <th>Email adress</th>
-  </tr>
-
-{% for each in object_list %}
-<tr>
-<td>  <img class="avatar" src="{{each.profile_pic.url}}" alt="Av"/></td>
-<td>  {{each.name}}</td>
-<td> <a href="callto:{{each.telephone}}">{{each.telephone}}</a> </td>
-<td>{{each.position}}</td>
-<td>    {{each.get_departament_display}}</td>
-<td>    {{each.get_location_display}}</td>
-<td><a href="mailto:{{each.email}}">{{each.email}}</a></td>
-</tr>
-
-
-{% endfor %}
-
-
-
-
-</table>
-</div>
-</div>
-</div>
- <div class="pag-wrapper"> {% if is_paginated %}
+  <div class="pag-wrapper"> {% if is_paginated %}
 
 
 
@@ -112,7 +112,7 @@
 <div class="site-filler">
 
 </div>
-    {% endif %}
+{% endif %}
 </div>
 
 {% endblock %}

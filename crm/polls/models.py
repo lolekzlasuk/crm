@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.models import User
-from accounts.choises.choises import *
+from accounts.choices.choices import *
 
 
 class Poll(models.Model):
@@ -29,7 +29,7 @@ class Poll(models.Model):
 class Question(models.Model):
     poll = models.ForeignKey('polls.Poll', on_delete=models.CASCADE,
                              null=True, blank=True, related_name='questions')
-    title = models.TextField(max_length=200)
+    title = models.CharField(max_length=200)
     order = models.IntegerField(null=True, blank=True)
     enabletext = models.BooleanField(default=False)
     type = models.CharField(max_length=3, choices=QUESTIONTYPES, default='chc')

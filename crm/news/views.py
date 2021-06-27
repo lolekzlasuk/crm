@@ -1,22 +1,18 @@
-from django.shortcuts import render
+
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import NewsForm, NewsFileForm, DocumentFForm, DocQuestionForm, UserQuestionForm, DocFileForm
+from .forms import *
 from django.contrib.auth.models import User
 from accounts.models import UserProfile
-from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
-from django.urls import reverse, reverse_lazy
-from django.contrib.auth.decorators import login_required
-from django.views.generic import View, TemplateView
+from django.http import HttpResponseRedirect, HttpResponse
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import News, NewsFile, Notification, NotificationReadFlag, NewsReadFlag, DocumentF, DocFile, DocQuestion, KnowledgeCategory, UserQuestion
+from django.views.generic import  ListView, DetailView
+from .models import *
 from django.utils import timezone
 from django.contrib import messages
 from django.db.models import Q
 import json
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.contrib.auth.decorators import permission_required
 from django.core.exceptions import PermissionDenied
 
 

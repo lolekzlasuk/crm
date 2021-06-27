@@ -6,7 +6,7 @@ from django.forms import ClearableFileInput
 class NewsForm(forms.ModelForm):
     class Meta():
         model = News
-        fields = ['title', 'body', 'staticdoc',
+        fields = ['title', 'body',
                   'target_location', 'target_departament']
 
         widgets = {

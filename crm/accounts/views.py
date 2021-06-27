@@ -1,24 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
-# Create your views here.
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
-from django.urls import reverse, reverse_lazy
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from .models import UserProfile
 from django.utils import timezone
-from django.contrib import messages
 from django.db.models import Q
-from django.contrib.auth import logout
 from .forms import UserProfileForm
 from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import update_session_auth_hash, authenticate, login, logout
 from django.contrib.auth.forms import PasswordChangeForm
-from django.shortcuts import render, redirect
-import os
-from pathlib import Path
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -99,11 +90,9 @@ def edit_profile(request):
 
     if request.method == 'POST':
         form = UserProfileForm(request.POST, request.FILES)
-
         files = request.FILES.getlist('file')
 
         if form.is_valid():
-            print(profile.profile_pic.path)
             profile.change_profile_pic(request.FILES['profile_pic'])
         return redirect('accounts:profile')
     else:

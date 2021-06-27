@@ -1,13 +1,13 @@
 from django import forms
-from .models import Question,Answer
+from .models import Post, Comment
 
 
-class QuestionForm(forms.ModelForm):
+class PostForm(forms.ModelForm):
         class Meta():
-            model = Question
+            model = Post
             fields = ['title', 'body', 'category']
 
-class AnswerForm(forms.ModelForm):
+class CommentForm(forms.ModelForm):
     class Meta():
-        model = Answer
+        model = Comment
         fields = ['body']

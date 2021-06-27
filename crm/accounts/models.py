@@ -4,7 +4,7 @@ from django.utils import timezone
 from PIL import Image
 import os
 from django.conf import settings
-from accounts.choises.choises import *
+from accounts.choices.choices import *
 
 class AvatarManager(models.Manager):
     def resize_file(self, file):
@@ -34,12 +34,12 @@ class UserProfile(models.Model):
         blank=True
     )
 
-    name = models.TextField(max_length=200) #charfieldd
-    telephone = models.IntegerField() #positiveintegerfield
-    email = models.TextField(max_length=200, null=True) #emailfield
-    date_of_employement = models.DateTimeField(default=timezone.now) #switch to datefield
-    employee_id = models.CharField(max_length=20) #positiveintegerfield
-    position = models.CharField(max_length=40, default="")
+    name = models.CharField(max_length=30)
+    telephone = models.PositiveIntegerField()
+    email = models.EmailField(max_length=50)
+    date_of_employement = models.DateField(default=timezone.now)
+    employee_id = models.PositiveIntegerField()
+    position = models.CharField(max_length=40, default="trainee")
     objects = AvatarManager()
 
     departament = models.CharField(

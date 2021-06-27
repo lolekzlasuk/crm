@@ -1,42 +1,46 @@
-
 <!DOCTYPE html>
 {% load static %}
 {% load groupfilter %}
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>yolko</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-    <script
-  src="https://code.jquery.com/jquery-3.5.1.min.js"
-  integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-  crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+<head>
+  <meta charset="utf-8">
+  <title>yolko</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
   <script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
-<style media="screen">
-{% block extra_css %}{% endblock %}
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
+  <style media="screen">
+    {
+      % block extra_css %
+    }
 
-</style>
-  </head>
-  <body>
-    <div class="login">
-      <div class="loginlogo ">
-         <span>intranet</span>
-      </div>
+      {
+      % endblock %
+    }
+  </style>
+</head>
 
-<h2> Sign in</h2>
-<form action="{% url 'accounts:user_login' %}" method="post">
-  {% csrf_token %}
-  <label hidden for="username">Username</label>
-<input type="text" name="username" placeholder="Username, email or phone number">
-<label hidden for="password">Password:</label>
-<input type="password" name="password" placeholder="Password">
-
-<input type="submit" name="" class="doc secondary-hover" value="Sign in">
-
-</form>
+<body>
+  <div class="login">
+    <div class="loginlogo ">
+      <span>intranet</span>
     </div>
+
+    <h2> Sign in</h2>
+    <form action="{% url 'accounts:user_login' %}" method="post">
+      {% csrf_token %}
+      <label hidden for="username">Username</label>
+      <input type="text" name="username" placeholder="Username, email or phone number">
+      <label hidden for="password">Password:</label>
+      <input type="password" name="password" placeholder="Password">
+
+      <input type="submit" name="" class="doc secondary-hover" value="Sign in">
+
+    </form>
+  </div>
 </body>
+
 </html>

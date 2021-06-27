@@ -7,9 +7,10 @@ import os
 from django.core.validators import FileExtensionValidator
 from PIL import Image
 from django.conf import settings
-from accounts.choises.choises import *
+from accounts.choices.choices import *
 from django.urls import reverse
 from django.template.defaultfilters import slugify
+
 
 class FileManager(models.Manager):
     def save_file(self, file):
@@ -41,13 +42,12 @@ class News(models.Model):
     author = models.ForeignKey('auth.User', on_delete=models.PROTECT)
     title = models.CharField(max_length=200)
     published_date = models.DateTimeField(default=None, null=True, blank=True)
-    staticdoc = models.BooleanField(default=False)#delete
     files = models.ManyToManyField('news.NewsFile', default=None, blank=True)
     target_departament = models.CharField(
         max_length=3, choices=DEPARTAMENTS, default='non')
     target_location = models.CharField(
         max_length=3, choices=COMPANY_LOCATIONS, default='non')
-    slug = models.SlugField(max_length=200,null=True)
+    slug = models.SlugField(max_length=200, null=True)
 
     def publish(self):
         self.published_date = timezone.now()
@@ -77,17 +77,19 @@ class News(models.Model):
         return self.title[0:30]
 
     def get_absolute_url(self):
-       return reverse('news:newsdetail', args=[str(self.pk)])
+        return reverse('news:newsdetail', args=[str(self.pk)])
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title[0:20])
         super(News, self).save(*args, **kwargs)
 
+
 class NewsFile(models.Model):
     file = models.FileField(upload_to='upload/%Y/%m/%d', default=None, blank=True, validators=[
                             FileExtensionValidator(allowed_extensions=['jpg', 'png', 'gif', 'pdf'])])
     miniature = models.TextField(default=None, null=True, blank=True,)
-    extension = models.CharField(default=None, null=True, blank=True, max_length=10)
+    extension = models.CharField(
+        default=None, null=True, blank=True, max_length=10)
     objects = FileManager()
 
     def __str__(self):
@@ -95,7 +97,6 @@ class NewsFile(models.Model):
 
     def get_absolute_url(self):
         return self.file.url
-
 
 
 class Notification(models.Model):
@@ -110,11 +111,13 @@ class Notification(models.Model):
 
 class NotificationReadFlag(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-    notification = models.ForeignKey('news.Notification', on_delete=models.CASCADE)
+    notification = models.ForeignKey(
+        'news.Notification', on_delete=models.CASCADE)
     read = models.BooleanField(default=False)
 
     def __str__(self):
         return '{0} ({1}) '.format(self.user.userprofile, self.notification)
+
 
 class NewsReadFlag(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
@@ -123,6 +126,7 @@ class NewsReadFlag(models.Model):
 
     def __str__(self):
         return '{0} ({1}) '.format(self.user.userprofile, self.news)
+
 
 class KnowledgeCategory(models.Model):
     title = models.CharField(max_length=200)
@@ -142,9 +146,9 @@ class DocumentF(models.Model):
         max_length=3, choices=COMPANY_LOCATIONS, default='non')
     category = models.ForeignKey(
         'news.KnowledgeCategory',
-         on_delete=models.PROTECT,
-         default=2,
-         related_name="docs"
+        on_delete=models.PROTECT,
+        default=2,
+        related_name="docs"
     )
 
     class Meta:
@@ -154,7 +158,8 @@ class DocumentF(models.Model):
         return self.title
 
     def get_absolute_url(self):
-       return reverse('news:docdetail', args=[str(self.id)])
+        return reverse('news:docdetail', args=[str(self.id)])
+
 
 class DocFile(models.Model):
     file = models.FileField(upload_to='documents/%Y/%m/%d')
@@ -166,8 +171,9 @@ class DocFile(models.Model):
         max_length=3, choices=COMPANY_LOCATIONS, default='non')
     category = models.ForeignKey(
         'news.KnowledgeCategory', on_delete=models.PROTECT,
-         default=2, related_name="files"
+        default=2, related_name="files"
     )
+
     class Meta:
         ordering = ['-date_created']
 
@@ -176,6 +182,7 @@ class DocFile(models.Model):
 
     def get_absolute_url(self):
         return self.file.url
+
 
 class DocQuestion(models.Model):
     title = models.CharField(max_length=200)
@@ -194,8 +201,11 @@ class DocQuestion(models.Model):
 
     def __str__(self):
         return self.title
+
     class Meta:
         ordering = ['-date_created']
+
+
 class UserQuestion(models.Model):
     title = models.CharField(max_length=200)
     body = models.TextField(max_length=5000)
