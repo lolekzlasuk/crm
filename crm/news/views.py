@@ -60,6 +60,7 @@ class QuestionListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = KnowledgeCategory.objects.all()
+        context['title'] = "FAQ"
         return context
 
 

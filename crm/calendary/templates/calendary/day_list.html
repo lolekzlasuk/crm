@@ -77,8 +77,9 @@
             <div class="date">
               <div class="date__inside">
                 {{news.date|date:"j" }}
+                {% if request.user|has_group:"Managers" %}
                 <a class="cala" href="{% url 'calendary:post_devent' pk=news.pk %}"><i class="far fa-plus-square"></i></a>
-              </div>
+              {% endif %}</div>
               {% endif %}
 
 

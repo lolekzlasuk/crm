@@ -48,7 +48,7 @@ def user_logout(request):
 class EmployeeListView(LoginRequiredMixin, ListView):
     model = UserProfile
     template_name = 'accounts/userprofile_list.html'
-    paginate_by = 20
+    paginate_by = 9
 
     def get_queryset(self):
         object_list = UserProfile.objects.all()

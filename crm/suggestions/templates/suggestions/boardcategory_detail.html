@@ -21,7 +21,7 @@
   <div class="Ccard_body">
     <div class="doc_grid">
       <div class="doc secondary-hover">
-        <a href="{% url 'suggestions:questionlist'  %}">
+        <a href="{% url 'suggestions:postlist'  %}">
 
           <span> All</span>
 
@@ -41,28 +41,28 @@
 
   </div>
 
-  {% for question in object_list %}
+  {% for post in object_list %}
   <div class="pA idea">
     <div class="idea__left">
-      <img src="{{question.author.userprofile.profile_pic.url}}" alt="" class="avatar">
+      <img src="{{post.author.userprofile.profile_pic.url}}" alt="" class="avatar">
       <div class="avatar__name">
-        {{question.author.userprofile.name}}
+        {{post.author.userprofile.name}}
       </div>
       <div class="idea__info">
-        {{question.date_created}}
+        {{post.date_created}}
 
-        <span>no of replies: {% if question.answers.all %}
-          {{question.answers.all}}
+        <span>no of replies: {% if post.answers.all %}
+          {{post.answers.all}}
           {% else %}
           0{%endif%}</span>
       </div>
     </div>
     <div class="idea__right">
 
-      <a href="{{ question.get_absolute_url }}">
+      <a href="{{ post.get_absolute_url }}">
         <div class="pH">
           <div class="pT">
-            {{question.title}}
+            {{post.title}}
           </div>
 
 
@@ -72,7 +72,7 @@
 
 
 
-        {{question.body|truncatewords:100}}
+        {{post.body|truncatewords:100}}
 
       </div>
 

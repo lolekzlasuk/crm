@@ -21,7 +21,7 @@
 
 
 <div class="content-container ">
-  {% if request.user|has_group:"Admins" %}
+  {% if request.user|has_group:"Managers" %}
   <div class="moderator_bar">
     <a href="{% url 'polls:poll_list' %}">Published polls</a>
     <a href="{% url 'polls:unpublishedpolllist' %}">Unpublished polls</a>

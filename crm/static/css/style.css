@@ -94,9 +94,7 @@ body{
 
 
 
-.breadcrumbs{
-  display: none;
-}
+
 
 .moderator_bar {
   background-color: #A6A6A6;
@@ -714,6 +712,7 @@ font-weight: 600;
 }
 .knowledge-table tr:hover{
 background-color: #F5F5F5;
+  transition: 0.1s;
 }
 .knowledge-table a{
   font-weight: bold;
@@ -758,7 +757,7 @@ background-color: lightgray;
 }
 
 
-tr:nth-child(1n+9){
+.tr-hide:nth-child(1n+9){
   display:none;
 }
 

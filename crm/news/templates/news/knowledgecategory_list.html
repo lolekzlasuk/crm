@@ -17,7 +17,7 @@
     <span class="site-header__breadcrumb">Home page</span>
   </div>
 </div>
-{% if request.user|has_group:"Admins" %}
+{% if request.user|has_group:"Managers" %}
 <div class="moderator_bar">
   <a href="{% url 'news:createfile' %}">Upload file</a>
   <a href="{% url 'news:createdoc' %}">upload a document</a>
@@ -77,7 +77,7 @@
             <tbody>
 
               {% for each in docs %}
-              <tr>
+              <tr class="tr-hide">
                 <td><a href="{{ each.get_absolute_url }}">{{each.title}}</a></td>
                 <td>{{each.category}}</td>
                 <td>{{each.date_created | date:"d.m.y"}}</td>
@@ -108,7 +108,7 @@
             </thead>
             <tbody>
               {% for each in files %}
-              <tr>
+              <tr class="tr-hide">
 
 
 
@@ -133,22 +133,5 @@
     </div>
 
 
-
-  <script type="text/javascript">
-    $("tbody").each(function() {
-      if ($(this).children("tr").length > 9) {
-        $(this).find('.moreload').css("display", "table-row");
-
-      }
-    });
-
-
-    $(document).ready(function() {
-      $('.moreload').click(function() {
-        $(this).parents('tbody').find('tr').css("display", "table-row");
-        $(this).toggle();
-      });
-    });
-  </script>
 
   {% endblock %}

@@ -12,7 +12,7 @@
     <span class="site-header__title">
       FAQaa
     </span>
-    <span class="site-header__subtitle">/ Frequently asked questions/span>
+    <span class="site-header__subtitle">/ Frequently asked questions</span>
   </div>
   <div class="site-header__right">
     <span class="site-header__breadcrumb">Home page</span>
@@ -22,7 +22,7 @@
 
 <div class="content-container content-container--paginated">
 
-  {% if request.user|has_group:"Admins" %}
+  {% if request.user|has_group:"Managers" %}
   <div class="moderator_bar">
 
 
@@ -55,6 +55,7 @@
 
   <div class="question_answer">
     {{question.body}}
+
     <a class="buttonn" href="{% url 'news:answerfaq' pk=question.pk %}"><div class="doc secondary-hover">
 
     answer</div></a>
@@ -67,15 +68,5 @@
 </div>
 </div>
 </div>
-<script type="text/javascript">
 
-  // $('.question_answer').toggle();
-  //
-  // $(document).ready(function(){
-  // $(".question_title").click(function(){
-  //     $(this).parents('.question').find('.question_answer').toggle();
-  //     $(this).toggleClass("question_title--active")
-  //   });
-  // });
-</script>
 {% endblock %}
