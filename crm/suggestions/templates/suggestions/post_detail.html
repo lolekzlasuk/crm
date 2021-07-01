@@ -7,12 +7,18 @@
 
 
     <span class="site-header__title">
-      Message Board
+{{object.title|truncatechars:30}}
     </span>
-    <span class="site-header__subtitle">/ Communicate!</span>
+
   </div>
   <div class="site-header__right">
-    <span class="site-header__breadcrumb">Home page</span>
+    <span class="site-header__breadcrumb">
+    <div class="breadcrumbs">
+    <a href="{% url 'news:news_list' %}">Home</a>
+&rsaquo; <a href="{% url 'suggestions:postlist' %}">Message board</a>
+     &rsaquo; <span>{{object.title}}</span>
+    </div>
+</span>
   </div>
 </div>
 
@@ -58,7 +64,7 @@
 
   </div>
 
-  {% for each in object.answer.all %}
+  {% for each in object.comments.all %}
   <div class="pA  comment">
     <div class="idea__left">
       <img src="{{each.author.userprofile.profile_pic.url}}" alt="" class="avatar">
@@ -90,7 +96,7 @@
   {% endfor %}
 
 
-  <a class="buttonn" href="{% url "suggestions:postanswer" pk=object.pk %}">
+  <a class="buttonn" href="{% url "suggestions:postcomment" pk=object.pk %}">
     <div class="doc secondary-hover">Add a comment</div>
   </a>
 

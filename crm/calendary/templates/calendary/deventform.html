@@ -1,9 +1,34 @@
 {% extends 'base.html' %}
 
 {% block body_block %}
+<div class="site-header">
+  <div class="site-header__left">
+
+
+    <span class="site-header__title">
+      Add an Event
+    </span>
+  </div>
+  <div class="site-header__right">
+    <span class="site-header__breadcrumb">
+    <div class="breadcrumbs">
+    <a href="{% url 'news:news_list' %}">Home</a>
+    &rsaquo;
+    {% now "n" as current %}
+    {% now "Y" as currentyear %}
+    <a href="{% url 'calendary:calendary' month=current year=currentyear %}" >Calendar</a>
+     &rsaquo; <span>Add an Event</span>
+    </div>
+</span>
+  </div>
+</div>
+<div class="form-container">
+
 <form method="POST" class="post-form">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="save btn btn-default">Save</button>
 </form>
+
+</div>
 {% endblock %}

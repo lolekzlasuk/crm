@@ -15,7 +15,13 @@
     <span class="site-header__subtitle">/ Directory of employees</span>
   </div>
   <div class="site-header__right">
-    <span class="site-header__breadcrumb"></span>
+    <span class="site-header__breadcrumb">
+
+    <div class="breadcrumbs">
+    <a href="{% url 'news:news_list' %}">Home</a>
+     &rsaquo; <span>{{title}}</span>
+    </div>
+</span>
   </div>
 </div>
 
@@ -66,20 +72,13 @@
             <td> {{each.get_location_display}}</td>
             <td><a href="mailto:{{each.email}}">{{each.email}}</a></td>
           </tr>
-
-
           {% endfor %}
-
-
-
 
         </table>
       </div>
     </div>
   </div>
   <div class="pag-wrapper"> {% if is_paginated %}
-
-
 
     <ul class="pagination">
       {% if page_obj.has_previous %}
@@ -110,11 +109,4 @@
     {% endif %}
   </div>
 </div>
-<!-- {% if object_list.count <= 7 %}
-<div class="site-filler">
-
-</div>
-{% endif %} -->
-
-
 {% endblock %}

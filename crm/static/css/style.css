@@ -11,23 +11,13 @@
 body{
   background-color: #e4e7ea;
 }
-.login{
-  width: 40%;
-  height: auto;
-  margin: 10% auto;
-  padding: 2em 2em;
-  background-color: #F5F5F5 ;
-  text-align: center;
 
-}
 .form-container{
   width: 60%;
   height: auto;
   margin: 2% auto;
   padding: 2em 2em;
-  background-color: #e4e7ea ;
-
-
+  background-color: #e4e7ea;
 }
 a {
   text-decoration: none;
@@ -765,41 +755,7 @@ background-color: lightgray;
 .moreload{
   display: none;
 }
-.profile_table{
 
-}
-.profile-wrapper{
-  /*background-color: #FFF;*/
-  /*padding: 2em 1.5em;*/
-  /*margin: 1em;*/
-  /*border-radius: 4px;*/
-  display: grid;
-grid-template-columns: 35% auto 15%;
-}
-#profilegrid{
-    background-color: white;
-    border-radius: 2px;
-     border-collapse: collapse;
- border-spacing: 1px;
-padding:2em;
-margin: 0 1em;
-
-}
-.profile_divider{
-  text-align: center;
-}
-#profilegrid tr td:nth-child(2) {
-  padding-left: 4em;
-}
-#profilegrid tr td:first-child {
-  font-weight: bold;
-}
-#profilegrid tr td{
-  padding-top: 1em;
-}
-.profile-title{
-  font-weight: bold;
-}
 .poll{
   background-color: #e4e7ea;
   text-align:center;
@@ -1018,6 +974,13 @@ input[type=submit]{
   margin: 1em auto 0 auto;
   padding: .5em 1em;
 }
+
+.textarea{
+  text-align: left;
+}
+
+/* ACCOUNTS */
+/* ###login */
 .loginlogo{
 
   line-height: normal;
@@ -1035,6 +998,45 @@ align-items: flex-start;
   font-weight: bold;
   border-bottom: 2px solid #1caf9a;
 }
-.textarea{
-  text-align: left;
+.login{
+  width: 40%;
+  height: auto;
+  margin: 10% auto;
+  padding: 2em 2em;
+  background-color: #F5F5F5 ;
+  text-align: center;
+
+}
+/* ##########profile */
+.profile_table{
+
+}
+.profile-wrapper{
+
+  display: grid;
+grid-template-columns: 35% auto 15%;
+}
+#profilegrid{
+    background-color: inherit;
+    border-radius: 2px;
+     border-collapse: collapse;
+ border-spacing: 1px;
+padding:2em;
+margin: 0 1em;
+
+}
+.profile_divider{
+  text-align: center;
+}
+#profilegrid tr td:nth-child(2) {
+  padding-left: 4em;
+}
+#profilegrid tr td:first-child {
+  font-weight: bold;
+}
+#profilegrid tr td{
+  padding-top: 1em;
+}
+.profile-title{
+  font-weight: bold;
 }

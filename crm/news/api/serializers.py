@@ -6,6 +6,25 @@ import datetime
 from ..models import *
 from rest_framework_jwt.settings import api_settings
 from django.db.models import Q
+
+def sizify(value):
+    """
+    Simple kb/mb/gb size snippet for templates:
+
+    {{ product.file.size|sizify }}
+    """
+    #value = ing(value)
+    if value < 512000:
+        value = value / 1024.0
+        ext = 'kb'
+    elif value < 4194304000:
+        value = value / 1048576.0
+        ext = 'mb'
+    else:
+        value = value / 1073741824.0
+        ext = 'gb'
+    return '%s %s' % (str(round(value, 2)), ext)
+
 class NewsFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = NewsFile
@@ -16,6 +35,10 @@ class NewsFileSerializer(serializers.ModelSerializer):
 
 
 class NewsSerializer(serializers.ModelSerializer):
+    def to_representation(self, instance):
+        rep = super(NewsSerializer, self).to_representation(instance)
+        rep['author'] = instance.author.userprofile.name
+        return rep
     files = NewsFileSerializer(many=True, read_only=True)
     class Meta:
         model = News
@@ -28,6 +51,7 @@ class NewsSerializer(serializers.ModelSerializer):
             'files'
         ]
         read_only_fields = ['id']
+
 class FilteredListSerializer(serializers.ListSerializer):
 
     def to_representation(self, data):
@@ -41,30 +65,45 @@ class FilteredListSerializer(serializers.ListSerializer):
 
 
 class DocumentFSerializer(serializers.ModelSerializer):
-
+    author = serializers.HiddenField(
+    default=serializers.CurrentUserDefault()
+)
+    def to_representation(self, instance):
+        rep = super(DocumentFSerializer, self).to_representation(instance)
+        rep['author'] = instance.author.userprofile.name
+        return rep
     class Meta:
         list_serializer_class = FilteredListSerializer
         model = DocumentF
-        fields = ['title',
+        fields = ['id',
+        'title',
                 'body',
                 'author',
                 'date_created']
-
+        read_only_fields = ['id','author','date_created']
 
 class DocFileSerializer(serializers.ModelSerializer):
-
+    def to_representation(self, instance):
+        rep = super(DocFileSerializer, self).to_representation(instance)
+        rep['size'] = sizify(instance.file.size)
+        return rep
+    size = serializers.CharField(source='file.size', read_only=True)
     class Meta:
         list_serializer_class = FilteredListSerializer
         model = DocFile
-        fields = ['file',
-        'title',
+        fields = ['id',
+                'title',
+        'file',
+        'size',
         'date_created']
+
+        read_only_fields = ['id','size','date_created']
 class KnowledgeCategorySerializer(serializers.ModelSerializer):
      docs = DocumentFSerializer(many=True, read_only=True)
      files = DocFileSerializer(many=True, read_only=True)
      class Meta:
         model = KnowledgeCategory
-        fields = ['title','docs','files']
+        fields = ['id','title','docs','files']
 
 
 class DocQuestionSerializer(serializers.ModelSerializer):
@@ -77,6 +116,9 @@ class DocQuestionSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
 class UserQuestionSerializer(serializers.ModelSerializer):
+    author = serializers.HiddenField(
+    default=serializers.CurrentUserDefault()
+)
     class Meta:
         model = UserQuestion
         fields = ['id','title','body','author']

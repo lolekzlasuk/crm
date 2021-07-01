@@ -39,6 +39,11 @@ class UserProfileDetailView(LoginRequiredMixin, DetailView):
     def get_object(self):
         return self.request.user.userprofile
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Profile"
+        return context
+
 @login_required
 def user_logout(request):
     logout(request)
@@ -62,7 +67,10 @@ class EmployeeListView(LoginRequiredMixin, ListView):
             )
 
         return object_list
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Contact List"
+        return context
 
 def user_login(request):
     if request.method == 'POST':
@@ -97,7 +105,10 @@ def edit_profile(request):
         return redirect('accounts:profile')
     else:
         form = UserProfileForm
-    return render(request, 'accounts/editprofile.html', {'form': form})
+
+    return render(request, 'accounts/editprofile.html', {'form': form, 'title':'Password Change'})
+
+
 
 @login_required
 def delete_profile_pic(request):

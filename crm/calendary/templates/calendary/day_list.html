@@ -11,10 +11,17 @@
     <span class="site-header__title">
       Calendar
     </span>
-    <span class="site-header__subtitle">/ subtitle</span>
+    <span class="site-header__subtitle">/ company events</span>
   </div>
   <div class="site-header__right">
-    <span class="site-header__breadcrumb">Home page</span>
+    <span class="site-header__breadcrumb">
+    <div class="breadcrumbs">
+    <a href="{% url 'news:news_list' %}">Home</a>
+    &rsaquo;
+  <span>  Calendar</span>
+
+    </div>
+</span>
   </div>
 </div>
 
@@ -83,12 +90,12 @@
               {% endif %}
 
 
-              {% for each in news.devent_set.all|dictsort:"start" %}
+              {% for each in news.events.all|dictsort:"start" %}
 
               <div class="event">
 
                 <a class="buttonn" href="{{ each.get_absolute_url }}">
-                  <div class="devent secondary-hover">{{each.title}}</div>
+                  <div class="devent secondary-hover">{{each.title|truncatechars:20}} </div>
                 </a>
 
               </div>

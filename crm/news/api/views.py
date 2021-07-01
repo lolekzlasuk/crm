@@ -16,6 +16,7 @@ import json
 import copy
 User = get_user_model()
 
+
 def is_json(json_data):
     try:
         real_json = json.loads(json_data)
@@ -24,57 +25,79 @@ def is_json(json_data):
         is_valid = False
     return is_valid
 
+
 class CustomDjangoModelPermission(permissions.DjangoModelPermissions):
 
     def __init__(self):
-        self.perms_map = copy.deepcopy(self.perms_map)  # from EunChong's answer
+        self.perms_map = copy.deepcopy(self.perms_map)
         self.perms_map['GET'] = ['%(app_label)s.view_%(model_name)s']
 
 
 class UnpublishedNewsListAPIView(generics.ListAPIView):
 
     model = News
-    permission_classes      = [permissions.IsAuthenticated]
-    serializer_class        = NewsSerializer
-    passed_id               = None
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = NewsSerializer
+    passed_id = None
 
     def get_queryset(self):
         qs = News.objects.filter(published_date=None)
         return qs
 
-class KnowledgeListAPIView(generics.ListAPIView):
-    permission_classes      = [permissions.IsAuthenticated]
-    serializer_class        = KnowledgeCategorySerializer
-    queryset = KnowledgeCategory.objects.all()
 
-class DocQuestionListAPIView(generics.ListAPIView, generics.CreateAPIView):
-    permission_classes      = [permissions.IsAuthenticated,permissions.DjangoModelPermissions, CustomDjangoModelPermission]
-    serializer_class        = DocQuestionSerializer
+class KnowledgeListAPIView(generics.ListAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = KnowledgeCategorySerializer
+    passed_id = None
 
     def get_queryset(self):
+        request = self.request
+        passed_id = request.GET.get('id', None) or self.passed_id
+        queryset = KnowledgeCategory.objects.all()
 
+        if passed_id is not None:
+            queryset = queryset.filter(id=passed_id)
+
+        return queryset
+
+
+class DocQuestionListAPIView(generics.ListAPIView, mixins.CreateModelMixin):
+    permission_classes = [permissions.IsAuthenticated,
+                          permissions.DjangoModelPermissions, CustomDjangoModelPermission]
+    serializer_class = DocQuestionSerializer
+
+    def get_queryset(self):
         queryset = DocQuestion.objects.exclude(answer=None)
         return queryset
-    #different permissions for different views
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+    # different permissions for different views
 
 
-#######views for uploading news docs docfiles
+# views for uploading news docs docfiles
 
-class UserQuestionListAPIView(generics.ListAPIView, generics.CreateAPIView,  CustomDjangoModelPermission):
-    permission_classes      = [permissions.IsAuthenticated]
-    serializer_class        = UserQuestionSerializer
+class UserQuestionListAPIView(generics.ListAPIView, mixins.CreateModelMixin):
+    permission_classes = [permissions.IsAuthenticated,
+                          permissions.DjangoModelPermissions, CustomDjangoModelPermission]
+    serializer_class = UserQuestionSerializer
     queryset = UserQuestion.objects.all()
-    #different permissions for different views
+    # different permissions for different views
 
-class NewsListDetailAPIView(generics.ListAPIView, generics.RetrieveAPIView):
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+
+class NewsListDetailAPIView(generics.ListAPIView, mixins.RetrieveModelMixin):
     model = News
-    permission_classes      = [permissions.IsAuthenticated]
-    serializer_class        = NewsSerializer
-    passed_id               = None
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = NewsSerializer
+    passed_id = None
 
     def get_queryset(self):
         userprofile = self.request.user.userprofile
-        qs = News.objects.exclude(published_date=None).order_by('-published_date')
+        qs = News.objects.exclude(
+            published_date=None).order_by('-published_date')
         qs = qs.filter(Q(target_location=userprofile.location) | Q(
             target_location="non"))
         qs = qs.filter(Q(target_departament=userprofile.departament) | Q(
@@ -82,25 +105,25 @@ class NewsListDetailAPIView(generics.ListAPIView, generics.RetrieveAPIView):
         return qs
 
     def get_object(self):
-        request         = self.request
-        passed_id       = request.GET.get('id', None) or self.passed_id
-        queryset        = self.get_queryset()
-        obj             = None
+        request = self.request
+        passed_id = request.GET.get('id', None) or self.passed_id
+        queryset = self.get_queryset()
+        obj = None
         if passed_id is not None:
-            obj = get_object_or_404(queryset, id = passed_id)
-            self.check_object_permissions(request,obj)
+            obj = get_object_or_404(queryset, id=passed_id)
+            self.check_object_permissions(request, obj)
         return obj
 
     def get(self, request, *args, **kwargs):
-        url_passed_id       = request.GET.get('id', None)
-        json_data           = {}
-        body_               = request.body
+        url_passed_id = request.GET.get('id', None)
+        json_data = {}
+        body_ = request.body
         if is_json(body_):
-            json_data           = json.loads(request.body)
-            new_passed_id        = json_data.get('id',None)
+            json_data = json.loads(request.body)
+            new_passed_id = json_data.get('id', None)
 
         passed_id = url_passed_id or new_passed_id or None
-        self.passed_id      = passed_id
+        self.passed_id = passed_id
         if passed_id is not None:
-            return self.retrieve(request,*args,**kwargs)
+            return self.retrieve(request, *args, **kwargs)
         return super().get(request, *args, **kwargs)

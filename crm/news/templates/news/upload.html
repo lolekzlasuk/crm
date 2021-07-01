@@ -3,7 +3,23 @@
 {% block extra_css %}  .nav__link[name="Home"] {background-color: #1caf9a; color: white;} {% endblock %}
 
 {% block body_block %}
+<div class="site-header">
+  <div class="site-header__left">
 
+
+    <span class="site-header__title">
+     Upload
+    </span>
+  </div>
+  <div class="site-header__right">
+    <span class="site-header__breadcrumb">
+    <div class="breadcrumbs">
+    <a href="{% url 'news:news_list' %}">Home</a>
+
+    </div>
+</span>
+  </div>
+</div>
 <div class="form-container">
 
 

@@ -14,7 +14,13 @@
     <span class="site-header__subtitle">/ Communicate!</span>
   </div>
   <div class="site-header__right">
-    <span class="site-header__breadcrumb">Home page</span>
+    <span class="site-header__breadcrumb">
+    <div class="breadcrumbs">
+    <a href="{% url 'news:news_list' %}">Home</a>
+
+     &rsaquo; <span>Message Board</span>
+    </div>
+</span>
   </div>
 </div>
 
@@ -41,7 +47,7 @@
         </div>
         {% for each in categories %}
 
-        <a class="buttonn" href="{{ category.get_absolute_url }}">
+        <a class="buttonn" href="{{ each.get_absolute_url }}">
           <div class="doc secondary-hover">
             <span> {{ each.title}}</span>
 
@@ -68,8 +74,8 @@
       <div class="idea__info">
         {{post.date_created|date:"d.m.Y"}}
 
-        <div>no of replies: {% if post.answer.count %}
-          {{post.answer.all.count}}
+        <div>no of replies: {% if post.comments.count %}
+          {{post.comments.count}}
           {% else %}
           0{%endif%}</div>
       </div>

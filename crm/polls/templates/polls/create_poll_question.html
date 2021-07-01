@@ -5,8 +5,30 @@
 
 
 
+<div class="site-header">
+  <div class="site-header__left">
 
-{{data.title}}
+
+    <span class="site-header__title">
+      {{data.title}}
+    </span>
+    <span class="site-header__subtitle">/ Add poll questions</span>
+  </div>
+  <div class="site-header__right">
+    <span class="site-header__breadcrumb">
+    <div class="breadcrumbs">
+    <a href="{% url 'news:news_list' %}">Home</a>
+     &rsaquo;
+     <a href="{% url 'polls:poll_list' %}">Polls</a>
+     &rsaquo; <span>{{data.title}}</span>
+    </div>
+</span>
+  </div>
+</div>
+
+<div class="form-container">
+
+
 <form id="form" method="POST" class="pollcreation">
   {% csrf_token %}
   <div class="question">
@@ -44,7 +66,7 @@
       <input data-id="{{data.pk}}" data-href="{% url 'polls:create_poll_question' pk=data.pk %}" type="submit" name="submit" value="submit" class="form-button comment-submit">
 </form>
 
-
+</div>
 
 
 <script type="text/javascript">

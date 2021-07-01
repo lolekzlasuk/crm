@@ -12,7 +12,7 @@ class Day(models.Model):
 
 
 class Devent(models.Model):
-    day = models.ForeignKey('calendary.Day',on_delete=models.CASCADE, related_name='Events')
+    day = models.ForeignKey('calendary.Day',on_delete=models.CASCADE, related_name='events')
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True, max_length=5000)
     start = models.TimeField('Start time', default="00:00")

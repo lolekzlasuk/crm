@@ -45,7 +45,7 @@ class CategoryDetailView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['category'] = BoardCategory.objects.filter(
+        context['category'] = BoardCategory.objects.get(
             pk=self.kwargs['pk'])
         context['categories'] = BoardCategory.objects.all()
         return context
@@ -60,27 +60,27 @@ def post_post(request):
             instance = form.save(commit=False)
             instance.author = User.objects.get(username=request.user.username)
             instance.save()
-            return redirect('suggestions:Postlist')
+            return redirect('suggestions:postlist')
     else:
         form = PostForm()
-    return render(request, 'suggestions/Postform.html', {'form': form})
+    return render(request, 'suggestions/postform.html', {'form': form})
 
 
 @login_required
 def post_comment(request, pk):
-    Post = get_object_or_404(Post, pk=pk)
+    post = get_object_or_404(Post, pk=pk)
     context = {}
     if request.method == 'POST':
         form = CommentForm(request.POST)
 
         if form.is_valid():
-            Post.last_comment = timezone.now()
-            Post.save()
+            post.last_comment = timezone.now()
+            post.save()
             instance = form.save(commit=False)
             instance.author = User.objects.get(username=request.user.username)
-            instance.Post = Post
+            instance.Post = post
             instance.save()
-            return redirect('suggestions:Postlist')
+            return redirect('suggestions:postlist')
     else:
         form = CommentForm()
-    return render(request, 'suggestions/commentform.html', {'form': form})
+    return render(request, 'suggestions/commentform.html', {'form': form, 'post': post})

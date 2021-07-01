@@ -4,7 +4,7 @@
 {% block body_block %}
 {% load static %}
 {% load groupfilter %}
-{% load i18n %}
+
 <div class="site-header">
   <div class="site-header__left">
 
@@ -16,12 +16,11 @@
   </div>
   <div class="site-header__right">
     <span class="site-header__breadcrumb">
-        {% block breadcrumbs %}
     <div class="breadcrumbs">
-    <a href="{% url 'admin:index' %}">{% translate 'Home' %}kupka</a>
-    {% if title %} &rsaquo; {{ title }}{% endif %}
+    <a href="{% url 'news:news_list' %}">Home</a>
+     &rsaquo; <span>FAQ</span>
     </div>
-    {% endblock %}</span>
+</span>
   </div>
 </div>
 

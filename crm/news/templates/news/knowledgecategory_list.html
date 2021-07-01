@@ -14,7 +14,14 @@
     <span class="site-header__subtitle">/ Directory of useful information</span>
   </div>
   <div class="site-header__right">
-    <span class="site-header__breadcrumb">Home page</span>
+    <span class="site-header__breadcrumb">
+    <div class="breadcrumbs">
+    <a href="{% url 'news:news_list' %}">Home</a>
+     &rsaquo;
+<span>Knowledge</span>
+
+    </div>
+</span>
   </div>
 </div>
 {% if request.user|has_group:"Managers" %}

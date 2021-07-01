@@ -9,12 +9,17 @@
 
 
     <span class="site-header__title">
-      Home
+      {{object.title|truncatechars:40}}
     </span>
     <span class="site-header__subtitle">/ Company News</span>
   </div>
   <div class="site-header__right">
-    <span class="site-header__breadcrumb">Home page</span>
+    <span class="site-header__breadcrumb">
+    <div class="breadcrumbs">
+    <a href="{% url 'news:news_list' %}">Home</a>
+     &rsaquo; <span>{{object.title|truncatechars:20}}</span>
+    </div>
+</span>
   </div>
 </div>
 

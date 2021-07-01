@@ -8,7 +8,7 @@ urlpatterns = [
     # path('employees/',views.EmployeeListView.as_view(),name="employees"),
     path('', views.PostListView.as_view(), name='postlist'),
     path('upload/', views.post_post, name='postform'),
-    path('<int:pk>/answer', views.post_comment, name='postcomment'),
+    path('<int:pk>/comment', views.post_comment, name='postcomment'),
 
     path('category/<int:pk>', views.CategoryDetailView.as_view(), name="category"),
 

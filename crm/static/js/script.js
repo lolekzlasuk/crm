@@ -1,6 +1,5 @@
 $(document).ready(function() {
     var editor = new MediumEditor('.editable');
-    console.log('yolko')
     $('.question_answer').toggle();
     $('#dropdown').toggle();
     $('#dropdown2').toggle();
@@ -54,13 +53,13 @@ $(document).ready(function() {
             }
         }
     });
-});
-$(document).ready(function() {
     $(".question_title").click(function() {
         $(this).parents('.question').find('.question_answer').toggle();
         $(this).toggleClass("question_title--active")
     });
 });
+
+
 
 function toggleDropdown1() {
     $('#dropdown-trigger').toggleClass('top-bar__item--active');
@@ -173,10 +172,6 @@ $(document).on('click', '.unopened', function(e) {
     }
   });
 });
-
-
-
-
 
 $(document).ready(function() {
   $('.moreload').click(function() {

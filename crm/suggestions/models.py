@@ -7,7 +7,6 @@ from django.urls import reverse
 
 class BoardCategory(models.Model):
     title = models.TextField(max_length=25)
-    icon = models.TextField(blank=True)
 
     def __str__(self):
         return self.title
@@ -25,7 +24,7 @@ class Post(models.Model):
     category = models.ForeignKey(
         'suggestions.BoardCategory',
         on_delete=models.PROTECT,
-        related_name="categories")
+        related_name="posts")
 
     last_comment = models.DateTimeField(default=timezone.now)
 
@@ -33,15 +32,15 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('suggestions:questiondetail', args=[str(self.id)])
+        return reverse('suggestions:postdetail', args=[str(self.id)])
 
     class Meta:
-        ordering = ['-date_created']
+        ordering = ['-last_comment']
 
 
 class Comment(models.Model):
     Post = models.ForeignKey(
-        'suggestions.Post', on_delete=models.CASCADE, related_name="comment")
+        'suggestions.Post', on_delete=models.CASCADE, related_name="comments")
     body = models.TextField(max_length=500)
     date_created = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey('auth.User', on_delete=models.PROTECT)

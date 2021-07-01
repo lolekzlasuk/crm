@@ -7,5 +7,6 @@ urlpatterns = [
     path('', NewsListDetailAPIView.as_view()),
     path('unpublished/', UnpublishedNewsListAPIView.as_view()),
     path('knowledge/', KnowledgeListAPIView.as_view()),
-    path('faq/', DocQuestionListAPIView.as_view()),    
+    path('faq/', DocQuestionListAPIView.as_view()),
+    path('userquestion/', UserQuestionListAPIView.as_view()), 
 ]

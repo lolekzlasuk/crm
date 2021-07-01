@@ -9,12 +9,19 @@
 
 
     <span class="site-header__title">
-      Polls
+      {{poll.title}}
     </span>
     <span class="site-header__subtitle">/ Polling station</span>
   </div>
   <div class="site-header__right">
-    <span class="site-header__breadcrumb">Home page</span>
+    <span class="site-header__breadcrumb">
+    <div class="breadcrumbs">
+    <a href="{% url 'news:news_list' %}">Home</a>
+     &rsaquo;
+     <a href="{% url 'polls:poll_list' %}">Polls</a>
+     &rsaquo; <span>{{poll.title}}</span>
+    </div>
+</span>
   </div>
 </div>
 

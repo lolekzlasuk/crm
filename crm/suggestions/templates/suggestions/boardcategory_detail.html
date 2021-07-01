@@ -8,38 +8,59 @@
 
 
     <span class="site-header__title">
-      Message Board
+      Message Board - {{category.title}}
     </span>
     <span class="site-header__subtitle">/ Communicate!</span>
   </div>
   <div class="site-header__right">
-    <span class="site-header__breadcrumb">Home page</span>
+    <span class="site-header__breadcrumb">
+    <div class="breadcrumbs">
+    <a href="{% url 'news:news_list' %}">Home</a>
+     &rsaquo; <span>{{category.title}}</span>
+    </div>
+</span>
   </div>
 </div>
 
 <div class="content-container content-container--paginated">
-  <div class="Ccard_body">
-    <div class="doc_grid">
-      <div class="doc secondary-hover">
-        <a href="{% url 'suggestions:postlist'  %}">
 
-          <span> All</span>
+  <div class="Ccard">
 
-        </a>
+    <div class="Ccard_header">
+
+
+      <div class="Ccard_title">
+        Categories
+
       </div>
-      {% for each in categories %}
-
-      <a class="buttonn" href="{{ each.get_absolute_url }}">
-        <div class="doc secondary-hover">
-          <span> {{ each.title}}</span>
-
-
-        </div>
-      </a>
-      {% endfor %}
     </div>
+    <div class="Ccard_body">
+      <div class="doc_grid">
+        <div class="doc secondary-hover">
+          <a href="{% url 'suggestions:postlist'  %}">
 
+            <span> All</span>
+
+          </a>
+        </div>
+        {% for each in categories %}
+
+        <a class="buttonn" href="{{ each.get_absolute_url }}">
+          <div class="doc secondary-hover">
+            <span> {{ each.title}}</span>
+
+
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
   </div>
+  <a class="buttonn" href="{% url 'suggestions:postform' %}">
+    <div class="doc secondary-hover">Add a post</div>
+  </a>
+
+
 
   {% for post in object_list %}
   <div class="pA idea">
@@ -49,12 +70,12 @@
         {{post.author.userprofile.name}}
       </div>
       <div class="idea__info">
-        {{post.date_created}}
+        {{post.date_created|date:"d.m.Y"}}
 
-        <span>no of replies: {% if post.answers.all %}
-          {{post.answers.all}}
+        <div>no of replies: {% if post.answer.count %}
+          {{post.answer.all.count}}
           {% else %}
-          0{%endif%}</span>
+          0{%endif%}</div>
       </div>
     </div>
     <div class="idea__right">
@@ -80,38 +101,48 @@
   </div>
 
   {% endfor %}
-  {% if is_paginated %}
-  <ul class="pagination">
-    {% if page_obj.has_previous %}
-    <a href="?page={{ page_obj.previous_page_number }}">
-      <li class="hover">&laquo;</li>
-    </a>
-    {% else %}
-    <li class="disabled"><span>&laquo;</span></li>
+  <div class="pag-wrapper"> {% if is_paginated %}
+
+
+
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">
+        <li class="secondary-hover">&laquo;</li>
+      </a>
+      {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+      {% endif %}
+      {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+      <li class="active pagi__number"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+      <a href="?page={{ i }}">
+        <li class="secondary-hover">{{ i }}</li>
+      </a>
+      {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">
+        <li class="secondary-hover">&raquo;</li>
+      </a>
+      {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+      {% endif %}
+    </ul>
+
     {% endif %}
-    {% for i in paginator.page_range %}
-    {% if page_obj.number == i %}
-    <li class="active pagi__number"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-    {% else %}
-    <a href="?page={{ i }}">
-      <li class="hover">{{ i }}</li>
-    </a>
-    {% endif %}
-    {% endfor %}
-    {% if page_obj.has_next %}
-    <a href="?page={{ page_obj.next_page_number }}">
-      <li class="hover">&raquo;</li>
-    </a>
-    {% else %}
-    <li class="disabled"><span>&raquo;</span></li>
-    {% endif %}
-  </ul>
-  {% endif %}
+  </div>
+</div>{% if object_list.count <= 7 %}
+<div class="site-filler">
+
 </div>
+{% endif %}
 
 
 
 
+</div>
 
 
 

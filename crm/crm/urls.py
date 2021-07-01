@@ -27,5 +27,6 @@ urlpatterns = [
     path('accounts/api/',include('accounts.api.urls')),
     path('calendar/api/',include('calendary.api.urls')),
     path('news/api/',include('news.api.urls')),
+    path('suggestions/api/',include('suggestions.api.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

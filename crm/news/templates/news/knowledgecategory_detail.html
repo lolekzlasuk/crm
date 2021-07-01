@@ -9,12 +9,19 @@
 
 
     <span class="site-header__title">
-      Knowledge
+      Knowledge - {{object.title}}
     </span>
     <span class="site-header__subtitle">/ Directory of useful information</span>
   </div>
   <div class="site-header__right">
-    <span class="site-header__breadcrumb">Home page</span>
+    <span class="site-header__breadcrumb">
+    <div class="breadcrumbs">
+    <a href="{% url 'news:news_list' %}">Home</a>
+     &rsaquo;
+     <a href="{% url 'news:knowledge' %}">Knowledge</a>
+     &rsaquo; <span>{{object.title}}</span>
+    </div>
+</span>
   </div>
 </div>
 {% if request.user|has_group:"Managers" %}

@@ -28,8 +28,8 @@ class KnowledgeCategoryListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user.userprofile
-        context['files'] = locationdepartamentfilter(DocFile.objects,user)
-        context['docs'] = locationdepartamentfilter(DocumentF.objects,user)
+        context['files'] = locationdepartamentfilter(DocFile.objects, user)
+        context['docs'] = locationdepartamentfilter(DocumentF.objects, user)
         return context
 
 
@@ -112,12 +112,6 @@ class DocDetailView(LoginRequiredMixin, LocationDepartamentCheckMixin, DetailVie
 class NewsListView(LoginRequiredMixin, ListView):
     paginate_by = 10
     model = News
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['activate'] = NewsReadFlag.objects.filter(
-    #         user=self.request.user, read=False).values_list('news', flat=True)
-    #     return context
 
     def get_queryset(self):
         userprofile = self.request.user.userprofile
@@ -247,7 +241,6 @@ def post_file(request):
         files = request.FILES.getlist('file')
         for f in files:
             file_instance = form.save(commit=False)
-            file_instance.isnews = False
             file_instance.save()
             return redirect('news:knowledge')
     else:

@@ -32,7 +32,7 @@ class PollAnswerDetailView(PermissionRequiredMixin, LoginRequiredMixin, DetailVi
 class PollListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         # possibly add .exclude(published_date__lt = self.request.user.date_joined)
-        queryset = Poll.objects.exclude(
+        queryset = Poll.objects.exclude(published_date__lt = self.request.user.date_joined).exclude(
             published_date=None).order_by('-published_date')
         submitions_set = PollSubmition.objects.filter(
             user=self.request.user).exclude(submitions__isnull=True)
@@ -117,8 +117,6 @@ def create_poll_answer(request, pk):
     currentuser = request.user
     context = {}
     if request.is_ajax() and request.method == 'POST':
-        print(json.loads(request.body))
-        print("currentuser " + currentuser.username)
         submition = PollSubmition.objects.get(user=currentuser, poll=poll)
         question_pk = json.loads(request.body).get('question')
         questionobj = Question.objects.get(pk=question_pk)
