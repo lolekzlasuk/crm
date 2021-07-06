@@ -14,6 +14,7 @@ class Poll(models.Model):
         max_length=3, choices=DEPARTAMENTS, default='non')
     target_location = models.CharField(
         max_length=3, choices=COMPANY_LOCATIONS, default='non')
+    slug = models.SlugField(max_length=20,null=True)
 
     def publish(self):
         self.published_date = timezone.now()
@@ -24,6 +25,10 @@ class Poll(models.Model):
 
     def get_absolute_url(self):
         return reverse('polls:create_poll_answer', args=[str(self.id)])
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title[0:20])
+        super(Poll, self).save(*args, **kwargs)
 
 
 class Question(models.Model):
@@ -74,16 +79,13 @@ class PollSubmitionQuestion(models.Model):
 
     def ans(self):
         if self.answer != None and self.text == None:
-            # if len(self.manyanswer.split(';')) > 1:
-            #     return self.manyanswer
-            # else:
 
             return str(self.answer)
-        if self.answer != None and self.text is not None:
+        elif self.answer != None and self.text is not None:
             return str(self.answer + "; " + self.text)
-        if self.text is not None:
+        elif self.text is not None:
             return str(self.text)
-        if self.date:
+        elif self.date:
             return self.date.strftime("%m/%d/%Y")
 
     def __str__(self):

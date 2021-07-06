@@ -57,8 +57,16 @@ class DocQuestionForm(forms.ModelForm):
         fields = ['title', 'body', 'answer', 'target_location',
                   'target_departament', 'category']
 
-
-class UserQuestionForm(forms.ModelForm):
+class DocQuestionUserForm(forms.ModelForm):
     class Meta:
-        model = UserQuestion
+        model = DocQuestion
         fields = ['title', 'body']
+
+        labels = {
+    'title': 'Question',
+    'body': 'Description(optional)'
+}
+# class UserQuestionForm(forms.ModelForm):
+#     class Meta:
+#         model = UserQuestion
+#         fields = ['title', 'body']

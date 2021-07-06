@@ -34,23 +34,7 @@ class NewsFileSerializer(serializers.ModelSerializer):
         ]
 
 
-class NewsSerializer(serializers.ModelSerializer):
-    def to_representation(self, instance):
-        rep = super(NewsSerializer, self).to_representation(instance)
-        rep['author'] = instance.author.userprofile.name
-        return rep
-    files = NewsFileSerializer(many=True, read_only=True)
-    class Meta:
-        model = News
-        fields = [
-        'id',
-            'body',
-            'author',
-            'title' ,
-            'published_date',
-            'files'
-        ]
-        read_only_fields = ['id']
+
 
 class FilteredListSerializer(serializers.ListSerializer):
 
@@ -76,7 +60,7 @@ class DocumentFSerializer(serializers.ModelSerializer):
         list_serializer_class = FilteredListSerializer
         model = DocumentF
         fields = ['id',
-        'title',
+                'title',
                 'body',
                 'author',
                 'date_created']
@@ -93,9 +77,9 @@ class DocFileSerializer(serializers.ModelSerializer):
         model = DocFile
         fields = ['id',
                 'title',
-        'file',
-        'size',
-        'date_created']
+                'file',
+                'size',
+                'date_created']
 
         read_only_fields = ['id','size','date_created']
 class KnowledgeCategorySerializer(serializers.ModelSerializer):
@@ -122,4 +106,51 @@ class UserQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserQuestion
         fields = ['id','title','body','author']
+        read_only_fields = ['id','author']
+
+
+class DocFileUploadSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = DocFile
+        fields = [
+        'file',
+        'title',
+        'target_departament',
+        'target_location',
+        'category',
+        ]
+
+
+
+class NewsListSerializer(serializers.ModelSerializer):
+
+    files = NewsFileSerializer(many=True, read_only=True)
+    class Meta:
+        list_serializer_class = FilteredListSerializer
+        model = News
+        fields = [
+        'id',
+            'title' ,
+            'published_date',
+            'files'
+        ]
+        read_only_fields = ['id']
+
+class NewsCRUDSerializer(serializers.ModelSerializer):
+
+    files = NewsFileSerializer(many=True, read_only=True)
+    class Meta:
+        list_serializer_class = FilteredListSerializer
+        model = News
+        fields = [
+        'id',
+        'body',
+        'author',
+        'title',
+        'files',
+        'target_departament',
+        'target_location',
+
+        ]
         read_only_fields = ['id','author']

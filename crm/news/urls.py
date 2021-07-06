@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from . import views
+from news import views
 app_name = 'news'
 
 urlpatterns = [
@@ -15,13 +15,13 @@ urlpatterns = [
     path('upload/file', views.post_file, name="createfile"),
     path('upload/question', views.post_question, name="createquestion"),
     path('upload/userquestion', views.post_userquestion, name="createuserquestion"),
-    path('upload/<int:pk>/updatequestion', views.answer_question, name="answerfaq"),
+    path('upload/<int:pk>/updatequestion', views.UpdateDocQuestionView.as_view(), name="answerfaq"),
+    path('upload/<int:pk>/updatenews', views.UnpublishedNewsUpdateView.as_view(), name="updatenews"),
     path('news/<int:pk>/publish/', views.publish_news, name="publish_news"),
     path('flagtoggle/', views.flagtoggle, name="flagtoggle"),
-    path('newstoggle/', views.newsreadflagtoggle, name="newsreadflag"),
     path('markall/', views.markall, name="markall"),
     path('docs/<int:pk>/', views.DocDetailView.as_view(), name="docdetail"),
     path('faq/', views.QuestionListView.as_view(), name="faq"),
-    path('faq/pending', views.UnansweredQuestionListView.as_view(), name="pending_faq"),
+    path('faq/pending/', views.UnansweredQuestionListView.as_view(), name="pending_faq"),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

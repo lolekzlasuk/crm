@@ -1,12 +1,12 @@
 import requests
 import json
 import os
-# image_path = os.path.join(os.getcwd(),'dino.jpg')
+image_path = os.path.join(os.getcwd(),'dino.jpg')
 # print(image_path)
 
 
 
-AUTH_ENDPOINT ="http://localhost:8080/polls/add/3/"
+AUTH_ENDPOINT ="http://localhost:8080/accounts/api/jwt/"
 # REFRESH_ENDPOINT ="http://localhost:8080/auth/refresh/"
 headers = {
     "Content-Type": "application/json",
@@ -14,29 +14,27 @@ headers = {
     }
 
 data = {
-    'username': '',
-    'password': ''
+    'username': 'admin',
+    'password': 'admin'
 }
 
 # r = requests.post(AUTH_ENDPOINT, data=json.dumps(data), headers=headers)
-r = requests.get(AUTH_ENDPOINT, headers=headers)
-print(r.content)
-# token = r.json()['token']
-
-# print(token)
-
-data2 = {
-              "title":"test json question TITLE",
-              "enabletext":"False",
-              "type":"chc",
-              "answers":"['one','two','three']",
-              "order":"0",
-              "pk": "3",
-}
+r = requests.post(AUTH_ENDPOINT,json.dumps(data), headers=headers)
+# print(r.content)
+token = r.json()['token']
 headers2 = {
-    "Content-Type": "application/json",
     "Authorization": "JWT " + token,
+    # "Content-Type" : "multipart/form-data"
     }
+# print(token)
+# with open(image_path, 'rb') as r:
+#     files = {'file': r}
+data2 = {
+
+         'Post':3,
+         'body':"test body last activity"
+}
+
 # with open(image_path, 'rb') as image:
 #     file_data = {
 #     'profile_pic': image,
@@ -44,8 +42,8 @@ headers2 = {
 #     # r2 = requests.patch(ENDPOINT, files=file_data, headers=headers2)
 #     # token2 = r2.json()#['token']
 #     # print(token2)
-ENDPOINT = "http://localhost:8080/polls/add/3/"
-r2 = requests.post(ENDPOINT,json.dumps(data2), headers=headers2)
+ENDPOINT = "http://localhost:8080/news/api/router/news/1"
+r2 = requests.get(ENDPOINT, headers=headers2)
 token2 = r2.json()#['token']
 print(token2)
 

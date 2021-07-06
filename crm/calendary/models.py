@@ -18,9 +18,14 @@ class Devent(models.Model):
     start = models.TimeField('Start time', default="00:00")
     end = models.TimeField('Ending time' , default="23:59")
     author = models.ForeignKey('auth.user',on_delete=models.PROTECT)
-
+    slug = models.SlugField(max_length=20, null=True)
+    
     def __str__(self):
         return '{0} ({1})'.format(self.title, self.day)
 
     def get_absolute_url(self):
        return reverse('calendary:devent', args=[str(self.id)])
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title[0:20])
+        super(Devent, self).save(*args, **kwargs)

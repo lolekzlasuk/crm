@@ -35,6 +35,7 @@ class DayListView(LoginRequiredMixin, ListView):
 
         return qs_padded_days
 
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         qs = Day.objects.filter(date__month=self.kwargs['month']

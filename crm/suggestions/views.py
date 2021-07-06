@@ -20,7 +20,7 @@ class PostListView(LoginRequiredMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        queryset = Post.objects.order_by('-last_comment')
+        queryset = Post.objects.all()
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -40,7 +40,7 @@ class CategoryDetailView(LoginRequiredMixin, ListView):
 
     def get_queryset(self, **kwargs):
         queryset = Post.objects.all().filter(
-            category_id=self.kwargs['pk']).order_by('-last_comment')
+            category_id=self.kwargs['pk'])
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -74,8 +74,7 @@ def post_comment(request, pk):
         form = CommentForm(request.POST)
 
         if form.is_valid():
-            post.last_comment = timezone.now()
-            post.save()
+
             instance = form.save(commit=False)
             instance.author = User.objects.get(username=request.user.username)
             instance.Post = post
@@ -83,4 +82,6 @@ def post_comment(request, pk):
             return redirect('suggestions:postlist')
     else:
         form = CommentForm()
-    return render(request, 'suggestions/commentform.html', {'form': form, 'post': post})
+    return render(request,
+                'suggestions/commentform.html',
+                {'form': form, 'post': post})

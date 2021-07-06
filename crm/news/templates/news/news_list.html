@@ -57,7 +57,7 @@
 
 
 <a class="buttonn" href="{% url 'news:publish_news' pk=news.pk %}"><div class="doc secondary-hover">Publish  </div></a>
-
+<a class="buttonn" href="{% url 'news:updatenews' pk=news.pk %}"><div class="doc secondary-hover">Update </div></a>
               {% endif %}
       {{news.body | safe}}
 

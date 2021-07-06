@@ -21,7 +21,6 @@ class FileManager(models.Manager):
         if ext in format_ext_dict.keys():
             file_to_save.extension = 'image'
             img_format = format_ext_dict[ext]
-            print(img_format)
             size = 128, 128
             im = Image.open(file)
             im.thumbnail(size)
@@ -47,7 +46,7 @@ class News(models.Model):
         max_length=3, choices=DEPARTAMENTS, default='non')
     target_location = models.CharField(
         max_length=3, choices=COMPANY_LOCATIONS, default='non')
-    slug = models.SlugField(max_length=200, null=True)
+    slug = models.SlugField(max_length=20)
 
     def publish(self):
         self.published_date = timezone.now()
@@ -68,10 +67,6 @@ class News(models.Model):
                 user=each.user,
                 notification=notification_instance
             )
-            newsreadflag = NewsReadFlag.objects.create(
-                user=each.user,
-                news=self
-            )
 
     def __str__(self):
         return self.title[0:30]
@@ -83,10 +78,17 @@ class News(models.Model):
         self.slug = slugify(self.title[0:20])
         super(News, self).save(*args, **kwargs)
 
+    class Meta:
+        verbose_name_plural = "news"
 
 class NewsFile(models.Model):
-    file = models.FileField(upload_to='upload/%Y/%m/%d', default=None, blank=True, validators=[
-                            FileExtensionValidator(allowed_extensions=['jpg', 'png', 'gif', 'pdf'])])
+    file = models.FileField(upload_to='upload/%Y/%m/%d',
+                            default=None,
+                            blank=True,
+                            validators=[
+                            FileExtensionValidator(
+                                allowed_extensions=['jpg', 'png', 'gif', 'pdf'])])
+
     miniature = models.TextField(default=None, null=True, blank=True,)
     extension = models.CharField(
         default=None, null=True, blank=True, max_length=10)
@@ -119,21 +121,13 @@ class NotificationReadFlag(models.Model):
         return '{0} ({1}) '.format(self.user.userprofile, self.notification)
 
 
-class NewsReadFlag(models.Model):
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-    news = models.ForeignKey('News', on_delete=models.CASCADE)
-    read = models.BooleanField(default=False)
-
-    def __str__(self):
-        return '{0} ({1}) '.format(self.user.userprofile, self.news)
-
-
 class KnowledgeCategory(models.Model):
     title = models.CharField(max_length=200)
 
     def __str__(self):
         return self.title
-
+    class Meta:
+        verbose_name_plural = "Knowledge Categories"
 
 class DocumentF(models.Model):
     title = models.CharField(max_length=200)
@@ -186,7 +180,7 @@ class DocFile(models.Model):
 
 class DocQuestion(models.Model):
     title = models.CharField(max_length=200)
-    body = models.TextField(max_length=5000)
+    body = models.TextField(max_length=5000, blank=True, null=True)
     answer = models.TextField(
         max_length=5000, default=None, blank=True, null=True)
     target_departament = models.CharField(
@@ -194,9 +188,11 @@ class DocQuestion(models.Model):
     target_location = models.CharField(
         max_length=3, choices=COMPANY_LOCATIONS, default='non')
     date_created = models.DateTimeField(default=timezone.now)
+    author = models.ForeignKey(
+        'auth.User', on_delete=models.PROTECT, blank=True, null=True)
     category = models.ForeignKey(
         'news.KnowledgeCategory', on_delete=models.PROTECT,
-        default=2, related_name="questions"
+        default=1, related_name="questions"
     )
 
     def __str__(self):

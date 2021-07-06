@@ -35,13 +35,13 @@ class PostSerializer(serializers.ModelSerializer):
         'id',
         'body',
         'date_created',
-        'last_comment',
+        'last_activity',
         'author',
         'title',
         'category',
         'comments'
         ]
-read_only_fields = ['id','author','date_created','last_comment']
+read_only_fields = ['id','author','date_created','last_activity']
 
 class PostListSerializer(serializers.ModelSerializer):
     author = serializers.HiddenField(
@@ -62,11 +62,11 @@ class PostListSerializer(serializers.ModelSerializer):
         'title',
         'body',
         'date_created',
-        'last_comment',
+        'last_activity',
         'author',
         'total_comments'
         ]
-    read_only_fields = ['id','author','date_created','last_comment','total_comments']
+    read_only_fields = ['id','author','date_created','last_activity','total_comments']
 
 class CommentCreationSerializer(serializers.ModelSerializer):
     author = serializers.HiddenField(
@@ -79,7 +79,7 @@ class CommentCreationSerializer(serializers.ModelSerializer):
         'body',
         'author'
         ]
-        read_only_fields = ['id','author']
+        read_only_fields = ['author']
 
 
 class BoardCategorySerializer(serializers.ModelSerializer):

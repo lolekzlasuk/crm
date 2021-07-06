@@ -14,6 +14,8 @@ class BoardCategory(models.Model):
     def get_absolute_url(self):
         return reverse('suggestions:category', args=[str(self.id)])
 
+    class Meta:
+        verbose_name_plural = "board categories"
 
 class Post(models.Model):
     body = models.TextField(max_length=500)
@@ -26,7 +28,7 @@ class Post(models.Model):
         on_delete=models.PROTECT,
         related_name="posts")
 
-    last_comment = models.DateTimeField(default=timezone.now)
+    last_activity = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.title
@@ -35,7 +37,7 @@ class Post(models.Model):
         return reverse('suggestions:postdetail', args=[str(self.id)])
 
     class Meta:
-        ordering = ['-last_comment']
+        ordering = ['-last_activity']
 
 
 class Comment(models.Model):
@@ -47,3 +49,8 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.body[0:20]
+
+    def save(self, *args, **kwargs):
+        self.Post.last_activity = timezone.now()
+        self.Post.save()
+        super(Comment, self).save(*args, **kwargs)

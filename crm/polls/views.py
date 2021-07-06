@@ -14,7 +14,9 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import permission_required
 
 
-class PollListAnswerView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
+class PollListAnswerView(PermissionRequiredMixin,
+                            LoginRequiredMixin,
+                            ListView):
     model = Poll
     template_name = 'polls/poll_record_list.html'
     permission_required = 'polls.view_pollsubmition'
@@ -23,7 +25,9 @@ class PollListAnswerView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
             published_date=None).order_by('-published_date')
         return queryset
 
-class PollAnswerDetailView(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
+class PollAnswerDetailView(PermissionRequiredMixin,
+                            LoginRequiredMixin,
+                            DetailView):
     model = Poll
     template_name = 'polls/poll_record_detail.html'
     permission_required = 'polls.view_pollsubmition'
@@ -31,8 +35,9 @@ class PollAnswerDetailView(PermissionRequiredMixin, LoginRequiredMixin, DetailVi
 
 class PollListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
-        # possibly add .exclude(published_date__lt = self.request.user.date_joined)
-        queryset = Poll.objects.exclude(published_date__lt = self.request.user.date_joined).exclude(
+        # possibly add
+        queryset = Poll.objects.exclude(
+            published_date__lt = self.request.user.date_joined).exclude(
             published_date=None).order_by('-published_date')
         submitions_set = PollSubmition.objects.filter(
             user=self.request.user).exclude(submitions__isnull=True)
@@ -41,7 +46,9 @@ class PollListView(LoginRequiredMixin, ListView):
         return queryset
 
 
-class UnpublishedPollListView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
+class UnpublishedPollListView(PermissionRequiredMixin,
+                                LoginRequiredMixin,
+                                ListView):
     permission_required = 'polls.view_pollsubmition'
 
     def get_queryset(self):
