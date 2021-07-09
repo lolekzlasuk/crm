@@ -117,10 +117,11 @@ $(document).on('click', '.markall', function(e) {
 
 $(document).on('click', '.dropdown_notification', function(e) {
     // var csrftoken = $("input[name=csrfmiddlewaretoken]").val();
-
+    e.preventDefault();
     var pk = $(this).data("pk");
     var urlss = $(this).attr("data-href");
     console.log(urlss)
+    console.log(yoleczko)
     $.ajax({
         type: 'POST',
         url: urlss,

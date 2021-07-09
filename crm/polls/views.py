@@ -35,7 +35,7 @@ class PollAnswerDetailView(PermissionRequiredMixin,
 
 class PollListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
-        # possibly add
+
         queryset = Poll.objects.exclude(
             published_date__lt = self.request.user.date_joined).exclude(
             published_date=None).order_by('-published_date')

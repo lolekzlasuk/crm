@@ -16,7 +16,7 @@ class FileManager(models.Manager):
     def save_file(self, file):
         file_to_save = self.create(file=file)
         name, ext = os.path.splitext(file.name)
-
+        print('workiiinn')
         format_ext_dict = {'.jpg': 'JPEG', '.png': 'PNG', '.gif': 'GIF'}
         if ext in format_ext_dict.keys():
             file_to_save.extension = 'image'
@@ -51,6 +51,9 @@ class News(models.Model):
     def publish(self):
         self.published_date = timezone.now()
         self.save()
+        self.create_notifications()
+
+    def create_notifications(self):
         notification_instance = Notification.objects.create(
             news=self,
             title="New news for you!",
@@ -167,7 +170,7 @@ class DocFile(models.Model):
         'news.KnowledgeCategory', on_delete=models.PROTECT,
         default=2, related_name="files"
     )
-
+    author = models.ForeignKey('auth.User', on_delete=models.PROTECT)
     class Meta:
         ordering = ['-date_created']
 
@@ -202,6 +205,8 @@ class DocQuestion(models.Model):
         ordering = ['-date_created']
 
 
+
+# delte this
 class UserQuestion(models.Model):
     title = models.CharField(max_length=200)
     body = models.TextField(max_length=5000)

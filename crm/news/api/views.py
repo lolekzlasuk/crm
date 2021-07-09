@@ -12,8 +12,10 @@ from accounts.models import UserProfile
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework import status
+from django.contrib.auth.mixins import UserPassesTestMixin
 import json
 import copy
+from rest_framework.decorators import action
 User = get_user_model()
 
 
@@ -61,35 +63,64 @@ class KnowledgeListAPIView(generics.ListAPIView):
         return queryset
 
 # add a search here and retrieve questioins
-class DocQuestionListAPIView(generics.ListAPIView, mixins.CreateModelMixin):
+class DocQuestionListAPIView(
+                            mixins.CreateModelMixin,
+                            mixins.UpdateModelMixin,
+                            mixins.DestroyModelMixin,
+                            generics.ListAPIView):
+
     permission_classes = [permissions.IsAuthenticated,
                           permissions.DjangoModelPermissions,
                           CustomDjangoModelPermission]
     serializer_class = DocQuestionSerializer
-
     def get_queryset(self):
-        queryset = DocQuestion.objects.exclude(answer=None)
+        request = self.request
+        query = request.GET.get('q', None)
+        queryset = DocQuestion.objects.all()
+        if self.request.user.groups.filter(name='Managers').exists():
+            pass
+        else:
+            queryset = queryset.exclude(answer=None)
+
+        if query is not None:
+            queryset = queryset.filter(Q(title__icontains=query) | Q(
+                            answer__icontains=query) | Q(body__icontains=query))
+
         return queryset
 
+
     def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+        if self.request.user.groups.filter(name='Managers').exists():
+            return self.create(request, *args, **kwargs)
+        else:
+            return Response({"detail": 'You do not have permission to perform this action.'},status=status.HTTP_403_FORBIDDEN)
+
+    def patch(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
 
 
-
-# views for uploading news docs docfiles
-
-
-
-class UserQuestionListAPIView(generics.ListAPIView, mixins.CreateModelMixin):
+class UserQuestionCreateAPIView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated,
                           permissions.DjangoModelPermissions,
                           CustomDjangoModelPermission]
     serializer_class = UserQuestionSerializer
-    queryset = UserQuestion.objects.all()
-
-
+    queryset = DocQuestion.objects.all()
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
+
+# class UserQuestionListAPIView(generics.ListAPIView, mixins.CreateModelMixin):
+#     permission_classes = [permissions.IsAuthenticated,
+#                           permissions.DjangoModelPermissions,
+#                           CustomDjangoModelPermission]
+#     serializer_class = UserQuestionSerializer
+#     queryset = UserQuestion.objects.all()
+#
+#
+#     def post(self, request, *args, **kwargs):
+#         return self.create(request, *args, **kwargs)
 
 class DocFileCreateAPIView(generics.CreateAPIView):
         permission_classes = [permissions.IsAuthenticated,
@@ -97,18 +128,18 @@ class DocFileCreateAPIView(generics.CreateAPIView):
         serializer_class = DocFileUploadSerializer
         queryset = DocFile.objects.all()
 
-class NewsViewSet(viewsets.ModelViewSet):
-    # mapping serializer into the action
+class NewsFileCreateAPIView(generics.CreateAPIView):
+        permission_classes = [permissions.IsAuthenticated,
+                              permissions.DjangoModelPermissions]
+        serializer_class = NewsFileSerializer
+        queryset = NewsFile.objects.all()
+
+class DocumentFViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated,
                           permissions.DjangoModelPermissions,
                           CustomDjangoModelPermission]
-    serializer_classes = {
-        'list': NewsListSerializer,
-    }
-    default_serializer_class = NewsCRUDSerializer # Your default serializer
-    queryset = News.objects.all()
-    def get_serializer_class(self):
-        return self.serializer_classes.get(self.action, self.default_serializer_class)
+    serializer = DocumentFSerializer
+    queryset = DocumentF.objects.all()
 
     def get_queryset(self):
         userprofile = self.request.user.userprofile
@@ -119,6 +150,55 @@ class NewsViewSet(viewsets.ModelViewSet):
         qs = qs.filter(Q(target_departament=userprofile.departament) | Q(
             target_departament="non"))
         return qs
+
+class NewsViewSet(viewsets.ModelViewSet):
+    # mapping serializer into the action
+    permission_classes = [permissions.IsAuthenticated,
+                          permissions.DjangoModelPermissions,
+                          CustomDjangoModelPermission]
+    serializer_classes = {
+        'list': NewsListSerializer,
+    }
+    default_serializer_class = NewsCRUDSerializer
+    queryset = News.objects.all()
+
+
+    def retrieve(self, request, *args, **kwargs):
+        user = User.objects.get(username=request.user)
+        news = self.get_object()
+        notification = Notification.objects.get(news=news)
+        notificationreadflag = NotificationReadFlag.objects.get(
+            user=user, notification=notification)
+        notificationreadflag.read = True
+        notificationreadflag.save()
+        serializer = self.get_serializer(news)
+        return Response(serializer.data)
+
+    def get_serializer_class(self):
+        return self.serializer_classes.get(self.action, self.default_serializer_class)
+
+    def get_queryset(self):
+        userprofile = self.request.user.userprofile
+        qs = News.objects.all()
+        if self.request.user.groups.filter(name='Managers').exists():
+            qs = qs.order_by('-date_created')
+        else:
+            qs = qs.exclude(
+                published_date=None).order_by('-published_date')
+            qs = qs.filter(Q(target_location=userprofile.location) | Q(
+                target_location="non"))
+            qs = qs.filter(Q(target_departament=userprofile.departament) | Q(
+                target_departament="non"))
+        return qs
+
+    @action(detail=True, methods=['get'])
+    def publish(self, request, pk=None):
+        obj = News.objects.get(pk=pk)
+        obj.publish()
+        return Response({"published_date": obj.published_date},status=status.HTTP_200_OK)
+
+
+
 
 # class NewsListDetailAPIView(generics.ListAPIView, mixins.RetrieveModelMixin, mixins.UpdateModelMixin):
 #     model = News

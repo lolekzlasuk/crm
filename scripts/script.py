@@ -24,27 +24,29 @@ r = requests.post(AUTH_ENDPOINT,json.dumps(data), headers=headers)
 token = r.json()['token']
 headers2 = {
     "Authorization": "JWT " + token,
+    "Content-Type": "application/json",
     # "Content-Type" : "multipart/form-data"
     }
 # print(token)
 # with open(image_path, 'rb') as r:
 #     files = {'file': r}
 data2 = {
-
-         'Post':3,
-         'body':"test body last activity"
+ 'title':"test test",
+ 'body':"body test",
+ 'answer':"answer test",
 }
 
 # with open(image_path, 'rb') as image:
 #     file_data = {
-#     'profile_pic': image,
+#     'file': image,
 #     }
-#     # r2 = requests.patch(ENDPOINT, files=file_data, headers=headers2)
-#     # token2 = r2.json()#['token']
-#     # print(token2)
-ENDPOINT = "http://localhost:8080/news/api/router/news/1"
-r2 = requests.get(ENDPOINT, headers=headers2)
-token2 = r2.json()#['token']
+#     ENDPOINT = "http://localhost:8080/news/api/createnewsfile/"
+#     r2 = requests.post(ENDPOINT, headers=headers2, files = file_data)
+#     token2 = r2.json()#['token']
+#     print(token2)
+ENDPOINT = "http://localhost:8080/news/api/faq/"
+r2 = requests.get(ENDPOINT,json.dumps(data2), headers=headers2)
+token2 = r2.json()
 print(token2)
 
 

@@ -29,12 +29,18 @@ class NewsFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = NewsFile
         fields = [
+        'id',
         'file',
         'miniature'
         ]
 
+        read_only_fields = ['id','miniature']
 
-
+    def create(self, validated_data):
+        file_obj = validated_data.pop('file')
+        object = NewsFile.objects.save_file(file_obj)
+        object.save()
+        return object
 
 class FilteredListSerializer(serializers.ListSerializer):
 
@@ -46,6 +52,18 @@ class FilteredListSerializer(serializers.ListSerializer):
         data = data.filter(Q(target_departament=userprofile.departament) | Q(
             target_departament="non"))
         return super(FilteredListSerializer, self).to_representation(data)
+
+
+class DocumentFSmallSerializer(serializers.ModelSerializer):
+
+
+    class Meta:
+        list_serializer_class = FilteredListSerializer
+        model = DocumentF
+        fields = ['id',
+                'title',
+                'date_created']
+        read_only_fields = ['id','date_created']
 
 
 class DocumentFSerializer(serializers.ModelSerializer):
@@ -61,10 +79,14 @@ class DocumentFSerializer(serializers.ModelSerializer):
         model = DocumentF
         fields = ['id',
                 'title',
-                'body',
-                'author',
-                'date_created']
-        read_only_fields = ['id','author','date_created']
+            'body',
+            'author',
+            'date_created',
+            'target_departament',
+            'target_location',
+            'category' ]
+        read_only_fields = ['id','date_created']
+
 
 class DocFileSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
@@ -82,8 +104,10 @@ class DocFileSerializer(serializers.ModelSerializer):
                 'date_created']
 
         read_only_fields = ['id','size','date_created']
+
+
 class KnowledgeCategorySerializer(serializers.ModelSerializer):
-     docs = DocumentFSerializer(many=True, read_only=True)
+     docs = DocumentFSmallSerializer(many=True, read_only=True)
      files = DocFileSerializer(many=True, read_only=True)
      class Meta:
         model = KnowledgeCategory
@@ -104,13 +128,15 @@ class UserQuestionSerializer(serializers.ModelSerializer):
     default=serializers.CurrentUserDefault()
 )
     class Meta:
-        model = UserQuestion
-        fields = ['id','title','body','author']
-        read_only_fields = ['id','author']
+        model = DocQuestion
+        fields = ['title','body','author']
+
 
 
 class DocFileUploadSerializer(serializers.ModelSerializer):
-
+    author = serializers.HiddenField(
+    default=serializers.CurrentUserDefault()
+)
     class Meta:
         model = DocFile
         fields = [
@@ -119,12 +145,12 @@ class DocFileUploadSerializer(serializers.ModelSerializer):
         'target_departament',
         'target_location',
         'category',
+        'author'
         ]
 
 
-
 class NewsListSerializer(serializers.ModelSerializer):
-
+    published_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
     files = NewsFileSerializer(many=True, read_only=True)
     class Meta:
         list_serializer_class = FilteredListSerializer
@@ -138,7 +164,14 @@ class NewsListSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
 class NewsCRUDSerializer(serializers.ModelSerializer):
-
+    author = serializers.HiddenField(
+    default=serializers.CurrentUserDefault()
+)
+    published_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
+    def to_representation(self, instance):
+        rep = super(NewsCRUDSerializer, self).to_representation(instance)
+        rep['author'] = instance.author.userprofile.name
+        return rep
     files = NewsFileSerializer(many=True, read_only=True)
     class Meta:
         list_serializer_class = FilteredListSerializer
@@ -148,9 +181,10 @@ class NewsCRUDSerializer(serializers.ModelSerializer):
         'body',
         'author',
         'title',
+        'published_date',
         'files',
         'target_departament',
         'target_location',
 
         ]
-        read_only_fields = ['id','author']
+        read_only_fields = ['id','author','published_date']
