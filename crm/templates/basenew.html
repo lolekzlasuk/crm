@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+{% load static %}
+{% load groupfilter %}
+{% load i18n %}
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>intranet</title>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="{% static 'css/input.css' %}">
+  <script src="{% static 'js/script.js' %}" charset="utf-8"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+  <script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
+  <style media="screen">
+    {
+      % block extra_css %
+    }
+
+      {
+      % endblock %
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- covers that collapse dropdowns on click -->
+   <div class="cover" onclick="toggleDropdown1()">
+   </div>
+   <div class="cover2" onclick="toggleDropdown2()">
+   </div>
+
+   <div class="all-content-wrapper">
+
+
+      <nav class="top-bar">
+         <div class="top-bar__logo ">
+            <span>intranet</span>
+         </div>
+         <div onclick="collapseNavigation()" id="top-bar__collapse" class="top-bar__item">
+            <i class="fa fa-bars top-bar_icon"></i>
+         </div>
+
+         <div onclick="toggleDropdown1()" id="dropdown-trigger" class="top-bar__item">
+            <span><i class="fas fa-globe top-bar_icon"></i></span>
+         </div>
+
+
+
+
+      <div id="dropdown" class=" dropdown dropdown--notif">
+        <header>
+          <span>Notifications</span> <span data-href="{% url "news:markall" %}" class="smol markall">Mark all as read</span>
+        </header>
+        <div class="dropdown__body">
+          {% for each in user.notificationreadflag_set.all|in_category|slice:":7" %}
+          <a href="{% url 'news:newsdetail' pk=each.notification.news.pk %}">
+            <div data-href="{% url 'news:flagtoggle' %}" data-pk="{{each.notification.news.pk}}" class="dropdown_notification primary-hover">
+              <div class="dropdown_notification__header">
+                {{each.notification.title}}
+              </div>
+              <div class="dropdown_notification__body">
+                {{each.notification.body}}
+              </div>
+            </div>
+          </a>
+          {% empty %}
+          <span class="nonews"> You dont have any new notifications</span>
+          {% endfor %}
+        </div>
+        <footer>
+        </footer>
+      </div>
+
+
+
+
+      <div onclick="toggleDropdown2()" id="dropdown-trigger-2" class="top-bar__item">
+        <span> <i class="fas fa-user-alt"></i> {{user.userprofile.name}}</span>
+        <div id="dropdown2" class="dropdown dropdown--prof">
+          <div class="dropdown__body">
+            <a href="{% url 'accounts:profile' %}">
+              <div class="dropdown_notification-last secondary-hover">Profile</div>
+            </a>
+            <a href="{% url 'accounts:user_logout' %}">
+              <div class="dropdown_notification-last secondary-hover">
+                Logout</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+
+
+
+
+    <div class="undercontent">
+      <div class="sidebar">
+        <nav>
+          <div class="nav__title">
+            navigation
+          </div>
+          {% now "n" as current %}
+          {% now "Y" as currentyear %}
+          <a href="{% url 'news:news_list' %}" class="nav__link" name="Home"><i class="fas fa-home"></i> <span class="navlink">Home</span></a>
+          <a href="{% url 'news:knowledge' %}" class="nav__link" name="Knowledge"><i class="fas fa-paperclip"></i> <span class="navlink">Knowledge</span></a>
+          <a href="{% url 'news:faq' %}" class="nav__link" name="faq"><i class="fas fa-paperclip"></i> <span class="navlink">Q&A</span></a>
+          <a href="{% url 'calendary:calendary' month=current year=currentyear %}" class="nav__link" name="Calendar"><i class="fas fa-calendar-alt"></i> <span class="navlink">Calendar</span></a>
+          <a href="{% url 'suggestions:postlist' %}" class="nav__link" name="Message Board"><i class="far fa-comment-alt"></i> <span class="navlink">Message Board</span></a>
+          <a href="{% url 'accounts:employees' %}" class="nav__link" name="Contact List"><i class="fas fa-phone"></i> <span class="navlink">Contact List</span></a>
+          <a href="{% url 'polls:poll_list' %}" class="nav__link" name="Polls"><i class="fas fa-poll"></i> <span class="navlink">Surveys</span></a>
+        </nav>
+
+      </div>
+
+
+
+      <div class="right-column">
+        <div class="content-block">
+          {% block body_block %}
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

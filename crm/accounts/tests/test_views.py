@@ -3,7 +3,7 @@ from django.urls import reverse
 from accounts.models import UserProfile
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
-
+from django.http import HttpResponseForbidden
 class TestAccountsViews(TestCase):
 
     def setUp(self):
@@ -36,7 +36,7 @@ class TestAccountsViews(TestCase):
             telephone='22',
             email='testuser2@email.com',
             employee_id='3',
-            departament='sal'
+            departament='sal',
             location='PZN'
              )
 
@@ -46,8 +46,8 @@ class TestAccountsViews(TestCase):
             telephone='33',
             email='testuser3@email.com',
             employee_id='4',
-            departament='mar'
-            location='KRK'
+            departament='mar',
+            location='KRK',
              )
 
         test_user4_userprofile = UserProfile.objects.create(

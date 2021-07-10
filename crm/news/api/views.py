@@ -48,7 +48,8 @@ class CustomDjangoModelPermission(permissions.DjangoModelPermissions):
 
 
 class KnowledgeListAPIView(generics.ListAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated,permissions.DjangoModelPermissions,
+    CustomDjangoModelPermission]
     serializer_class = KnowledgeCategorySerializer
     passed_id = None
 

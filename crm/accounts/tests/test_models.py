@@ -99,15 +99,12 @@ class UserProfileModelTest(TestCase):
 
     def test_userprofile_name_max_length(self):
         max_length= self.test_user1_userprofile._meta.get_field('name').max_length
-        self.assertEqual(max_length, 200)
+        self.assertEqual(max_length, 30)
 
     def test_userprofile_email_max_length(self):
         max_length= self.test_user1_userprofile._meta.get_field('email').max_length
-        self.assertEqual(max_length, 200)
+        self.assertEqual(max_length, 50)
 
-    def test_userprofile_employee_id_max_length(self):
-        max_length= self.test_user1_userprofile._meta.get_field('employee_id').max_length
-        self.assertEqual(max_length, 20)
 
     def test_userprofile_position_max_length(self):
         max_length= self.test_user1_userprofile._meta.get_field('position').max_length

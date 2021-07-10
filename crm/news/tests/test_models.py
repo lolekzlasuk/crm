@@ -1,6 +1,7 @@
 from django.test import TestCase, override_settings
 from accounts.models import UserProfile
 from django.contrib.auth.models import User
+from django.http import HttpResponseForbidden
 from news.models import *
 from datetime import date, timedelta
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -93,11 +94,11 @@ class NewsModelTest(TestCase):
 
     def test_news_slug_max_length(self):
         max_length= self.test_news._meta.get_field('slug').max_length
-        self.assertEqual(max_length, 200)
+        self.assertEqual(max_length, 20)
 
-    def test_news_slug_max_length(self):
-        max_length= self.test_news._meta.get_field('slug').max_length
-        self.assertEqual(max_length, 200)
+    # def test_news_slug_max_length(self):
+    #     max_length= self.test_news._meta.get_field('slug').max_length
+    #     self.assertEqual(max_length, 200)
 
     def test_news_slug_creation(self):
         expected_slug = "test-title"
@@ -124,11 +125,6 @@ class NewsModelTest(TestCase):
         notification.refresh_from_db()
         self.assertEqual(notification.notificationreadflag_set.count(), 1)
 
-    def test_news_if_publish_creates_news_flags(self):
-        self.assertEqual(self.test_news.newsreadflag_set.count(), 0)
-        self.test_news.publish()
-        self.test_news.refresh_from_db()
-        self.assertEqual(self.test_news.newsreadflag_set.count(), 1)
 
 @override_settings(MEDIA_ROOT=MEDIA_ROOT)
 class NewsFileModelTest(TestCase):
@@ -313,51 +309,51 @@ class NotificationReadFlagModelTest(TestCase):
 
 
 
-
-class NewsReadFlagModelTest(TestCase):
-
-
-    @classmethod
-    def setUpTestData(cls):
-        test_user1 = User.objects.create_user(username='testuser1', password='1X<ISRUkw+tuK')
-
-        test_user1.save()
-        test_user1_userprofile = UserProfile.objects.create(
-            user=test_user1,
-            name='Test User1',
-            telephone='11',
-            email='testuser1@email.com',
-            employee_id='2',
-            departament='HR',
-            location='WAW'
-            )
-
-        cls.test_news = News.objects.create(
-            title="test title",
-            body='test body',
-            author= test_user1,
-        )
-        cls.test_news.publish()
-        cls.test_news.save()
-        cls.test_newsreadflag = NewsReadFlag.objects.get(pk=1)
-
-    def test_newsreadflag_read_label(self):
-        field_label = self.test_newsreadflag._meta.get_field('read').verbose_name
-        self.assertEqual(field_label, 'read')
-
-    def test_newsreadflag_user_label(self):
-        field_label = self.test_newsreadflag._meta.get_field('user').verbose_name
-        self.assertEqual(field_label, 'user')
-
-    def test_newsreadflag_news_label(self):
-        field_label = self.test_newsreadflag._meta.get_field('news').verbose_name
-        self.assertEqual(field_label, 'news')
-
-    def test_newsreadflag_object_name(self):
-        expected_object_name = '{0} ({1}) '.format(self.test_newsreadflag.user.userprofile, self.test_newsreadflag.news)
-        self.assertEqual(str(self.test_newsreadflag), expected_object_name)
-
-
+#
+# class NewsReadFlagModelTest(TestCase):
+#
+#
+#     @classmethod
+#     def setUpTestData(cls):
+#         test_user1 = User.objects.create_user(username='testuser1', password='1X<ISRUkw+tuK')
+#
+#         test_user1.save()
+#         test_user1_userprofile = UserProfile.objects.create(
+#             user=test_user1,
+#             name='Test User1',
+#             telephone='11',
+#             email='testuser1@email.com',
+#             employee_id='2',
+#             departament='HR',
+#             location='WAW'
+#             )
+#
+#         cls.test_news = News.objects.create(
+#             title="test title",
+#             body='test body',
+#             author= test_user1,
+#         )
+#         cls.test_news.publish()
+#         cls.test_news.save()
+#         cls.test_newsreadflag = NewsReadFlag.objects.get(pk=1)
+#
+#     def test_newsreadflag_read_label(self):
+#         field_label = self.test_newsreadflag._meta.get_field('read').verbose_name
+#         self.assertEqual(field_label, 'read')
+#
+#     def test_newsreadflag_user_label(self):
+#         field_label = self.test_newsreadflag._meta.get_field('user').verbose_name
+#         self.assertEqual(field_label, 'user')
+#
+#     def test_newsreadflag_news_label(self):
+#         field_label = self.test_newsreadflag._meta.get_field('news').verbose_name
+#         self.assertEqual(field_label, 'news')
+#
+#     def test_newsreadflag_object_name(self):
+#         expected_object_name = '{0} ({1}) '.format(self.test_newsreadflag.user.userprofile, self.test_newsreadflag.news)
+#         self.assertEqual(str(self.test_newsreadflag), expected_object_name)
+#
+#
 
 
 class KnowledgeCategoryModelTest(TestCase):
@@ -393,12 +389,17 @@ class DocFileModelTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
+        cls.test_user1 = User.objects.create_user(username='testuser1', password='1X<ISRUkw+tuK')
+
+        cls.test_user1.save()
         cls.test_category = KnowledgeCategory.objects.create(title="test category")
         cls.test_file = SimpleUploadedFile('testfile.txt',b'test contents')
         cls.test_docfile = DocFile.objects.create(
             title="test title",
             file = cls.test_file,
-            category = cls.test_category,)
+            category = cls.test_category,
+            author = cls.test_user1,
+            )
 
 
     def test_docfile_title_label(self):
