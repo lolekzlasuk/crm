@@ -7,8 +7,8 @@ from django.contrib.auth.models import User
 class EmailPhoneBackend(ModelBackend):
     def authenticate(self, request, username, password, **kwargs):
         try:
-            userprofile = UserProfile.objects.get(Q(email__iexact=username) | Q(
-                telephone__iexact=username) | Q(user__username__iexact=username))
+            userprofile = UserProfile.objects.get(Q(email__iexact=username) | \
+             Q(telephone__iexact=username) | Q(user__username__iexact=username))
             user = userprofile.user
         except UserProfile.DoesNotExist:
             user = UserModel.objects.get(username=username)
