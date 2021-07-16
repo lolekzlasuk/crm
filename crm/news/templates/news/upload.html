@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block extra_css %}  .nav__link[name="Home"] {background-color: #1caf9a; color: white;} {% endblock %}
+{% block extra_css %} .nav__link[name="Home"] {background-color: #1caf9a; color: white;} {% endblock %}
 
 {% block body_block %}
 <div class="site-header">
@@ -8,29 +8,29 @@
 
 
     <span class="site-header__title">
-     Submit
+      Submit
     </span>
   </div>
   <div class="site-header__right">
     <span class="site-header__breadcrumb">
-    <div class="breadcrumbs">
-    <a href="{% url 'news:news_list' %}">Home</a>
+      <div class="breadcrumbs">
+        <a href="{% url 'news:news_list' %}">Home</a>
 
-    </div>
-</span>
+      </div>
+    </span>
   </div>
 </div>
 <div class="form-container">
 
 
-<form method="POST" class="post-form" enctype="multipart/form-data">
+  <form method="POST" class="post-form" enctype="multipart/form-data">
 
-        {% csrf_token %}
+    {% csrf_token %}
 
-        {{ form.as_p}}
-        {{ file_form.as_p }}
-        <button type="submit" class="save btn btn-default">Save</button>
-</form>
+    {{ form.as_p}}
+    {{ file_form.as_p }}
+    <button type="submit" class="save btn btn-default">Save</button>
+  </form>
 </div>
 
 {% endblock %}

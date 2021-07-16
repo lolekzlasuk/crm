@@ -11,5 +11,8 @@ urlpatterns = [
     path('profile/password/', views.change_password, name='change_password'),
     path('profile/profile_pic_default',
          views.delete_profile_pic, name='delete_profile_pic'
-    ),
+         ),
+    path('register/', views.register, name='register'),
+    path('first_login/<str:string>/', views.first_login, name='first_login'),
+    path('set_password/', views.set_password, name='set_password'),
 ]

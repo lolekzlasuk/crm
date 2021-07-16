@@ -1,17 +1,17 @@
 from django.test import TestCase, Client, override_settings
 from django.urls import reverse
-from accounts.models import UserProfile
-from django.contrib.auth.models import User
-from datetime import date, timedelta
-from news.models import *
-from django.contrib.auth.models import Permission
-from django.contrib.auth.models import Group
+from django.http import HttpResponseForbidden
+from django.contrib.auth.models import Permission, Group, User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils import timezone
+from accounts.models import UserProfile
+from news.models import KnowledgeCategory, DocumentF, DocQuestion, DocFile, \
+    NewsFile, DocumentF, News, NotificationReadFlag
+from datetime import date, timedelta
 import json
 import tempfile
 import shutil
-from django.http import HttpResponseForbidden
+
 MEDIA_ROOT = tempfile.mkdtemp()
 
 
@@ -52,31 +52,31 @@ class TestKnowledgeCategoryListView(TestCase):
 
         test_user1_userprofile.save()
         test_user2_userprofile.save()
-        cls.test_category = KnowledgeCategory.objects.create(title="Test Category")
-        cls.test_category_2 = KnowledgeCategory.objects.create(title="Test Category 2")
+        cls.test_category = KnowledgeCategory.objects.create(title='Test Category')
+        cls.test_category_2 = KnowledgeCategory.objects.create(title='Test Category 2')
         i = 0
         file_test_category = cls.test_category
 
         while i < 11:
             if i%2 == 0:
-                test_location = "WAW"
+                test_location = 'WAW'
             elif i%3 == 0:
-                test_location = "non"
+                test_location = 'non'
             else:
-                test_location = "PZN"
+                test_location = 'PZN'
 
             if i%4 == 0:
-                test_departament = "HR"
+                test_departament = 'HR'
             elif i%3 == 0:
-                test_departament = "non"
+                test_departament = 'non'
             else:
-                test_departament = "sal"
+                test_departament = 'sal'
 
 
             instance = DocFile.objects.create(
                 file = SimpleUploadedFile(
-                    "best_dasdasasdds.txt",
-                    b"these are the file contents!"
+                    'best_dasdasasdds.txt',
+                    b'these are the file contents!'
                 ),
                 title = 'test title',
                 date_created = timezone.now(),
@@ -88,7 +88,7 @@ class TestKnowledgeCategoryListView(TestCase):
             instance = DocumentF.objects.create(
 
                 title = 'test title',
-                body = "test body",
+                body = 'test body',
                 author = test_user1,
                 date_created = timezone.now(),
                 target_departament = test_departament,
@@ -170,8 +170,8 @@ class TestKnowledgeCategoryDetailView(TestCase):
 
         test_user1_userprofile.save()
         test_user2_userprofile.save()
-        cls.test_category = KnowledgeCategory.objects.create(title="Test Category")
-        cls.test_category_2 = KnowledgeCategory.objects.create(title="Test Category 2")
+        cls.test_category = KnowledgeCategory.objects.create(title='Test Category')
+        cls.test_category_2 = KnowledgeCategory.objects.create(title='Test Category 2')
         cls.test_category.save()
         cls.test_category_2.save()
         i = 0
@@ -179,26 +179,26 @@ class TestKnowledgeCategoryDetailView(TestCase):
 
         while i < 11:
             if i%2 == 0:
-                test_location = "WAW"
+                test_location = 'WAW'
                 file_test_category = cls.test_category_2
             elif i%3 == 0:
-                test_location = "non"
+                test_location = 'non'
                 file_test_category = cls.test_category_2
             else:
-                test_location = "PZN"
+                test_location = 'PZN'
 
             if i%4 == 0:
-                test_departament = "HR"
+                test_departament = 'HR'
             elif i%3 == 0:
-                test_departament = "non"
+                test_departament = 'non'
             else:
-                test_departament = "sal"
-            # print(test_location + "  " + test_departament + "  " + file_test_category.title)
+                test_departament = 'sal'
+            # print(test_location + '  ' + test_departament + '  ' + file_test_category.title)
 
             instance = DocFile.objects.create(
                 file = SimpleUploadedFile(
-                    "best_file_eva.txt",
-                    b"these are the file contents!"
+                    'best_file_eva.txt',
+                    b'these are the file contents!'
                 ),
                 title = 'test title',
                 date_created = timezone.now(),
@@ -210,7 +210,7 @@ class TestKnowledgeCategoryDetailView(TestCase):
             instance = DocumentF.objects.create(
 
                 title = 'test title',
-                body = "test body",
+                body = 'test body',
                 author = test_user1,
                 date_created = timezone.now(),
                 target_departament = test_departament,
@@ -295,8 +295,8 @@ class TestQuestionsListView(TestCase):
 
         test_user1_userprofile.save()
         test_user2_userprofile.save()
-        cls.test_category = KnowledgeCategory.objects.create(title="Test Category")
-        cls.test_category_2 = KnowledgeCategory.objects.create(title="Test Category 2")
+        cls.test_category = KnowledgeCategory.objects.create(title='Test Category')
+        cls.test_category_2 = KnowledgeCategory.objects.create(title='Test Category 2')
         cls.test_category.save()
         cls.test_category_2.save()
         i = 0
@@ -304,28 +304,28 @@ class TestQuestionsListView(TestCase):
 
         while i < 11:
             if i%2 == 0:
-                test_location = "WAW"
+                test_location = 'WAW'
                 file_test_category = cls.test_category_2
             elif i%3 == 0:
-                test_location = "non"
+                test_location = 'non'
                 file_test_category = cls.test_category_2
             else:
-                test_location = "PZN"
+                test_location = 'PZN'
 
             if i%4 == 0:
-                test_departament = "HR"
+                test_departament = 'HR'
             elif i%3 == 0:
-                test_departament = "non"
+                test_departament = 'non'
             else:
-                test_departament = "sal"
+                test_departament = 'sal'
 
-            # print("%s %s %s" %(test_location,test_departament,file_test_category))
+            # print('%s %s %s' %(test_location,test_departament,file_test_category))
 
             instance = DocQuestion.objects.create(
 
                 title = 'test title',
-                body = "test body",
-                answer = "test answer",
+                body = 'test body',
+                answer = 'test answer',
                 date_created = timezone.now(),
                 target_departament = test_departament,
                 target_location  = test_location,
@@ -358,12 +358,12 @@ class TestQuestionsListView(TestCase):
 
     def test_view_if_files_filtered_by_category_2(self):
         login = self.client.login(username='testuser2', password='1ddsSRUkw+tuK')
-        response = self.client.get("%s?category=%s" % (reverse('news:faq'),2))
+        response = self.client.get('%s?category=%s' % (reverse('news:faq'),2))
         self.assertEquals(response.context['object_list'].count(),3)
 
     def test_view_if_files_filtered_by_category_1(self):
         login = self.client.login(username='testuser2', password='1ddsSRUkw+tuK')
-        response = self.client.get("%s?category=%s" % (reverse('news:faq'),1))
+        response = self.client.get('%s?category=%s' % (reverse('news:faq'),1))
         self.assertEquals(response.context['object_list'].count(),3)
 
     def test_view_if_filtered_by_location_depratament_1(self):
@@ -422,11 +422,11 @@ class TestQuestionsListView(TestCase):
 #         test_user1_userprofile.save()
 #         test_user2_userprofile.save()
 #         UserQuestion.objects.create(
-#             title="test title",
+#             title='test title',
 #             body='test body',
 #             author= test_user1
 #         )
-#         permission = Permission.objects.get(name="Can view user question")
+#         permission = Permission.objects.get(name='Can view user question')
 #         test_user2.user_permissions.add(permission)
 #         test_user2.save()
 #
@@ -491,7 +491,7 @@ class TestUnpublishedNewsListView(TestCase):
         while i < 4:
 
             instance = News.objects.create(
-                title="test title",
+                title='test title',
                 body='test body',
                 author= test_user1
             )
@@ -499,7 +499,7 @@ class TestUnpublishedNewsListView(TestCase):
             i +=1
         instance.publish()
 
-        permission = Permission.objects.get(name="Can add news")
+        permission = Permission.objects.get(name='Can add news')
         test_user2.user_permissions.add(permission)
         test_user2.save()
 
@@ -572,11 +572,11 @@ class TestNewsDetailView(TestCase):
         test_user2_userprofile.save()
         test_user3_userprofile.save()
         cls.test_news = News.objects.create(
-            title="test title",
+            title='test title',
             body='test body',
             author= test_user1,
-            target_location = "PZN",
-            target_departament = "sal"
+            target_location = 'PZN',
+            target_departament = 'sal'
         )
 
         cls.test_news.publish()
@@ -650,16 +650,16 @@ class TestDocDetailView(TestCase):
         test_user2_userprofile.save()
         test_user3_userprofile.save()
 
-        cls.test_category = KnowledgeCategory.objects.create(title="Test Category")
-        cls.test_category_2 = KnowledgeCategory.objects.create(title="Test Category 2")
+        cls.test_category = KnowledgeCategory.objects.create(title='Test Category')
+        cls.test_category_2 = KnowledgeCategory.objects.create(title='Test Category 2')
         cls.test_category.save()
         cls.test_category_2.save()
         cls.test_document = DocumentF.objects.create(
-            title="test title",
+            title='test title',
             body='test body',
             author= test_user1,
-            target_location = "PZN",
-            target_departament = "sal"
+            target_location = 'PZN',
+            target_departament = 'sal'
         )
 
 
@@ -728,7 +728,7 @@ class TestNewsListView(TestCase):
         while i < 4:
 
             instance = News.objects.create(
-                title="test title",
+                title='test title',
                 body='test body',
                 author= test_user1
             )
@@ -741,27 +741,27 @@ class TestNewsListView(TestCase):
         i = 0
         while i < 11:
             if i%2 == 0:
-                test_location = "WAW"
+                test_location = 'WAW'
 
             elif i%3 == 0:
-                test_location = "non"
+                test_location = 'non'
             else:
-                test_location = "PZN"
+                test_location = 'PZN'
 
             if i%5 == 0:
-                test_departament = "HR"
+                test_departament = 'HR'
             else:
-                test_departament = "mar"
+                test_departament = 'mar'
 
             instance = News.objects.create(
-                title="test title",
+                title='test title',
                 body='test body',
                 author= test_user1,
                 target_location=test_location,
                 target_departament=test_departament,
             )
             i +=1
-            # print("%s, %s" %(instance.target_location,instance.target_departament))
+            # print('%s, %s' %(instance.target_location,instance.target_departament))
             instance.publish()
 
 
@@ -798,7 +798,7 @@ class TestPostNewsView(TestCase):
         test_user2.save()
         test_user1.save()
 
-        permission = Permission.objects.get(name="Can add news")
+        permission = Permission.objects.get(name='Can add news')
         test_user2.user_permissions.add(permission)
         test_user2.save()
 
@@ -849,12 +849,12 @@ class TestPublishNewsView(TestCase):
             departament='sal',
             location='PZN'
             )
-        permission = Permission.objects.get(name="Can add news")
+        permission = Permission.objects.get(name='Can add news')
         test_user2.user_permissions.add(permission)
         test_user2.save()
 
         cls.test_news = News.objects.create(
-            title="test title",
+            title='test title',
             body='test body',
             author= test_user1,
         )
@@ -911,12 +911,12 @@ class TestAnswerFaqView(TestCase):
             departament='sal',
             location='PZN'
             )
-        permission = Permission.objects.get(name="Can view user question")
+        permission = Permission.objects.get(name='Can view user question')
         test_user2.user_permissions.add(permission)
         test_user2.save()
 
         cls.test_userquestion = UserQuestion.objects.create(
-            title="test title",
+            title='test title',
             body='test body',
             author= test_user1,
         )
@@ -957,7 +957,7 @@ class TestFlagToggleView(TestCase):
 
 
         cls.test_news = News.objects.create(
-            title="test title",
+            title='test title',
             body='test body',
             author= test_user1,
         )
@@ -1022,7 +1022,7 @@ class TestFlagToggleView(TestCase):
 #
 #
 #         cls.test_news = News.objects.create(
-#             title="test title",
+#             title='test title',
 #             body='test body',
 #             author= test_user1,
 #         )
@@ -1076,12 +1076,12 @@ class TestMarkallView(TestCase):
 
 
         cls.test_news = News.objects.create(
-            title="test title",
+            title='test title',
             body='test body',
             author= test_user1,
         )
         cls.test_news_2 = News.objects.create(
-            title="test title 2",
+            title='test title 2',
             body='test body',
             author= test_user1,
         )
@@ -1147,7 +1147,7 @@ class TestPostDocumentView(TestCase):
         test_user2.save()
         test_user1.save()
 
-        permission = Permission.objects.get(name="Can add document f")
+        permission = Permission.objects.get(name='Can add document f')
         test_user2.user_permissions.add(permission)
         test_user2.save()
 
@@ -1179,7 +1179,7 @@ class TestPostDocFileView(TestCase):
         test_user2.save()
         test_user1.save()
 
-        permission = Permission.objects.get(name="Can add doc file")
+        permission = Permission.objects.get(name='Can add doc file')
         test_user2.user_permissions.add(permission)
         test_user2.save()
 
@@ -1211,7 +1211,7 @@ class TestPostQuestionView(TestCase):
         test_user2.save()
         test_user1.save()
 
-        permission = Permission.objects.get(name="Can add doc question")
+        permission = Permission.objects.get(name='Can add doc question')
         test_user2.user_permissions.add(permission)
         test_user2.save()
 

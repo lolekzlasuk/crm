@@ -1,6 +1,5 @@
-
 {% extends 'base.html' %}
-{% block extra_css %}  .nav__link[name="Knowledge"] {background-color: #1caf9a; color: white;} {% endblock %}
+{% block extra_css %} .nav__link[name="Knowledge"] {background-color: #1caf9a; color: white;} {% endblock %}
 {% block body_block %}
 {% load static %}
 {% load groupfilter %}
@@ -15,13 +14,13 @@
   </div>
   <div class="site-header__right">
     <span class="site-header__breadcrumb">
-    <div class="breadcrumbs">
-    <a href="{% url 'news:news_list' %}">Home</a>
-     &rsaquo;
-     <a href="{% url 'news:knowledge' %}">Knowledge</a>
-     &rsaquo; <span>{{object.title}}</span>
-    </div>
-</span>
+      <div class="breadcrumbs">
+        <a href="{% url 'news:news_list' %}">Home</a>
+        &rsaquo;
+        <a href="{% url 'news:knowledge' %}">Knowledge</a>
+        &rsaquo; <span>{{object.title}}</span>
+      </div>
+    </span>
   </div>
 </div>
 {% if request.user|has_group:"Managers" %}
@@ -31,112 +30,113 @@
 </div>
 {% endif %}
 
-  <div class="content-container">
+<div class="content-container">
 
 
-    <div class="objecta">
+  <div class="objecta">
 
-    </div>
-    <div class="Ccard">
+  </div>
+  <div class="Ccard">
 
-      <div class="Ccard_header">
-
-
-        <div class="Ccard_title">
-
-          Categories
-        </div>
-      </div>
-      <div class="Ccard_body">
-        <div class="doc_grid">
-          <a class="buttonn" href="{% url 'news:knowledge' %}">
-            <div class="doc secondary-hover">All</div>
-          </a>
-          {% for cat in categories %}
-
-          <a class="buttonn" href="{% url 'news:knowledgedetail' pk=cat.pk %}">
-            <div class="doc secondary-hover">{{cat.title}} </div>
-          </a>
+    <div class="Ccard_header">
 
 
-          {% endfor %}
-        </div>
+      <div class="Ccard_title">
+
+        Categories
       </div>
     </div>
+    <div class="Ccard_body">
+      <div class="doc_grid">
+        <a class="buttonn" href="{% url 'news:knowledge' %}">
+          <div class="doc secondary-hover">All</div>
+        </a>
+        {% for cat in categories %}
+
+        <a class="buttonn" href="{% url 'news:knowledgedetail' pk=cat.pk %}">
+          <div class="doc secondary-hover">{{cat.title}} </div>
+        </a>
 
 
-
-    <div class="Ccard">
-      <div class="Ccard_body">
-
-
-          <span class="Ccard_title">Documents</span>
-          <div class="knowledge-table">
-            <table class="content-table">
-
-
-              <thead>
-                <th>Title</th>
-                <th>Category</th>
-                <th>Uploaded</th>
-              </thead>
-              <tbody>
-
-                {% for each in docs %}
-                <tr class="tr-hide">
-                  <td><a href="{{ each.get_absolute_url }}">{{each.title}}</a></td>
-                  <td>{{each.category}}</td>
-                  <td>{{each.date_created| date:"d.m.y"}}</td>
-                </tr>
-                {% endfor %}
-
-                <tr class="moreload">
-                  <td colspan="3" class="secondary-hover"> <span>more +</span></td>
-                </tr>
-
-              </tbody>
-            </table>
-          </div>
-
-
-
-
-          <span class="Ccard_title">Files</span>
-          <div class="knowledge-table">
-
-            <table class="content-table">
-              <thead>
-                <th>Title</th>
-                <th>Category</th>
-
-                <th>Size</th>
-                <th>Uploaded</th>
-              </thead>
-              <tbody>
-                {% for each in files %}
-                <tr class="tr-hide">
-
-
-
-
-                  <td> <a href="{{each.file.url}}"> {{each.title}} </a> </td>
-                  <td>{{each.category}}</td>
-                  <td>{{each.file.size|sizify}}</td>
-                  <td>{{each.date_created| date:"d.m.y"}}</td>
-
-                </tr>
-                {% endfor %}
-                <tr class="moreload">
-                  <td colspan="4" class="load_more"> <span class="load_more" id="more_files">load more +</span></td>
-                </tr>
-              </tbody>
-            </table>
-
-
-
-          </div>
-        </div>
+        {% endfor %}
       </div>
+    </div>
+  </div>
+
+
+
+  <div class="Ccard">
+    <div class="Ccard_body">
+
+
+      <span class="Ccard_title">Documents</span>
+      <div class="knowledge-table">
+        <table class="content-table">
+
+
+          <thead>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Uploaded</th>
+          </thead>
+          <tbody>
+
+            {% for each in docs %}
+            <tr class="tr-hide">
+              <td><a href="{{ each.get_absolute_url }}">{{each.title}}</a></td>
+              <td>{{each.category}}</td>
+              <td>{{each.date_created| date:"d.m.y"}}</td>
+            </tr>
+            {% endfor %}
+
+            <tr class="moreload">
+              <td colspan="3" class="secondary-hover">
+                 <span>more +</span></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+
+
+
+      <span class="Ccard_title">Files</span>
+      <div class="knowledge-table">
+
+        <table class="content-table">
+          <thead>
+            <th>Title</th>
+            <th>Category</th>
+
+            <th>Size</th>
+            <th>Uploaded</th>
+          </thead>
+          <tbody>
+            {% for each in files %}
+            <tr class="tr-hide">
+
+
+
+
+              <td> <a href="{{each.file.url}}"> {{each.title}} </a> </td>
+              <td>{{each.category}}</td>
+              <td>{{each.file.size|sizify}}</td>
+              <td>{{each.date_created| date:"d.m.y"}}</td>
+
+            </tr>
+            {% endfor %}
+            <tr class="moreload">
+              <td colspan="4" class="load_more"> <span class="load_more" id="more_files">load more +</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+
+
+      </div>
+    </div>
+  </div>
 
 
 

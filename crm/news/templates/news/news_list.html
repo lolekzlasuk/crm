@@ -32,6 +32,13 @@
   <div class="objecta">
 
   </div>
+  <select value="change edition" name="discard_reason" class="MySelect">
+    <option value="">--Select--</option>
+    <option value="Change edition">Change edition</option>
+    <option value="Change to eTextbook">Change to eTextbook</option>
+    <option value="Change title">Change title</option>
+    <option value="No material required">No material required</option>
+  </select>
   {% for news in object_list %}
 
 
@@ -53,17 +60,21 @@
       </div>
     </div>
     <div class="Ccard_body">
-         {% if not news.published_date %}
+      {% if not news.published_date %}
 
 
-<a class="buttonn" href="{% url 'news:publish_news' pk=news.pk %}"><div class="doc secondary-hover">Publish  </div></a>
-<a class="buttonn" href="{% url 'news:updatenews' pk=news.pk %}"><div class="doc secondary-hover">Update </div></a>
-              {% endif %}
+      <a class="buttonn" href="{% url 'news:publish_news' pk=news.pk %}">
+        <div class="doc secondary-hover">Publish </div>
+      </a>
+      <a class="buttonn" href="{% url 'news:updatenews' pk=news.pk %}">
+        <div class="doc secondary-hover">Update </div>
+      </a>
+      {% endif %}
       {{news.body | safe}}
 
-{% if news.files.all %}
+      {% if news.files.all %}
       <div class="Ccard_divider">
-Attached files
+        Attached files
       </div>
       {% endif %}
       <div class="Ccard_file-container">
@@ -72,11 +83,11 @@ Attached files
 
         <div class="Ccard_file">
           {% if each.extension == 'image' %}
-          <img src="{{each.miniature}}" >
+          <img src="{{each.miniature}}">
           <p><a href="{{each.file.get_absolute_url}}" download>Download</a></p>
 
           {% elif each.extension == 'pdf' %}
-          <img src="{% static 'media/pdf-icon.png' %}" >
+          <img src="{% static 'media/pdf-icon.png' %}">
           <p><a href="{{each.file.get_absolute_url}}" download>{{each}}</a></p>
           {% endif %}
         </div>

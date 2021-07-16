@@ -1,30 +1,29 @@
-
 {% extends 'base.html' %}
-{% block extra_css %}  .nav__link[name="Documents"] {background-color: #1caf9a; color: white;} {% endblock %}
+{% block extra_css %} .nav__link[name="Documents"] {background-color: #1caf9a; color: white;} {% endblock %}
 {% block body_block %}
 {% load static %}
 {% load groupfilter %}
 
-  <div class="site-header">
-    <div class="site-header__left">
+<div class="site-header">
+  <div class="site-header__left">
 
 
-      <span class="site-header__title">
-        {{object.title|truncatechars:40}}
-      </span>
-      <span class="site-header__subtitle">/ Directory of useful information</span>
-    </div>
-    <div class="site-header__right">
-      <span class="site-header__breadcrumb">
-      <div class="breadcrumbs">
-      <a href="{% url 'news:news_list' %}">Home</a>
-       &rsaquo;
-      <a href="{% url 'news:knowledge' %}">Knowledge</a>
-       &rsaquo; <span>{{object.title|truncatechars:20}}</span>
-      </div>
-  </span>
-    </div>
+    <span class="site-header__title">
+      {{object.title|truncatechars:40}}
+    </span>
+    <span class="site-header__subtitle">/ Directory of useful information</span>
   </div>
+  <div class="site-header__right">
+    <span class="site-header__breadcrumb">
+      <div class="breadcrumbs">
+        <a href="{% url 'news:news_list' %}">Home</a>
+        &rsaquo;
+        <a href="{% url 'news:knowledge' %}">Knowledge</a>
+        &rsaquo; <span>{{object.title|truncatechars:20}}</span>
+      </div>
+    </span>
+  </div>
+</div>
 
 
 <div class="content-container">
@@ -35,33 +34,33 @@
 
 
 
-    <div class="Ccard">
-      <div class="Ccard_header primary-hover">
+  <div class="Ccard">
+    <div class="Ccard_header primary-hover">
 
 
-        <div class="Ccard_title">
-          {{object.title }}
-        </div>
-        <div class="Ccard_subtitle">
-
-          {{object.created_date}}
-
-        </div>
+      <div class="Ccard_title">
+        {{object.title }}
       </div>
-      <div class="Ccard_body">
+      <div class="Ccard_subtitle">
 
-{{object.body|safe}}
+        {{object.created_date}}
 
+      </div>
+    </div>
+    <div class="Ccard_body">
 
-
-  </div>
-
-
-
-
+      {{object.body|safe}}
 
 
 
+    </div>
 
 
-{% endblock %}
+
+
+
+
+
+
+
+    {% endblock %}

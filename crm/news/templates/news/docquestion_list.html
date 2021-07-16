@@ -1,6 +1,5 @@
-
 {% extends 'base.html' %}
-{% block extra_css %}  .nav__link[name="faq"] {background-color: #1caf9a; color: white;} {% endblock %}
+{% block extra_css %} .nav__link[name="faq"] {background-color: #1caf9a; color: white;} {% endblock %}
 {% block body_block %}
 {% load static %}
 {% load groupfilter %}
@@ -16,11 +15,11 @@
   </div>
   <div class="site-header__right">
     <span class="site-header__breadcrumb">
-    <div class="breadcrumbs">
-    <a href="{% url 'news:news_list' %}">Home</a>
-     &rsaquo; <span>FAQ</span>
-    </div>
-</span>
+      <div class="breadcrumbs">
+        <a href="{% url 'news:news_list' %}">Home</a>
+        &rsaquo; <span>FAQ</span>
+      </div>
+    </span>
   </div>
 </div>
 
@@ -31,10 +30,10 @@
   <div class="moderator_bar">
 
 
-  <a href="{% url 'news:faq' %}">Questions</a>
-  <a href="{% url 'news:pending_faq' %}">unanswered</a>
+    <a href="{% url 'news:faq' %}">Questions</a>
+    <a href="{% url 'news:pending_faq' %}">unanswered</a>
 
-    </div>
+  </div>
   {% endif %}
   <div class="objecta">
 
@@ -42,58 +41,58 @@
 
   <div class="Ccard">
 
-  <div class="Ccard_header">
+    <div class="Ccard_header">
 
 
-  <div class="Ccard_title">
+      <div class="Ccard_title">
 
-Categories
-</div>
-</div>
-<div class="Ccard_body">
-
-<div class="doc_grid">
-  <a class="buttonn" href="{% url 'news:faq' %}">  <div class="doc secondary-hover">All</div></a>
-  {% for news in categories %}
-  {% if news.questions.all %}
-    <a class="buttonn" href="{% url 'news:faq' %}?category={{news.pk}}">  <div class="doc secondary-hover">{{news.title}} </div></a>
-
-    {% endif %}
-  {% endfor %}
-</div>
-</div>
-</div>
-<div class="Ccard">
-  <div class="Ccard_header">
-
-
-
-
-
-
-<a class="buttonn" href="{% url 'news:createuserquestion' %}">  <div class="doc secondary-hover">Ask a Question  </div></a>
-  </div>
-<div class="Ccard_body">
-
-
-<div class="questions__wrapper">
-  {% for question in object_list %}
-
-  <div class="question">
-  <div class="question_title secondary-hover">
-    {{question.title}}
-  </div>
-
-  <div class="question_answer">
-    {{question.answer}}
-  </div>
+        Categories
+      </div>
     </div>
+    <div class="Ccard_body">
 
-    {% endfor %}
-</div>
+      <div class="doc_grid">
+        <a class="buttonn" href="{% url 'news:faq' %}">
+          <div class="doc secondary-hover">All</div>
+        </a>
+        {% for news in categories %}
+        {% if news.questions.all %}
+        <a class="buttonn" href="{% url 'news:faq' %}?category={{news.pk}}">
+          <div class="doc secondary-hover">{{news.title}} </div>
+        </a>
 
-</div>
-</div>
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="Ccard">
+    <div class="Ccard_header">
+
+      <a class="buttonn" href="{% url 'news:createuserquestion' %}">
+        <div class="doc secondary-hover">Ask a Question </div>
+      </a>
+    </div>
+    <div class="Ccard_body">
+
+      <div class="questions__wrapper">
+        {% for question in object_list %}
+
+        <div class="question">
+          <div class="question_title secondary-hover">
+            {{question.title}}
+          </div>
+
+          <div class="question_answer">
+            {{question.answer}}
+          </div>
+        </div>
+
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
 </div>
 
 {% endblock %}

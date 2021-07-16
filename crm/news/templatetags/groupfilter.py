@@ -2,9 +2,11 @@ from django import template
 
 register = template.Library()
 
+
 @register.filter(name='has_group')
 def has_group(user, group_name):
     return user.groups.filter(name=group_name).exists()
+
 
 @register.filter
 def in_category(flag):
@@ -28,5 +30,6 @@ def sizify(value):
         value = value / 1073741824.0
         ext = 'gb'
     return '%s %s' % (str(round(value, 2)), ext)
+
 
 register.filter('sizify', sizify)

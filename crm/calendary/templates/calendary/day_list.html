@@ -15,13 +15,13 @@
   </div>
   <div class="site-header__right">
     <span class="site-header__breadcrumb">
-    <div class="breadcrumbs">
-    <a href="{% url 'news:news_list' %}">Home</a>
-    &rsaquo;
-  <span>  Calendar</span>
+      <div class="breadcrumbs">
+        <a href="{% url 'news:news_list' %}">Home</a>
+        &rsaquo;
+        <span> Calendar</span>
 
-    </div>
-</span>
+      </div>
+    </span>
   </div>
 </div>
 
@@ -67,35 +67,36 @@
 
 
         <!-- styling squares from other months than displayed -->
-        {% for news in object_list %}
+        {% for each in object_list %}
 
         {% if forloop.counter <= before %}
 
         <div class="cal_dif">
           <div class="date__inside">
-            {{news.date|date:"j M" }}
+            {{each.date|date:"j M" }}
           </div>
           {% elif forloop.counter >= after %}
           <div class="cal_dif_later">
             <div class="date__inside">
-              {{news.date|date:"j M" }}
+              {{each.date|date:"j M" }}
             </div>
             {% else %}
             <div class="date">
               <div class="date__inside">
-                {{news.date|date:"j" }}
+                {{each.date|date:"j" }}
                 {% if request.user|has_group:"Managers" %}
-                <a class="cala" href="{% url 'calendary:post_devent' pk=news.pk %}"><i class="far fa-plus-square"></i></a>
-              {% endif %}</div>
+                <a class="cala" href="{% url 'calendary:post_devent' pk=each.pk %}"><i class="far fa-plus-square"></i></a>
+                {% endif %}
+              </div>
               {% endif %}
 
 
-              {% for each in news.events.all|dictsort:"start" %}
+              {% for event in each.events.all|dictsort:"start" %}
 
               <div class="event">
 
-                <a class="buttonn" href="{{ each.get_absolute_url }}">
-                  <div class="devent secondary-hover">{{each.title|truncatechars:20}} </div>
+                <a class="buttonn" href="{{ event.get_absolute_url }}">
+                  <div class="devent secondary-hover">{{event.title|truncatechars:20}} </div>
                 </a>
 
               </div>

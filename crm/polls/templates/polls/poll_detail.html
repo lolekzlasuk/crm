@@ -78,7 +78,7 @@
           <p><label><input type="radio" name="{{question.title}}" value='{{answer.id}}'> {{answer.body}}</label></p>
           {% endfor %}
           {% if question.enabletext == True %}
-          <p><label><input type="radio" class="radiotext" name="{{question.title}}"><textarea class="radiotextanswer " style="display:inline-block;" name="lang"> </textarea> </label></p>
+          <p><label><input type="radio" class="radiotext" name="{{question.title}}"><textarea class="radiotextanswer" style="display:inline-block;" name="lang"> </textarea> </label></p>
           {% endif %}
           {% endif %}
         </div>

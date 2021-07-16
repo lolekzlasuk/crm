@@ -21,8 +21,3 @@ QUESTIONTYPES = (
         ('dat', 'Date')
 
         )
-STATES = (
-    ('acc', 'Accepted'),
-    ('rej', 'Rejected'),
-    ('wai', 'Awaiting'),
-)

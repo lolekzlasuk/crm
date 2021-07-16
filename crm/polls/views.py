@@ -127,10 +127,11 @@ def create_poll_answer(request, pk):
         submition = PollSubmition.objects.get(user=currentuser, poll=poll)
         question_pk = json.loads(request.body).get('question')
         questionobj = Question.objects.get(pk=question_pk)
-        answer_list = json.loads(request.body).get('answer')
-        text = json.loads(request.body).get('text')
+        answer_list = json.loads(request.body).get('answer',None)
+        text = json.loads(request.body).get('text',None)
         date = json.loads(request.body).get('date')
-        if text == None and date == None:
+
+        if len(answer_list) > 0:
             answerstr = str(" ")
             for counter, each in enumerate(answer_list):
                 if counter > 0:
@@ -142,44 +143,20 @@ def create_poll_answer(request, pk):
                 question=questionobj,
                 order=questionobj.order,
                 answer=answerstr,
-                date=None,
-                text=None,
+                date=date,
+                text=text,
             )
             for each in answer_list:
                 answer_instance.manyanswer.add(each)
-        elif text != None and len(answer_list) > 0:
 
-            answerstr = str(" ")
-            for counter, each in enumerate(answer_list):
-                if counter > 0:
-                    answerstr = answerstr + ";"
-                answerstr = answerstr + str(Answer.objects.get(pk=each).body)
-            answer_instance = PollSubmitionQuestion.objects.create(
-                submition=submition,
-                question=questionobj,
-                answer=answerstr,
-                order=questionobj.order,
-                text=text,
-                date=None,
-            )
-        elif text != None:
+        else:
             answer_instance = PollSubmitionQuestion.objects.create(
                 submition=submition,
                 question=questionobj,
                 order=questionobj.order,
                 text=text,
-                date=None,
-            )
-        elif date != None:
-            answer_instance = PollSubmitionQuestion.objects.create(
-                submition=submition,
-                question=questionobj,
-                order=questionobj.order,
                 date=date,
-                text=None,
             )
-
-        # submition.date = timezone.now()
         submition.save()
         return HttpResponse("OK")
     else:

@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.models import User
 from accounts.choices.choices import *
-
+from django.template.defaultfilters import slugify
 
 class Poll(models.Model):
     date_created = models.DateTimeField(default=timezone.now)

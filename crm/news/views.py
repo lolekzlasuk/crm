@@ -15,10 +15,12 @@ from django.db.models import Q
 import json
 from django.core.exceptions import PermissionDenied
 
+
 def locationdepartamentfilter(qs, userprofile):
-    qs = qs.filter(Q(target_location=userprofile.location) | Q(target_location="non") & Q(
-        target_departament=userprofile.departament) | Q(target_departament="non"))
+    qs = qs.filter(Q(target_location=userprofile.location) | Q(target_location='non') & Q(
+        target_departament=userprofile.departament) | Q(target_departament='non'))
     return qs
+
 
 class LocationDepartamentCheckMixin:
 
@@ -75,35 +77,36 @@ class QuestionListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = KnowledgeCategory.objects.all()
-        context['title'] = "FAQ"
+        context['title'] = 'FAQ'
         return context
+
 
 class UnpublishedNewsUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = News
     form_class = NewsForm
     permission_required = 'news.edit_news'
     success_url = reverse_lazy('news:unpublished')
-    template_name = "news/upload.html"
-
-
+    template_name = 'news/upload.html'
 
 
 class UnansweredQuestionListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = DocQuestion
 
     permission_required = 'news.view_userquestion'
-    template_name = "news/pending_questions.html"
+    template_name = 'news/pending_questions.html'
 
     def get_queryset(self):
         queryset = DocQuestion.objects.filter(answer=None)
         return queryset
+
 
 class UpdateDocQuestionView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = DocQuestion
     form_class = DocQuestionForm
     permission_required = 'news.edit_docquestion'
     success_url = reverse_lazy('news:pending_faq')
-    template_name = "news/upload.html"
+    template_name = 'news/upload.html'
+
 
 class UnpublishedNewsListView(LoginRequiredMixin,
                               PermissionRequiredMixin, ListView):
@@ -196,7 +199,7 @@ def flagtoggle(request):
             user=user, notification=notification)
         notificationreadflag.read = True
         notificationreadflag.save()
-        return HttpResponse("OK")
+        return HttpResponse('OK')
 
 
 @login_required
@@ -208,7 +211,7 @@ def markall(request):
         for each in notificationreadflag:
             each.read = True
             each.save()
-        return HttpResponse("OK")
+        return HttpResponse('OK')
 
 
 @login_required

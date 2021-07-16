@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block body_block %}
+<div class="site-header">
+  <div class="site-header__left">
+
+
+    <span class="site-header__title">
+      Change Password
+    </span>
+  </div>
+  <div class="site-header__right">
+    <span class="site-header__breadcrumb">
+    <div class="breadcrumbs">
+    <a href="{% url 'news:news_list' %}">Home</a>
+    &rsaquo;
+    <a href="{% url 'accounts:profile' %}">Profile</a>
+     &rsaquo; <span>Password Change</span>
+    </div>
+</span>
+  </div>
+</div>
+
+
+<div class="form-container">
+<form method="POST" class="post-form">
+  {% csrf_token %}
+  {{ user_form.as_p }}
+  {{ profile_form.as_p }}
+  <button type="submit" class="save btn btn-default">Save</button>
+</form>
+</div>
+{% endblock %}

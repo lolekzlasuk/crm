@@ -9,7 +9,6 @@ class CalendarModelsTest(TestCase):
 
     def setUp(self):
         test_user1 = User.objects.create_user(username='testuser1', password='1X<ISRUkw+tuK')
-
         test_user1.save()
 
         test_user1_userprofile = UserProfile.objects.create(
@@ -24,13 +23,12 @@ class CalendarModelsTest(TestCase):
         test_user1_userprofile.save()
 
         self.test_date = date(2019, 12, 1)
-
         self.test_day = Day.objects.create(date = self.test_date)
 
         self.test_devent = Devent.objects.create(
             day = self.test_day,
-            title = "test devent title",
-            description = "test devent description",
+            title = 'test devent title',
+            description = 'test devent description',
             author = test_user1,
         )
 
@@ -39,7 +37,7 @@ class CalendarModelsTest(TestCase):
         self.assertEqual(field_label, 'date')
 
     def test_day_object_name(self):
-        expected_object_name = self.test_day.date.strftime("%m/%d/%Y")
+        expected_object_name = self.test_day.date.strftime('%m/%d/%Y')
         self.assertEqual(str(self.test_day), expected_object_name)
 
     def test_devent_day_label(self):

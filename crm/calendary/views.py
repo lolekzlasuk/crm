@@ -33,6 +33,7 @@ class DayListView(LoginRequiredMixin, ListView):
         qs_days_ahead = Day.objects.filter(pk__in=list_of_pks_days_ahead)
         qs_padded_days = qs_days_days_before.union(qs_days_ahead)
 
+
         return qs_padded_days
 
 
@@ -42,11 +43,11 @@ class DayListView(LoginRequiredMixin, ListView):
             ).filter(date__year=self.kwargs['year'])
 
         alldays = len(qs) + qs[0].date.weekday()
-
+#needed for next and prev month buttons to be replaced with calendar lib
         context['before'] = qs[0].date.weekday()
         context['after'] = alldays + 1
         context['date'] = datetime.date(
-            self.kwargs['year'], self.kwargs['month'], 1).strftime("%B %Y")
+            self.kwargs['year'], self.kwargs['month'], 1).strftime('%B %Y')
 
         if self.kwargs['month'] == 12:
             context['nextmonth'] = 1
@@ -67,14 +68,14 @@ class DayListView(LoginRequiredMixin, ListView):
 @permission_required('calendary.add_devent', raise_exception=True)
 def post_devent(request, pk):
     username = request.user.username
-    data = {"start": "00:00", "end": "23:59"}
+    data = {'start': '00:00', 'end': '23:59'}
     if request.method == 'POST':
-        Days = get_object_or_404(Day, pk=pk)
+        day = get_object_or_404(Day, pk=pk)
         form = DeventForm(request.POST)
         if form.is_valid():
             instance = form.save(commit=False)
             instance.author = User.objects.get(username=username)
-            instance.day = Days
+            instance.day = day
             instance.save()
             month = instance.day.date.month
             year = instance.day.date.year

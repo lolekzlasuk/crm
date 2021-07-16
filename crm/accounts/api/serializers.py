@@ -36,7 +36,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only':True}}
 
     def get_message(self, obj):
-        return "thank you for registering"
+        return "user registered"
     # def get_token_response(self,obj):
     #     user = obj
     #     payload = jwt_payload_handler(user)

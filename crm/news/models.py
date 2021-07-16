@@ -2,7 +2,6 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from accounts.models import UserProfile
-# Create your models here.
 import os
 from django.core.validators import FileExtensionValidator
 from PIL import Image
@@ -16,7 +15,6 @@ class FileManager(models.Manager):
     def save_file(self, file):
         file_to_save = self.create(file=file)
         name, ext = os.path.splitext(file.name)
-        print('workiiinn')
         format_ext_dict = {'.jpg': 'JPEG', '.png': 'PNG', '.gif': 'GIF'}
         if ext in format_ext_dict.keys():
             file_to_save.extension = 'image'
@@ -48,11 +46,6 @@ class News(models.Model):
         max_length=3, choices=COMPANY_LOCATIONS, default='non')
     slug = models.SlugField(max_length=20)
 
-    def publish(self):
-        self.published_date = timezone.now()
-        self.save()
-        self.create_notifications()
-
     def create_notifications(self):
         notification_instance = Notification.objects.create(
             news=self,
@@ -69,7 +62,13 @@ class News(models.Model):
             notifreadflag = NotificationReadFlag.objects.create(
                 user=each.user,
                 notification=notification_instance
+
             )
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+        self.create_notifications()
 
     def __str__(self):
         return self.title[0:30]
@@ -83,14 +82,17 @@ class News(models.Model):
 
     class Meta:
         verbose_name_plural = "news"
+        ordering = ['-published_date', '-date_created', 'id']
+
 
 class NewsFile(models.Model):
     file = models.FileField(upload_to='upload/%Y/%m/%d',
                             default=None,
                             blank=True,
                             validators=[
-                            FileExtensionValidator(
-                                allowed_extensions=['jpg', 'png', 'gif', 'pdf'])])
+                                FileExtensionValidator(
+                            allowed_extensions=['jpg', 'png', 'gif', 'pdf'])
+                            ])
 
     miniature = models.TextField(default=None, null=True, blank=True,)
     extension = models.CharField(
@@ -129,8 +131,10 @@ class KnowledgeCategory(models.Model):
 
     def __str__(self):
         return self.title
+
     class Meta:
         verbose_name_plural = "Knowledge Categories"
+
 
 class DocumentF(models.Model):
     title = models.CharField(max_length=200)
@@ -171,6 +175,7 @@ class DocFile(models.Model):
         default=2, related_name="files"
     )
     author = models.ForeignKey('auth.User', on_delete=models.PROTECT)
+
     class Meta:
         ordering = ['-date_created']
 
@@ -202,8 +207,7 @@ class DocQuestion(models.Model):
         return self.title
 
     class Meta:
-        ordering = ['-date_created']
-
+        ordering = ['-id']
 
 
 # delte this

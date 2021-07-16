@@ -1,3 +1,5 @@
+import random
+import string
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -41,7 +43,8 @@ class UserProfile(models.Model):
     employee_id = models.PositiveIntegerField()
     position = models.CharField(max_length=40, default="trainee")
     objects = AvatarManager()
-
+    first_login_string = models.CharField(max_length=30, null=True)
+    is_active = models.BooleanField(default=False)
     departament = models.CharField(
         max_length=3,
         choices=DEPARTAMENTS,
@@ -56,6 +59,15 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        profiles = UserProfile.objects.order_by('-employee_id')
+        highest_id = profiles[0].employee_id
+        self.employee_id = highest_id + 1
+        self.first_login_string = ''.join(random.choices( \
+            string.ascii_letters + string.digits, k=15))
+        super(UserProfile, self).save(*args, **kwargs)
+
 
     class Meta:
         ordering = ['employee_id']

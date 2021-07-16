@@ -239,7 +239,7 @@ $(document).on('click',".removeanswer",function (e) {
 
           success:(json) => {
             console.log('yaaay');
-                window.location.href = '{% url 'polls:poll_list' %}';
+                // window.location.href = '{% url 'polls:poll_list' %}';
 
           },
           error : function(xhr,errmsg,err) {
